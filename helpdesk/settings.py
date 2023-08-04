@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'amc.apps.AmcConfig',
     'masters.apps.MastersConfig',
     'user.apps.UserConfig',
+    'dashboard.apps.DashboardConfig'
     
 ]
 
