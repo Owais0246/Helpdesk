@@ -13,30 +13,34 @@ from django.utils.decorators import method_decorator
 
 
 # Create View
+@method_decorator
 class  UserCreateView(generic.CreateView):
     template_name='users/user_create.html'
     form_class=CreateUser
     def get_success_url(self):
-        messages.success(self.request, 'User Created Sucessfully')
+        messages.success(self.request, 'User Created Successfully')
         return reverse ("UserList")
 
 # List View
+@method_decorator
 class UserListView(generic.ListView):
     template_name = "users/user_list.html"
     queryset = User.objects.all()
     context_object_name = "users"
 
 # Detail View
+@method_decorator
 def UserDetail(request, pk):
-    userpk =User.objects.get(id=pk)
+    user_pk =User.objects.get(id=pk)
 
     context = {
-        "users": userpk,
+        "users": user_pk,
     }
     return render(request, 'users/user_detail.html', context)
     
 
 # User Update View
+@method_decorator
 class UserUpdateView(generic.UpdateView):
     template_name="users/user_update.html"
     form_class = UpdateUser
@@ -68,7 +72,7 @@ def LoginPage(request):
 
 
 # User Logout View
-
+@method_decorator
 def LogoutUser (request):
     logout(request)
     return redirect ('Login')

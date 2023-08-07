@@ -9,7 +9,7 @@ from .views import (
 
 urlpatterns = [
     path('list', UserListView.as_view(), name="UserList"),
-    path('add', UserCreateView.as_view(), name="UserCreate"),
+    path('add', UserCreateView.as_view(), name="CreateUser"),
     path('<int:pk>/update', UserUpdateView.as_view(), name="UserUpdate"),
     path('<int:pk>', views.UserDetail, name="UserDetail")
 ]

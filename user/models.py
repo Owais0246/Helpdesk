@@ -14,6 +14,3 @@ class User(AbstractUser):
     user_loc = models.ForeignKey(Location,on_delete=models.CASCADE, null=True)
     password1 = models.CharField(max_length=50)
     password2 = models.CharField(max_length=50)
-
-    
-    

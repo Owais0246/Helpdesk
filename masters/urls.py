@@ -13,13 +13,13 @@ urlpatterns = [
     path('company/detail/<int:pk>', views.CompanyDetail, name="CompanyDetail"),
     
     #Location Urls
-    path('location/add', LocationCreateView.as_view(), name="LocationCreate"),
+    path('location/add', LocationCreateView.as_view(), name="CreateLocation"),
     path('location/list', LocationListView.as_view(), name="LocationList"),
     path('location/update/<int:pk>', LocationUpdateView.as_view(), name="LocationUpdate"),
     path('location/detail/<int:pk>', views.LocationDetail, name="LocationDetail"),
     
     #Product
-    path('product/add', ProductCreateView.as_view(), name="ProductCreate"),
+    path('product/add', ProductCreateView.as_view(), name="CreateProduct"),
     path('product/list', ProductListView.as_view(), name="ProductList"),
     path('product/update/<int:pk>', ProductUpdateView.as_view(), name="ProductUpdate"),
     path('product/detail/<int:pk>', views.ProductDetail, name="ProductDetail"),
