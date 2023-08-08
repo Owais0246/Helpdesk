@@ -5,31 +5,32 @@ from . models import Company,Location,Product
 # Create your views here.
 
 #Company Views
-class CompanyCreateView(generic.CreateView):
+
+def CreateCustomer(request):
+    pass
+class CustomerCreateView(generic.CreateView):
     template_name = 'masters/company/company_create.html'
     form_class = CompanyForm
 
     def get_success_url(self):
         return reverse('CompanyList')
 
-class CompanyListView(generic.ListView):
+class CustomerListView(generic.ListView):
     template_name = 'masters/company/company_list.html'
     queryset = Company.objects.all()
     context_object_name = 'company'
 
-
-
-def CompanyDetail(request, pk):
-    companypk =Company.objects.get(id=pk)
+def CustomerDetail(request, pk):
+    company_pk =Company.objects.get(id=pk)
 
     context = {
-        "company": companypk,
+        "company": company_pk,
     }
     return render(request, 'masters/company/company_detail.html', context)
 
 
 
-class CompanyUpdateView(generic.UpdateView):
+class CustomerUpdateView(generic.UpdateView):
     model =Company
     form_class = CompanyForm
     template_name = 'masters/company/company_update.html'
@@ -54,10 +55,10 @@ class LocationListView(generic.ListView):
 
 
 def LocationDetail(request, pk):
-    locationpk =Location.objects.get(id=pk)
+    location_pk =Location.objects.get(id=pk)
 
     context = {
-        "location": locationpk,
+        "location": location_pk,
     }
     return render(request, 'masters/location/location_detail.html', context)
 
@@ -87,10 +88,10 @@ class ProductListView(generic.ListView):
 
 
 def ProductDetail(request, pk):
-    productpk =Product.objects.get(id=pk)
+    product_pk =Product.objects.get(id=pk)
 
     context = {
-        "product": productpk,
+        "product": product_pk,
     }
     return render(request, 'product/product_detail.html', context)
 

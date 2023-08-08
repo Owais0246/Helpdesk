@@ -1,16 +1,16 @@
 from django.urls import path
 from masters import views
-from .views import (CompanyCreateView,CompanyListView,CompanyUpdateView,
+from .views import (CustomerCreateView,CustomerListView,CustomerUpdateView,
                     LocationCreateView,LocationListView,LocationUpdateView,
                     ProductCreateView,ProductListView,ProductUpdateView)
 
 
 urlpatterns = [
     #Company urls
-    path('company/add', CompanyCreateView.as_view(), name="CompanyCreate"),
-    path('company/list', CompanyListView.as_view(), name="CompanyList"),
-    path('company/update/<int:pk>', CompanyUpdateView.as_view(), name="CompanyUpdate"),
-    path('company/detail/<int:pk>', views.CompanyDetail, name="CompanyDetail"),
+    path('company/add', CustomerCreateView.as_view(), name="CompanyCreate"),
+    path('company/list', CustomerListView.as_view(), name="CompanyList"),
+    path('company/update/<int:pk>', CustomerUpdateView.as_view(), name="CompanyUpdate"),
+    path('company/detail/<int:pk>', views.CustomerDetail, name="CompanyDetail"),
     
     #Location Urls
     path('location/add', LocationCreateView.as_view(), name="CreateLocation"),

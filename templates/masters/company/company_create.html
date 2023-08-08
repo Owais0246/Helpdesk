@@ -1,0 +1,961 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Cutomer</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Create</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Elements</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Create Customer</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  company_name
+  company_contact_no
+  address
+
+  
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
+
+          <form>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"
+                >Email address</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+              />
+              <small id="emailHelp" class="form-text text-muted"
+                >We'll never share your email with anyone else.</small
+              >
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label"
+                >Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputPassword1"
+                placeholder="Password"
+              />
+            </div>
+            <div class="mb-3">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="checkmeout0"
+                />
+                <label class="form-check-label" for="checkmeout0"
+                  >Check me out !</label
+                >
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary waves-effect waves-light"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+        <!-- end card-body-->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="mb-3 header-title">Horizontal form</h4>
+
+          <form class="form-horizontal">
+            <div class="row mb-3">
+              <label for="inputEmail3" class="col-4 col-xl-3 col-form-label"
+                >Email</label
+              >
+              <div class="col-8 col-xl-9">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="inputEmail3"
+                  placeholder="Email"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputPassword3" class="col-4 col-xl-3 col-form-label"
+                >Password</label
+              >
+              <div class="col-8 col-xl-9">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="inputPassword3"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputPassword5" class="col-4 col-xl-3 col-form-label"
+                >Re Password</label
+              >
+              <div class="col-8 col-xl-9">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="inputPassword5"
+                  placeholder="Retype Password"
+                />
+              </div>
+            </div>
+            <div class="row mb-3 justify-content-end">
+              <div class="col-8 col-xl-9">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="checkmeout"
+                  />
+                  <label class="form-check-label" for="checkmeout"
+                    >Check me out !</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="justify-content-end row">
+              <div class="col-8 col-xl-9">
+                <button
+                  type="submit"
+                  class="btn btn-info waves-effect waves-light"
+                >
+                  Sign in
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- end card-body -->
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  <!-- Inline Form -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="header-title">Column sizing</h4>
+
+          <p class="sub-header">
+            As shown in the previous examples, our grid system allows you to
+            place any number of <code>.col</code>s within a <code>.row</code>.
+          </p>
+
+          <form class="row g-3">
+            <div class="col-xl-2 col-md-3">
+              <label for="staticEmail2" class="visually-hidden">Email</label>
+              <input
+                type="text"
+                readonly
+                class="form-control-plaintext"
+                id="staticEmail2"
+                value="email@example.com"
+              />
+            </div>
+            <div class="col-xl-2 col-md-3">
+              <label for="inputPassword2" class="visually-hidden"
+                >Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="inputPassword2"
+                placeholder="Password"
+              />
+            </div>
+            <div class="col-xl-2 col-md-3">
+              <button
+                type="submit"
+                class="btn btn-primary waves-effect waves-light"
+              >
+                Confirm identity
+              </button>
+            </div>
+          </form>
+
+          <h6 class="font-13 mt-3">Auto-sizing</h6>
+
+          <form>
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <label class="visually-hidden" for="inlineFormInput"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  id="inlineFormInput"
+                  placeholder="Jane Doe"
+                />
+              </div>
+              <div class="col-auto">
+                <label class="visually-hidden" for="inlineFormInputGroup"
+                  >Username</label
+                >
+                <div class="input-group mb-2">
+                  <div class="input-group-text">@</div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inlineFormInputGroup"
+                    placeholder="Username"
+                  />
+                </div>
+              </div>
+              <div class="col-auto">
+                <div class="form-check mb-2">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="autoSizingCheck"
+                  />
+                  <label class="form-check-label" for="autoSizingCheck"
+                    >Remember me</label
+                  >
+                </div>
+              </div>
+              <div class="col-auto">
+                <button
+                  type="submit"
+                  class="btn btn-primary waves-effect waves-light mb-2"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- end card-body -->
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  <!-- Form row -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="header-title">Gutters</h4>
+          <p class="text-muted font-13">
+            More complex layouts can also be created with the grid system.
+          </p>
+
+          <form>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="inputEmail4"
+                  placeholder="Email"
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="inputPassword4" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="inputPassword4"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="inputAddress" class="form-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress"
+                placeholder="1234 Main St"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="inputAddress2" class="form-label">Address 2</label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress2"
+                placeholder="Apartment, studio, or floor"
+              />
+            </div>
+
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label for="inputCity" class="form-label">City</label>
+                <input type="text" class="form-control" id="inputCity" />
+              </div>
+              <div class="mb-3 col-md-4">
+                <label for="inputState" class="form-label">State</label>
+                <select id="inputState" class="form-select">
+                  <option>Choose</option>
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                  <option>Option 3</option>
+                </select>
+              </div>
+              <div class="mb-3 col-md-2">
+                <label for="inputZip" class="form-label">Zip</label>
+                <input type="text" class="form-control" id="inputZip" />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="customCheck11"
+                />
+                <label class="form-check-label" for="customCheck11"
+                  >Check this custom checkbox</label
+                >
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary waves-effect waves-light"
+            >
+              Sign in
+            </button>
+          </form>
+        </div>
+        <!-- end card-body -->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <h4 class="header-title">Custom checkbox - Basic</h4>
+
+              <p class="sub-header">
+                Supports bootstrap brand colors: <code>.form-check</code>,
+                <code>.form-check-*</code> etc.
+              </p>
+
+              <div class="form-check mb-2 form-check-primary">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck1"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck1"
+                  >Primary</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-success">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck2"
+                />
+                <label class="form-check-label" for="customckeck2"
+                  >Success</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-danger">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck3"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck3"
+                  >Danger</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-warning">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck4"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck4"
+                  >Warning</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-pink">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck5"
+                />
+                <label class="form-check-label" for="customckeck5">Pink</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-blue">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck7"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck7">Blue</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-info">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck8"
+                />
+                <label class="form-check-label" for="customckeck8">Info</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-dark">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck9"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck9">Dark</label>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <h4 class="header-title mt-3 mt-md-0">
+                Custom checkbox - Circled
+              </h4>
+
+              <p class="sub-header">
+                <code>.rounded-circle</code> for roundness.
+              </p>
+              <div class="form-check mb-2 form-check-primary">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck10"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck10"
+                  >Primary</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-success">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck11"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck11"
+                  >Success</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-danger">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck12"
+                />
+                <label class="form-check-label" for="customckeck12"
+                  >Danger</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-warning">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck13"
+                />
+                <label class="form-check-label" for="customckeck13"
+                  >Warning</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-pink">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck14"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck14">Pink</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-blue">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck15"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck15">Blue</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-info">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck16"
+                />
+                <label class="form-check-label" for="customckeck16">Info</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-dark">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck17"
+                  checked
+                />
+                <label class="form-check-label" for="customckeck17">Dark</label>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <h4 class="header-title mt-3 mt-md-0">
+                Custom checkbox - Disabled
+              </h4>
+
+              <p class="sub-header">Disabled state also supported.</p>
+
+              <div class="form-check mb-2 form-check-primary">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck18"
+                  disabled
+                />
+                <label class="form-check-label" for="customckeck18"
+                  >Can't check this</label
+                >
+              </div>
+
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck19"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customckeck19"
+                  >This too</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-warning">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck20"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customckeck20"
+                  >And this</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-info">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck21"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customckeck21"
+                  >Can't check this</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-pink">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="customckeck22"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customckeck22"
+                  >This too</label
+                >
+              </div>
+
+              <div class="form-check mb-2 form-check-blue">
+                <input
+                  class="form-check-input rounded-circle"
+                  type="checkbox"
+                  value=""
+                  id="customckeck23"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customckeck23"
+                  >And this</label
+                >
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col-->
+  </div>
+  <!-- end row -->
+
+  <!-- RADIOS -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <h4 class="header-title">Custom radio - Basic</h4>
+
+              <p class="sub-header">
+                Supports bootstrap brand colors: <code>.form-check</code>,
+                <code>.form-check-*</code> etc.
+              </p>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio1"
+                      checked
+                    />
+                    <label class="form-check-label" for="customradio1"
+                      >Default</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-success">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio2"
+                    />
+                    <label class="form-check-label" for="customradio2"
+                      >Success</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-info">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio3"
+                    />
+                    <label class="form-check-label" for="customradio3"
+                      >Info</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-danger">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio4"
+                    />
+                    <label class="form-check-label" for="customradio4"
+                      >Danger</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-info">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio5"
+                    />
+                    <label class="form-check-label" for="customradio5"
+                      >Info</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-primary">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio6"
+                    />
+                    <label class="form-check-label" for="customradio6"
+                      >Primary</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-pink">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio7"
+                    />
+                    <label class="form-check-label" for="customradio7"
+                      >Pink</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-dark">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="customradio8"
+                    />
+                    <label class="form-check-label" for="customradio8"
+                      >Dark</label
+                    >
+                  </div>
+                </div>
+                <!-- end col -->
+
+                <div class="col-sm-6">
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio1"
+                    />
+                    <label class="form-check-label" for="customradio1"
+                      >Default</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-success">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio2"
+                      checked
+                    />
+                    <label class="form-check-label" for="customradio2"
+                      >Success</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-info">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio3"
+                    />
+                    <label class="form-check-label" for="customradio3"
+                      >Info</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-danger">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio4"
+                      checked
+                    />
+                    <label class="form-check-label" for="customradio4"
+                      >Danger</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-info">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio5"
+                    />
+                    <label class="form-check-label" for="customradio5"
+                      >Info</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-primary">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio6"
+                      checked
+                    />
+                    <label class="form-check-label" for="customradio6"
+                      >Primary</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-pink">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio7"
+                    />
+                    <label class="form-check-label" for="customradio7"
+                      >Pink</label
+                    >
+                  </div>
+
+                  <div class="form-check mb-2 form-check-dark">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="customradio8"
+                      checked
+                    />
+                    <label class="form-check-label" for="customradio8"
+                      >Dark</label
+                    >
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row-->
+            </div>
+            <!-- end col -->
+
+            <div class="col-md-4">
+              <h4 class="header-title mt-3 mt-md-0">Custom radio - Disabled</h4>
+              <p class="sub-header">Disabled state also supported.</p>
+
+              <div class="form-check form-check-danger mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  id="customradio1"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customradio1">Zero</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-dark">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  id="customradio2"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customradio2">One</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-blue">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  id="customradio3"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customradio3">Two</label>
+              </div>
+
+              <div class="form-check mb-2 form-check-pink">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  id="customradio4"
+                  checked
+                  disabled
+                />
+                <label class="form-check-label" for="customradio4">Three</label>
+              </div>
+            </div>
+            <!-- end col -->
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col-->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+{% endblock %}
