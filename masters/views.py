@@ -6,8 +6,25 @@ from . models import Company,Location,Product
 
 #Company Views
 
-def CreateCustomer(request):
-    pass
+def create_customer(request):
+    customer_form=CompanyForm(request.POST)
+    if customer_form.is_valid():
+        form= customer_form.save(commit=False)
+        form.is_customer=True
+        form.save()
+        return redirect('CompanyList')
+
+    context = {
+        'customer_form': customer_form,
+        
+    }
+    return render(request, 'masters/company/company_create.html', context)
+
+def customer_list(request):
+    customers= Company.objects.filter(is_customer=True)
+    context= {'customers':customers}
+    return render(request, 'masters/company/company_list.html', context)
+    
 class CustomerCreateView(generic.CreateView):
     template_name = 'masters/company/company_create.html'
     form_class = CompanyForm
@@ -20,11 +37,18 @@ class CustomerListView(generic.ListView):
     queryset = Company.objects.all()
     context_object_name = 'company'
 
-def CustomerDetail(request, pk):
-    company_pk =Company.objects.get(id=pk)
-
+def customer_detail(request, pk):
+    customer_pk =Company.objects.get(id=pk)
+    location_form=LocationForm(request.POST)
+    
+    if location_form.is_valid():
+        form=location_form.save(commit=False)
+        form.loc_company = customer_pk.id
+        form.save()
+        return redirect('CompanyDetail',pk)
     context = {
-        "company": company_pk,
+        "customer": customer_pk,
+        "location":location_form
     }
     return render(request, 'masters/company/company_detail.html', context)
 

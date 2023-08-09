@@ -1,0 +1,335 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Company Details" %}{% endblock head_title %} 
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Helpdesk</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Customer</a>
+            </li>
+            <li class="breadcrumb-item active">{{customer.company_name}}</li>
+          </ol>
+        </div>
+        <h4 class="page-title">{{customer.company_name}}</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i class="fe-list font-26 avatar-title text-primary"></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">942</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">Total Tickets</p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i
+                  class="fe-check-square font-26 avatar-title text-success"
+                ></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">328</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">
+                  Total Resolved tickets
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i class="fe-users font-26 avatar-title text-info"></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">17</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">Total Active Tickets</p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i class="fe-clock font-26 avatar-title text-warning"></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">412</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">Tickets in Progress</p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+  </div>
+
+  <div class="row">
+    <div class="col-xl-8 col-lg-6">
+      <!-- project card -->
+      <div class="card d-block">
+        <div class="card-body">
+          <div class="dropdown float-end">
+            <a
+              href="#"
+              class="dropdown-toggle arrow-none card-drop"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="dripicons-dots-3"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+                
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-pencil me-1"></i>Edit</a
+              >
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-delete me-1"></i>Delete</a
+              >
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-email-outline me-1"></i>Email</a
+              >
+              
+            </div>
+          </div>
+          <!-- project title-->
+          <h3 class="mt-0 font-20">Customer Details</h3>
+            <!--company datatable-->
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr >
+                  <th>Company Name</th>
+                  <td>{{customer.company_name}}</td>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Contact Number</th>
+                  <td>{{customer.company_contact_no}}</td>
+                  
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>{{customer.address}}</td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--end table-->
+          
+            
+          
+        <!-- end card-body-->
+    
+      <!-- end card-->
+
+      
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+
+    
+  <!-- end row -->
+</div>
+  <div class="row">
+    <div class="col-xl-8 col-lg-6">
+      <!-- project card -->
+      <div class="card d-block">
+        <div class="card-body">
+          <div class="dropdown float-end">
+            <a
+              href="#"
+              class="dropdown-toggle arrow-none card-drop"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="dripicons-dots-3"></i>
+            </a>
+            {% include 'masters/company/location_modal.html' %}
+            <div class="dropdown-menu dropdown-menu-end">
+                <!-- item-->
+                <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#location-modal"
+            >
+              Add Location
+            </button>
+              {% comment %} <a href="javascript:void(0);" class="dropdown-item"
+              ><i class="mdi mdi-email-outline me-1"></i>Add Location</a
+            > {% endcomment %}
+              
+              
+            </div>
+          </div>
+          <!-- project title-->
+          <h3 class="mt-0 font-20">Customer Locations</h3>
+            
+          
+            
+          
+        <!-- end card-body-->
+    
+      <!-- end card-->
+
+      
+      <!-- end card-->
+    </div>
+      <!-- project card for loop yaha lagana hai-->
+      <div class="card d-block">
+        <div class="card-body">
+          <div class="dropdown float-end">
+            <a
+              href="#"
+              class="dropdown-toggle arrow-none card-drop"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="dripicons-dots-3"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+                
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-pencil me-1"></i>Edit</a
+              >
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-delete me-1"></i>Delete</a
+              >
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-email-outline me-1"></i>Email</a
+              >
+              
+            </div>
+          </div>
+          <!-- project title-->
+          <h3 class="mt-0 font-20">TCS Bangalore</h3>
+            <!--company datatable-->
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr >
+                  <th>Company Name</th>
+                  <td>{{customer.company_name}}</td>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Contact Number</th>
+                  <td>{{customer.company_contact_no}}</td>
+                  
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>{{customer.address}}</td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--end table-->
+          
+            
+          
+        <!-- end card-body-->
+    
+      <!-- end card-->
+
+      
+      <!-- end card-->
+    </div>  
+    <!-- end col -->
+
+    
+  <!-- end row -->
+</div>
+<!-- container -->
+{% endblock %} {% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/chart.js/Chart.bundle.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/project-details.init.js' %}"></script>
+<!-- Init js end -->
+{% endblock %}

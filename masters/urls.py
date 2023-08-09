@@ -7,10 +7,10 @@ from .views import (CustomerCreateView,CustomerListView,CustomerUpdateView,
 
 urlpatterns = [
     #Company urls
-    path('company/add', CustomerCreateView.as_view(), name="CompanyCreate"),
-    path('company/list', CustomerListView.as_view(), name="CompanyList"),
+    path('company/add', views.create_customer, name="CompanyCreate"),
+    path('company/list', views.customer_list, name="CompanyList"),
     path('company/update/<int:pk>', CustomerUpdateView.as_view(), name="CompanyUpdate"),
-    path('company/detail/<int:pk>', views.CustomerDetail, name="CompanyDetail"),
+    path('company/detail/<int:pk>', views.customer_detail, name="CompanyDetail"),
     
     #Location Urls
     path('location/add', LocationCreateView.as_view(), name="CreateLocation"),

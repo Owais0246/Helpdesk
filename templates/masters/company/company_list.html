@@ -1,0 +1,91 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Responsive Tables | RWD Tables" %}{% endblock head_title %} 
+{% block extra_css %}
+
+<!-- third party css -->
+<link
+  href="{% static 'libs/admin-resources/rwd-table/rwd-table.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<!-- third party css end -->
+
+{% endblock %}
+ {% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Helpdeskk</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Customer</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Responsive</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Cutomers</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="responsive-table-plugin">
+            <div class="table-rep-plugin">
+              <div class="table-responsive" data-pattern="priority-columns">
+                <table id="tech-companies-1" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th data-priority="1">Contact No</th>
+                      <th data-priority="3">Address</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for customer in customers  %}
+                    <tr>
+                     <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th>
+                      <td>{{customer.company_contact_no}}</td>
+                      <td>{{customer.address}}</td>
+                      
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+              <!-- end .table-responsive -->
+            </div>
+            <!-- end .table-rep-plugin-->
+          </div>
+          <!-- end .responsive-table-plugin-->
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+{% endblock %} {% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/admin-resources/rwd-table/rwd-table.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/responsive-table.init.js' %}"></script>
+<!-- Init js end -->
+
+{% endblock %}

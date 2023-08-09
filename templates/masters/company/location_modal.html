@@ -1,0 +1,107 @@
+<!-- Standard modal content -->
+<div
+id="location-modal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="standard-modalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="standard-modalLabel">
+        Add Location
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+   
+      <form method='POST'>
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="nameofCustomer" class="form-label"
+            >Location Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="cust_name"
+            name="loc_name"
+            
+            placeholder="Enter the Customer's Loaction Name"
+          />
+          
+        </div>
+        <div class="mb-3">
+          <label for="contact_number" class="form-label"
+            >Contact Number</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="cust_number"
+            name="loc_poc_contact_no"
+            
+            placeholder="Enter the POC's Contact Number"
+          />
+          
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label"
+            >Email</label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="cust_number"
+            name="loc_poc_email"
+            
+            placeholder="Enter the POC's Email id"
+          />
+          
+        </div>
+        <div class="mb-3">
+          <label for="addressofCustomer" class="form-label"
+            >Address</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="loc_address"
+            name="address"
+            
+            placeholder="Enter the Address of the Location"
+          />
+          
+        </div>
+      
+        <button
+          type="submit"
+          class="btn btn-primary waves-effect waves-light"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        data-bs-dismiss="modal"
+      >
+        Close
+      </button>
+      
+    </div>
+  </div>
+  <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
