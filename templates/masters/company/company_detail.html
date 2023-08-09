@@ -250,6 +250,7 @@
       
       <!-- end card-->
     </div>
+    {% for location in locations  %}
       <!-- project card for loop yaha lagana hai-->
       <div class="card d-block">
         <div class="card-body">
@@ -265,7 +266,7 @@
             <div class="dropdown-menu dropdown-menu-end">
                 
               <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item"
+              <a href="" class="dropdown-item"
                 ><i class="mdi mdi-pencil me-1"></i>Edit</a
               >
               <!-- item-->
@@ -280,26 +281,26 @@
             </div>
           </div>
           <!-- project title-->
-          <h3 class="mt-0 font-20">TCS Bangalore</h3>
+          <h3 class="mt-0 font-20">{{location.loc_name}}</h3>
             <!--company datatable-->
           <div class="table-responsive">
             <table class="table mb-0">
               <thead>
                 <tr >
-                  <th>Company Name</th>
-                  <td>{{customer.company_name}}</td>
+                  <th>POC Email id</th>
+                  <td>{{location.loc_poc_email}}</td>
                   
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">Contact Number</th>
-                  <td>{{customer.company_contact_no}}</td>
+                  <th scope="row">POC Contact Number</th>
+                  <td>{{location.loc_poc_contact_no}}</td>
                   
                 </tr>
                 <tr>
                     <th scope="row">Address</th>
-                    <td>{{customer.address}}</td>
+                    <td>{{location.loc_address}}</td>
                 </tr>
                 
               </tbody>
@@ -307,7 +308,7 @@
           </div>
         </div>
         <!--end table-->
-          
+        {% endfor %}
             
           
         <!-- end card-body-->

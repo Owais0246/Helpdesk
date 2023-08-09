@@ -39,7 +39,12 @@ class CustomerListView(generic.ListView):
 
 def customer_detail(request, pk):
     customer_pk =Company.objects.get(id=pk)
-    location_form=LocationForm(request.POST or None)
+    
+    location_form=LocationForm(request.POST)
+    locations=Location.objects.filter(loc_company=customer_pk)
+    
+    user_form =CreateUser(request.POST)
+    users =Users.objects.filter(user_company=customer_pk)
     
     if location_form.is_valid():
         form=location_form.save(commit=False)
@@ -47,9 +52,18 @@ def customer_detail(request, pk):
         form.save()
         location_form.save()
         return redirect('CompanyDetail',pk)
+    
+    if user_form.is_valid():
+        form= user_form.save(commit=False)
+        
+    
+    
+    
+    
     context = {
         "customer": customer_pk,
-        "location":location_form
+        "location_form":location_form,
+        "locations":locations
     }
     return render(request, 'masters/company/company_detail.html', context)
 
