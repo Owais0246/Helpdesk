@@ -39,12 +39,13 @@ class CustomerListView(generic.ListView):
 
 def customer_detail(request, pk):
     customer_pk =Company.objects.get(id=pk)
-    location_form=LocationForm(request.POST)
+    location_form=LocationForm(request.POST or None)
     
     if location_form.is_valid():
         form=location_form.save(commit=False)
-        form.loc_company = customer_pk.id
+        form.loc_company = customer_pk
         form.save()
+        location_form.save()
         return redirect('CompanyDetail',pk)
     context = {
         "customer": customer_pk,
