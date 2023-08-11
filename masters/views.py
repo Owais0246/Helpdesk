@@ -1,5 +1,8 @@
 from django.shortcuts import render,HttpResponse,redirect,reverse
 from .forms import CompanyForm,LocationForm,ProductForm
+from user.forms import CreateUser
+from user.models import User
+
 from django.views import generic
 from . models import Company,Location,Product
 # Create your views here.
@@ -37,14 +40,11 @@ class CustomerListView(generic.ListView):
     queryset = Company.objects.all()
     context_object_name = 'company'
 
-def customer_detail(request, pk):
-    customer_pk =Company.objects.get(id=pk)
+def customer_detail(request, company_pk):
+    customer_pk =Company.objects.get(id=company_pk)
     
     location_form=LocationForm(request.POST)
     locations=Location.objects.filter(loc_company=customer_pk)
-    
-    user_form =CreateUser(request.POST)
-    users =Users.objects.filter(user_company=customer_pk)
     
     if location_form.is_valid():
         form=location_form.save(commit=False)
@@ -53,21 +53,39 @@ def customer_detail(request, pk):
         location_form.save()
         return redirect('CompanyDetail',pk)
     
-    if user_form.is_valid():
-        form= user_form.save(commit=False)
-        
-    
-    
-    
-    
     context = {
         "customer": customer_pk,
         "location_form":location_form,
-        "locations":locations
+        "locations":locations,
+            
     }
     return render(request, 'masters/company/company_detail.html', context)
 
 
+def create_customer_user(request,pk):
+    print ("create user is working")
+    company=Company.objects.get(id=company_pk)
+    location=Location.objects.get(id=location_pk)
+    user_form =CreateUser(request.POST)
+    users =User.objects.filter(user_company=customer_pk)
+    
+    if user_form.is_valid():
+        form= user_form.save(commit=False)
+        form.is_customer_user = True
+        form.user_company=company
+        form.user_loc=location
+        form.save()
+        return redirect('CompanyDetail',company_pk)
+    
+    context = {        
+        "user_form":user_form,
+        "users":users,
+        "company":company,
+        "location":location
+        }
+    return render(request, 'masters/company/company_detail.html', context)
+
+    
 
 class CustomerUpdateView(generic.UpdateView):
     model =Company

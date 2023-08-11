@@ -10,7 +10,11 @@ urlpatterns = [
     path('company/add', views.create_customer, name="CompanyCreate"),
     path('company/list', views.customer_list, name="CompanyList"),
     path('company/update/<int:pk>', CustomerUpdateView.as_view(), name="CompanyUpdate"),
-    path('company/detail/<int:pk>', views.customer_detail, name="CompanyDetail"),
+    path('company/detail/<int:company_pk>', views.customer_detail, name="CompanyDetail"),
+    
+    
+    
+    path('create-user/<int:company_pk>/<int:location_pk>', views.create_customer_user, name="CreateCustomerUser"),
     
     #Location Urls
     path('location/add', LocationCreateView.as_view(), name="CreateLocation"),
