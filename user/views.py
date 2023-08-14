@@ -15,8 +15,10 @@ from django.utils.decorators import method_decorator
 # Create View
 
 class  UserCreateView(generic.CreateView):
+    user=User.objects.all()
     template_name='users/user_create.html'
     form_class=CreateUser
+    context = user
     def get_success_url(self):
         messages.success(self.request, 'User Created Successfully')
         return reverse ("UserList")
