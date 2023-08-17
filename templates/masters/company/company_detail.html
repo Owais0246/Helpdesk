@@ -133,7 +133,7 @@
   </div>
 
   <div class="row">
-    <div class="col-xl-8 col-lg-6">
+    <div class="col-xl-12 col-lg-12">
       <!-- project card -->
       <div class="card d-block">
         <div class="card-body">
@@ -199,231 +199,121 @@
     </div>
   </div>
     <div class="row">
-      <div class="col-xl-8 col-lg-6">
+      <div class="col-xl-12 col-lg-12">
         <!-- project card -->
-        <div class="card d-block">
-          <div class="card-body">
-            <div class="dropdown float-end">
-              <a
-                href="#"
-                class="dropdown-toggle arrow-none card-drop"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="dripicons-dots-3"></i>
-              </a>
-              {% include 'masters/company/location_modal.html' %}
-              <div class="dropdown-menu dropdown-menu-end">
-                <!-- item-->
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#location-modal"
-                >
-                  Add Location
-                </button>
-                {% comment %}
-                <a href="javascript:void(0);" class="dropdown-item"
-                  ><i class="mdi mdi-email-outline me-1"></i>Add Location</a
-                >
-                {% endcomment %}
-              </div>
-            </div>
-            <!-- project title-->
-            <h3 class="mt-0 font-20">Customer Locations</h3>
-
-            <!-- end card-body-->
-
-            <!-- end card-->
-          </div>
-          {% for location in locations %}
-          <!-- project card for loop yaha lagana hai-->
-          <div class="card d-block">
-            <div class="card-body">
-              <div class="dropdown float-end">
-                <a
-                  href="#"
-                  class="dropdown-toggle arrow-none card-drop"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="dripicons-dots-3"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  
-                    <!-- item-->
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#user-modal"
-                    >
-                      Add User
-                    </button>
-                    
-                  <!-- item-->
-                  <a href="" class="dropdown-item"
-                    ><i class="mdi mdi-pencil me-1"></i>AddUser1</a
-                  >
-                  <a href="" class="dropdown-item"
-                    ><i class="mdi mdi-pencil me-1"></i>Edit</a
-                  >
-                  <!-- item-->
-                  <a href="javascript:void(0);" class="dropdown-item"
-                    ><i class="mdi mdi-delete me-1"></i>Delete</a
-                  >
-                  <!-- item-->
-                  <a href="javascript:void(0);" class="dropdown-item"
-                    ><i class="mdi mdi-email-outline me-1"></i>Email</a
-                  >
-                </div>
-              </div>
-              <!-- project title-->
-              <h3 class="mt-0 font-20">{{location.loc_name}}</h3>
-              <!--company datatable-->
-              <div class="table-responsive">
-                <table class="table mb-0">
-                  <thead>
-                    <tr>
-                      <th>POC Email id</th>
-                      <td>{{location.loc_poc_email}}</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">POC Contact Number</th>
-                      <td>{{location.loc_poc_contact_no}}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Address</th>
-                      <td>{{location.loc_address}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!--end table-->
-            {% endfor %}
-
-            <!-- end card-body-->
-          </div>
-            <!-- end card-->
-          </div>
-          <!-- end col -->
-        </div>
+        
         <!-- end row -->
-    </div>
-    <div class="row">
-      <div class="col-xl-8 col-lg-6">
+
         <!-- project card -->
-        <div class="card d-block">
-          <div class="card-body">
-            <div class="dropdown float-end">
-              <a
-                href="#"
-                class="dropdown-toggle arrow-none card-drop"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="dripicons-dots-3"></i>
-              </a>
-              {% include 'masters/company/user_modal.html' %}
-              <div class="dropdown-menu dropdown-menu-end">
-                <!-- item-->
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#user-modal"
-                >
-                  Add User
-                </button>
-                {% comment %}
-                <a href="javascript:void(0);" class="dropdown-item"
-                  ><i class="mdi mdi-email-outline me-1"></i>Add Location</a
-                >
-                {% endcomment %}
-              </div>
-            </div>
-            <!-- project title-->
-            <h3 class="mt-0 font-20">Customer Users</h3>
-
-            <!-- end card-body-->
-
-            <!-- end card-->
-          </div>
-          {% for user in users %}
-          <!-- project card for loop yaha lagana hai-->
-          <div class="card d-block">
+        
+        </div><div class="col-xl-12">
+          <div class="card">
             <div class="card-body">
-              <div class="dropdown float-end">
-                <a
-                  href="#"
-                  class="dropdown-toggle arrow-none card-drop"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="dripicons-dots-3"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <!-- item-->
-                  <a href="" class="dropdown-item"
-                    ><i class="mdi mdi-pencil me-1"></i>Edit</a
+    
+              <ul class="nav nav-tabs nav-bordered">
+                <li class="nav-item">
+                  <a
+                    href="#home-b1"
+                    data-bs-toggle="tab"
+                    aria-expanded="false"
+                    class="nav-link"
                   >
-                  <!-- item-->
-                  <a href="javascript:void(0);" class="dropdown-item"
-                    ><i class="mdi mdi-delete me-1"></i>Delete</a
+                    Home
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#location"
+                    data-bs-toggle="tab"
+                    aria-expanded="true"
+                    class="nav-link active"
                   >
-                  <!-- item-->
-                  <a href="javascript:void(0);" class="dropdown-item"
-                    ><i class="mdi mdi-email-outline me-1"></i>Email</a
+                    Location
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#messages-b1"
+                    data-bs-toggle="tab"
+                    aria-expanded="false"
+                    class="nav-link"
                   >
+                    Messages
+                  </a>
+                </li>
+              </ul>
+              <div class="tab-content" >
+                <div class="tab-pane" id="home-b1">
+                  <p>
+                    Vakal text here dolor sit amet, consectetuer adipiscing elit.
+                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
+                    natoque penatibus et magnis dis parturient montes, nascetur
+                    ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu,
+                    pretium quis, sem. Nulla consequat massa quis enim.
+                  </p>
+                  <p class="mb-0">
+                    Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
+                    arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
+                    justo. Nullam dictum felis eu pede mollis pretium. Integer
+                    tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean
+                    vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
+                    consequat vitae, eleifend ac, enim.
+                  </p>
+                </div>
+                <div class="tab-pane show active"  id="location">
+                  <h3>{{customer.company_name.title}} Locations</h3>
+                  {% comment %} card  {% endcomment %}
+                  <div class="row">
+                    {% for location in locations %}
+                    <div class="col-lg-3 border-gray border mb-3">
+                      <div class="card card-body " >
+                        <h5 class="card-title">{{location.loc_name.title}}</h5>
+                        <p class="card-text">
+                          <strong>Email: </strong>{{location.loc_poc_email}}
+                        </p>
+                        <p class="card-text">
+                          <strong>Contact: </strong>{{location.loc_poc_contact_no}}
+                        </p>
+                        <p class="card-text">
+                          <strong>Address: </strong>{{location.loc_poc_email}}
+                        </p>
+                        <a
+                          href="javascript:void(0);"
+                          class="btn btn-primary waves-effect waves-light"
+                          >Add User</a
+                        >
+                      </div>
+                    </div>{% endfor %}
+                  </div>
+                  {% comment %} card end {% endcomment %}
+
+                </div>
+                <div class="tab-pane" id="messages-b1">
+                  <p>
+                    Vakal text here dolor sit amet, consectetuer adipiscing elit.
+                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
+                    natoque penatibus et magnis dis parturient montes, nascetur
+                    ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu,
+                    pretium quis, sem. Nulla consequat massa quis enim.
+                  </p>
+                  <p class="mb-0">
+                    Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
+                    arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
+                    justo. Nullam dictum felis eu pede mollis pretium. Integer
+                    tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean
+                    vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
+                    consequat vitae, eleifend ac, enim.
+                  </p>
                 </div>
               </div>
-              <!-- project title-->
-                 
-              <h3 class="mt-0 font-20">{{user.first_name}} {{user.last_name}}</h3>
-              <!--company datatable-->
-              <div class="table-responsive">
-                <table class="table mb-0">
-                  <thead>
-                    <tr>
-                      <th>Username</th>
-                      <td>{{user.username}}</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th>Email id</th>
-                      <td>{{user.user_email}}</td>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Contact Number</th>
-                      <td>{{user.user_contact_no}}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">User Location</th>
-                      <td>{{user.user_loc}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
             </div>
-            <!--end table-->
-            {% endfor %}
-
-            <!-- end card-body-->
-              </div>
-            <!-- end card-->
           </div>
-          <!-- end col -->
+          <!-- end card-->
         </div>
         <!-- end row -->
       </div>
       <!-- container -->
+      
       {% endblock %} {% block extra_javascript %}
 
       <!-- Third party js -->

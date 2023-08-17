@@ -4,8 +4,24 @@
 {% block extra_css %}
 
 <!-- third party css -->
+
 <link
-  href="{% static 'libs/admin-resources/rwd-table/rwd-table.min.css' %}"
+  href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-select-bs4/css//select.bootstrap4.min.css' %}"
   rel="stylesheet"
   type="text/css"
 />
@@ -40,10 +56,8 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <div class="responsive-table-plugin">
-            <div class="table-rep-plugin">
-              <div class="table-responsive" data-pattern="priority-columns">
-                <table id="tech-companies-1" class="table table-striped">
+
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
                   <thead>
                     <tr>
                       <th>Company</th>
@@ -81,11 +95,23 @@
 {% endblock %} {% block extra_javascript %}
 
 <!-- Third party js -->
-<script src="{% static 'libs/admin-resources/rwd-table/rwd-table.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+{% comment %} <script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'libs/datatables.net-buttons/js/buttons.flash.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script> {% endcomment %}
 <!-- Third party js ends -->
 
 <!-- Init js -->
-<script src="{% static 'js/pages/responsive-table.init.js' %}"></script>
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
 <!-- Init js end -->
 
 {% endblock %}
