@@ -51,7 +51,7 @@ def customer_detail(request, company_pk):
         form.loc_company = customer_pk
         form.save()
         location_form.save()
-        return redirect('CompanyDetail',pk)
+        return redirect('CompanyDetail',company_pk)
     
     context = {
         "customer": customer_pk,
