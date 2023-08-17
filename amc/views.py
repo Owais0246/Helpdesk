@@ -2,15 +2,29 @@ from django.shortcuts import render,HttpResponse,redirect,reverse
 from .forms import AmcForm
 from django.views import generic
 from . models import Amc
+from masters.models import Company,Location,Product
+from user.models import User
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 #AMC Views
-class AmcCreateView(generic.CreateView):
-    template_name = 'amc/amc_create.html'
-    form_class = AmcForm
-
-    def get_success_url(self):
-        return reverse('AmcList')
+@login_required
+def create_amc(request):
+    user=User.objects.filter()
+    Location= Location.objects.filter
+    form = AmcForm(request.POST)
+    if form.is_valid():
+        var = form.save(commit=False)
+        var.company= company
+        var.location= location
+        var.user= request.user
+        var.save()
+        return redirect('AmcList')
+    context = {
+        'form':form,
+        
+    }
+    return render(request,'amc/amc_create.html',context)
 
 class AmcListView(generic.ListView):
     template_name = 'amc/amc_list.html'
