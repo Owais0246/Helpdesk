@@ -113,10 +113,24 @@ class LocationListView(generic.ListView):
 
 def LocationDetail(request, pk):
     location_pk =Location.objects.get(id=pk)
-
-    context = {
-        "location": location_pk,
-    }
+    user_form =CreateUser(request.POST)
+    users =User.objects.filter(user_loc=location_pk)
+    
+    if user_form.is_valid():
+        form= user_form.save(commit=False)
+        form.is_customer_user = True
+        form.user_company=company
+        form.user_loc=location
+        form.save()
+        return redirect('CompanyDetail',company_pk)
+    
+    context = {        
+        "user_form":user_form,
+        "users":users,
+        "company":company,
+        "location":location_pk
+        }
+   
     return render(request, 'masters/location/location_detail.html', context)
 
 

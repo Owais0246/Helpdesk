@@ -15,5 +15,6 @@ class Amc(models.Model):
     description = models.CharField(max_length=200,blank=True)
     startdate = models.DateTimeField()
     duration= models.DateTimeField()
+    
     def __str__(self):
-        return self.pk
+        return self.company + self.pk 

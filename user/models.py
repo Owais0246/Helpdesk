@@ -16,4 +16,8 @@ class User(AbstractUser):
     is_service_admin=models.BooleanField(default=False)
     is_service_agent=models.BooleanField(default=False)
     is_customer_user=models.BooleanField(default=False)
+    is_customer_admin=models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.username
     
