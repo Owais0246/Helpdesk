@@ -1,9 +1,10 @@
 from django import forms
 from .models import Amc
 
+
       
 
-class AmcForm(forms.ModelForm):
+class CreateAmcForm(forms.ModelForm):
     class Meta:
         model = Amc
         fields = ('company','location','user','product_name',

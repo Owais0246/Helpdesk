@@ -5,6 +5,8 @@ from user.models import User
 from django.contrib import messages
 from django.views import generic
 from . models import Company,Location,Product
+from amc.forms import CreateAmcForm
+from amc.models import Amc
 # Create your views here.
 
 #Company Views
@@ -115,8 +117,12 @@ class LocationListView(generic.ListView):
 def LocationDetail(request, pk):
     location =Location.objects.get(id=pk)
     company =Company.objects.get(id=location.loc_company.pk)
+    
     user_form =CreateUser(request.POST)
     users =User.objects.filter(user_loc=location)
+    
+    amc_form =CreateAmcForm(request.POST)
+    amc =Amc.objects.filter(user_loc=location)
     
     if user_form.is_valid():
         form= user_form.save(commit=False)
@@ -126,6 +132,17 @@ def LocationDetail(request, pk):
         form.save()
         messages.success(request, 'User Created Successfully')
         return redirect('LocationDetail',pk)
+    
+    if amc_form.is_valid():
+        form= amc_form.save(commit=False)
+        form.company=company
+        form.location=location
+        form.user=users
+        form.save()
+        messages.success(request, 'User Created Successfully')
+        return redirect('LocationDetail',pk)
+    
+    
     
     context = {        
         "user_form":user_form,
