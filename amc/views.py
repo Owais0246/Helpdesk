@@ -20,10 +20,10 @@ class AmcListView(generic.ListView):
 
 
 def AmcDetail(request, pk):
-    amcpk =Amc.objects.get(id=pk)
+    amc_pk =Amc.objects.get(id=pk)
 
     context = {
-        "amc": amcpk,
+        "amc": amc_pk,
     }
     return render(request, 'amc/amc_detail.html', context)
 
