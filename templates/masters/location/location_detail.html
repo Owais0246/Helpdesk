@@ -1,0 +1,332 @@
+{% extends "dashboard/horizontal_base.html" %} {% load static i18n %}
+ {% block head_title%}{% trans "Company Details" %}{% endblock head_title %}
+  {% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.info %} class="{{ message.info }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">{{customer.company_name}}</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">{{location.loc_name}}</a>
+            </li>
+            <li class="breadcrumb-item active"></li>
+          </ol>
+        </div>
+        <h4 class="page-title">{{customer.company_name}} - {{location.loc_name}}</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i class="fe-list font-26 avatar-title text-primary"></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">942</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">Total Tickets</p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i
+                  class="fe-check-square font-26 avatar-title text-success"
+                ></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">328</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">
+                  Total Resolved tickets
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i class="fe-users font-26 avatar-title text-info"></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">17</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">
+                  Total Active Tickets
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+      <div class="widget-rounded-circle card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="avatar-lg rounded-circle bg-light">
+                <i class="fe-clock font-26 avatar-title text-warning"></i>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-end">
+                <h3 class="text-dark mt-1">
+                  <span data-plugin="counterup">412</span>
+                </h3>
+                <p class="text-muted mb-1 text-truncate">Tickets in Progress</p>
+              </div>
+            </div>
+          </div>
+          <!-- end row-->
+        </div>
+      </div>
+      <!-- end widget-rounded-circle-->
+    </div>
+    <!-- end col-->
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12 col-lg-12">
+      <!-- project card -->
+      <div class="card d-block">
+        <div class="card-body">
+          <div class="dropdown float-end">
+            <a
+              href="#"
+              class="dropdown-toggle arrow-none card-drop"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="dripicons-dots-3"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-pencil me-1"></i>Edit</a
+              >
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-delete me-1"></i>Delete</a
+              >
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item"
+                ><i class="mdi mdi-email-outline me-1"></i>Email</a
+              >
+            </div>
+          </div>
+          <!-- project title-->
+          <h3 class="mt-0 font-20">Location Details</h3>
+          <!--company datatable-->
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>Location Name</th>
+                  <td>{{location.loc_name}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Contact Number</th>
+                  <td>{{location.loc_poc_contact_no}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Email</th>
+                  <td>{{location.loc_poc_email}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Address</th>
+                  <td>{{location.loc_address}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--end table-->
+
+        <!-- end card-body-->
+
+        <!-- end card-->
+
+        <!-- end card-->
+      </div>
+      <!-- end col -->
+
+      <!-- end row -->
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12">
+        <!-- project card -->
+        
+        <!-- end row -->
+
+        <!-- project card -->
+        
+        </div><div class="col-xl-12">
+          <div class="card">
+            <div class="card-body">
+    
+              <ul class="nav nav-tabs nav-bordered">
+                <li class="nav-item">
+                  <a
+                    href="#home-b1"
+                    data-bs-toggle="tab"
+                    aria-expanded="false"
+                    class="nav-link"
+                  >
+                    AMC
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#location"
+                    data-bs-toggle="tab"
+                    aria-expanded="true"
+                    class="nav-link active"
+                  >
+                    Contacts
+                  </a>
+                </li>
+                {% comment %} <li class="nav-item">
+                  <a
+                    href="#messages-b1"
+                    data-bs-toggle="tab"
+                    aria-expanded="false"
+                    class="nav-link"
+                  >
+                    Messages
+                  </a>
+                </li> {% endcomment %}
+              </ul>
+              <div class="tab-content" >
+                <div class="tab-pane" id="home-b1">
+                  <p>
+                    Vakal text here dolor sit amet, consectetuer adipiscing elit.
+                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
+                    natoque penatibus et magnis dis parturient montes, nascetur
+                    ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu,
+                    pretium quis, sem. Nulla consequat massa quis enim.
+                  </p>
+                  <p class="mb-0">
+                    Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
+                    arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
+                    justo. Nullam dictum felis eu pede mollis pretium. Integer
+                    tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean
+                    vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
+                    consequat vitae, eleifend ac, enim.
+                  </p>
+                </div>
+                <div class="tab-pane show active"  id="location">
+                  <h3>{{customer.company_name.title}} Users</h3>
+                  {% comment %} card  {% endcomment %}
+                  <div class="mb-3">
+                    {% include 'masters/company/user_modal.html' %}
+                        <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#user-modal"
+                        >
+                        Addd User
+                        </button><br>
+                    {% for user in users %}
+                    <div class="col-lg-3 border-gray border mb-3">
+                      <div class="card card-body " >
+                        <h5 class="card-title">{{user.username.title}}</h5>
+                        <p class="card-text">
+                          <strong>Email: </strong>{{user.email}}
+                        </p>
+                        <p class="card-text">
+                          {% comment %} <strong>Contact: </strong>{{location.loc_poc_contact_no}} {% endcomment %}
+                        </p>
+                        <p class="card-text">
+                          {% comment %} <strong>Address: </strong>{{location.loc_poc_email}} {% endcomment %}
+                        </p>
+                        <a
+                          href="{% url 'LocationDetail' location.pk%}"
+                          class="btn btn-primary waves-effect waves-light"
+                          >View</a>
+                      </div>
+                    </div>{% endfor %}
+                  </div>
+                  {% comment %} card end {% endcomment %}
+
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <!-- end card-->
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- container -->
+      
+      {% endblock %} {% block extra_javascript %}
+
+      <!-- Third party js -->
+      <script src="{% static 'libs/chart.js/Chart.bundle.min.js' %}"></script>
+      <!-- Third party js ends -->
+
+      <!-- Init js -->
+      <script src="{% static 'js/pages/project-details.init.js' %}"></script>
+      <!-- Init js end -->
+      {% endblock %}
+    </div>
+  </div>
+</div>

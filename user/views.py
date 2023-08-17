@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect,reverse
 from django.views import generic
 from django.contrib import messages
 from user.models import User
-from .forms import CreateUser, UpdateUser
+from .forms import CreateUser
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -42,15 +42,15 @@ def UserDetail(request, pk):
 
 # User Update View
 
-class UserUpdateView(generic.UpdateView):
-    template_name="users/user_update.html"
-    form_class = UpdateUser
-    queryset = User.objects.all()
-    context_object_name = "users"
+# class UserUpdateView(generic.UpdateView):
+#     template_name="users/user_update.html"
+#     form_class = UpdateUser
+#     queryset = User.objects.all()
+#     context_object_name = "users"
     
     
-    def get_success_url(self):
-        return reverse ("UserList")
+#     def get_success_url(self):
+#         return reverse ("UserList")
 
 
 # User Login view

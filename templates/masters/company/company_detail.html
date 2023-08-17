@@ -231,7 +231,7 @@
                     Location
                   </a>
                 </li>
-                <li class="nav-item">
+                {% comment %} <li class="nav-item">
                   <a
                     href="#messages-b1"
                     data-bs-toggle="tab"
@@ -240,7 +240,7 @@
                   >
                     Messages
                   </a>
-                </li>
+                </li> {% endcomment %}
               </ul>
               <div class="tab-content" >
                 <div class="tab-pane" id="home-b1">
@@ -278,33 +278,16 @@
                           <strong>Address: </strong>{{location.loc_poc_email}}
                         </p>
                         <a
-                          href="javascript:void(0);"
+                          href="{% url 'LocationDetail' location.pk%}"
                           class="btn btn-primary waves-effect waves-light"
-                          >Add User</a
-                        >
+                          >View</a>
                       </div>
                     </div>{% endfor %}
                   </div>
                   {% comment %} card end {% endcomment %}
 
                 </div>
-                <div class="tab-pane" id="messages-b1">
-                  <p>
-                    Vakal text here dolor sit amet, consectetuer adipiscing elit.
-                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                    natoque penatibus et magnis dis parturient montes, nascetur
-                    ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu,
-                    pretium quis, sem. Nulla consequat massa quis enim.
-                  </p>
-                  <p class="mb-0">
-                    Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
-                    arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
-                    justo. Nullam dictum felis eu pede mollis pretium. Integer
-                    tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean
-                    vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
-                    consequat vitae, eleifend ac, enim.
-                  </p>
-                </div>
+                
               </div>
             </div>
           </div>

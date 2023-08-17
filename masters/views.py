@@ -2,7 +2,7 @@ from django.shortcuts import render,HttpResponse,redirect,reverse
 from .forms import CompanyForm,LocationForm,ProductForm
 from user.forms import CreateUser
 from user.models import User
-
+from django.contrib import messages
 from django.views import generic
 from . models import Company,Location,Product
 # Create your views here.
@@ -15,6 +15,7 @@ def create_customer(request):
         form= customer_form.save(commit=False)
         form.is_customer=True
         form.save()
+        
         return redirect('CompanyList')
 
     context = {
@@ -112,9 +113,10 @@ class LocationListView(generic.ListView):
 
 
 def LocationDetail(request, pk):
-    location_pk =Location.objects.get(id=pk)
+    location =Location.objects.get(id=pk)
+    company =Company.objects.get(id=location.loc_company.pk)
     user_form =CreateUser(request.POST)
-    users =User.objects.filter(user_loc=location_pk)
+    users =User.objects.filter(user_loc=location)
     
     if user_form.is_valid():
         form= user_form.save(commit=False)
@@ -122,13 +124,14 @@ def LocationDetail(request, pk):
         form.user_company=company
         form.user_loc=location
         form.save()
-        return redirect('CompanyDetail',company_pk)
+        messages.success(request, 'User Created Successfully')
+        return redirect('LocationDetail',pk)
     
     context = {        
         "user_form":user_form,
         "users":users,
-        "company":company,
-        "location":location_pk
+        "customer":company, 
+        "location":location
         }
    
     return render(request, 'masters/location/location_detail.html', context)
