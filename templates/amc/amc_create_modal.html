@@ -1,0 +1,124 @@
+
+<!-- Standard modal content -->
+<div
+id="amc-create-modal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="standard-modalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="standard-modalLabel">
+        Create AMC
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+            
+      <form action= "" method='POST'>
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="firstnameofUser" class="form-label"
+            >Product Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="product_name"
+            name="product_name"
+            
+            placeholder="Enter the Product Name"
+          />
+          
+        </div>
+        <div class="mb-3">
+          <label for="firstnameofUser" class="form-label"
+            >Part Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="part_number"
+            name="part_number"
+            
+            placeholder="Enter the Part Name"
+          />
+          
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label"
+            >Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            name="description"
+            
+            placeholder="Enter the description"
+          />
+          
+        </div>
+        
+        <div class="mb-3">
+          <label for="contact_number" class="form-label"
+            >Start Date</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="startdate"
+            name="startdate"
+            
+            placeholder="Enter the Start Date"
+          />
+          
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label"
+            >Duration(in years)</label
+          >
+          <input
+            type="number "
+            class="form-control"
+            id="duration"
+            name="duration"
+            
+            placeholder="Enter the duration in years"
+          />
+          
+        </div>
+        
+      
+        <button
+          type="submit"
+          class="btn btn-primary waves-effect waves-light"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        data-bs-dismiss="modal"
+      >
+        Close
+      </button>
+      
+    </div>
+  </div>
+  <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
