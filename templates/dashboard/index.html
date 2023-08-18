@@ -4,7 +4,11 @@
 {% trans "Dashboard" %}
 {% endblock head_title %} 
 {% block extra_css %}
-
+<link
+  href="{% static 'libs/hopscotch/css/hopscotch.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
 <!-- third party css -->
 <link
   href="{% static 'libs/flatpickr/flatpickr.min.css' %}"
@@ -454,5 +458,12 @@
 <!-- Dashboard init -->
 <script src="{% static 'js/pages/dashboard-1.init.js' %}"></script>
 <!-- end demo js-->
+<!-- Third party js -->
+<script src="{% static 'libs/hopscotch/js/hopscotch.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/tour.init.js' %}"></script>
+<!-- Init js end -->
 
 {% endblock %}

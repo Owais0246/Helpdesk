@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'masters.apps.MastersConfig',
     'user.apps.UserConfig',
     'dashboard.apps.DashboardConfig',
+    'support.apps.SupportConfig',
     
     
 ]
