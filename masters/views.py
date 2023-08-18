@@ -122,7 +122,7 @@ def LocationDetail(request, pk):
     users =User.objects.filter(user_loc=location)
     
     amc_form =CreateAmcForm(request.POST)
-    amc =Amc.objects.filter(user_loc=location)
+    amc =Amc.objects.filter(location=location)
     
     if user_form.is_valid():
         form= user_form.save(commit=False)

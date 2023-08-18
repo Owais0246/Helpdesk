@@ -1,0 +1,112 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Product</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Create</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Elements</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Create Product</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
+          
+          
+          serial_number
+          created_on
+          description
+          location
+          <form method='POST'>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="nameofCustomer" class="form-label"
+                >Product Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="product_name"
+                name="product_name"
+                
+                placeholder="Enter the Product Name"
+              />
+              
+            </div>
+            <div class="mb-3">
+              <label for="part_number" class="form-label"
+                >Part Number</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="part_number"
+                name="part_number"
+                
+                placeholder="Enter the Part Number"
+              />
+              
+            </div>
+            <div class="mb-3">
+              <label for="addressofCustomer" class="form-label"
+                >Serial Number</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="serial_number"
+                name="serial_number"
+                
+                placeholder="Enter the Customer's Address"
+              />
+              
+            </div>
+          
+            <button
+              type="submit"
+              class="btn btn-primary waves-effect waves-light"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+        <!-- end card-body-->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+
+    
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col-->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+{% endblock %}

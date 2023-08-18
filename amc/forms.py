@@ -2,8 +2,6 @@ from django import forms
 from .models import Amc
 
 
-      
-
 class CreateAmcForm(forms.ModelForm):
     class Meta:
         model = Amc

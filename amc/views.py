@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse,redirect,reverse
-from .forms import AmcForm
+from .forms import CreateAmcForm
 from django.views import generic
 from . models import Amc
 from masters.models import Company,Location,Product
@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 def create_amc(request):
     user=User.objects.filter()
     Location= Location.objects.filter
-    form = AmcForm(request.POST)
+    form = CreateAmcForm(request.POST)
     if form.is_valid():
         var = form.save(commit=False)
         var.company= company
@@ -45,7 +45,7 @@ def AmcDetail(request, pk):
 
 class AmcUpdateView(generic.UpdateView):
     model = Amc
-    form_class = AmcForm
+    form_class = CreateAmcForm
     template_name = 'Amc_update.html'
 
     def get_success_url(self):
