@@ -58,4 +58,4 @@ class Message(models.Model):
     ticket_no = models.ForeignKey(Ticket,related_name="messages", on_delete=models.CASCADE, null=True, blank=True)
     messages = models.TextField()
     sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    sent_on = models.DateTimeField(auto_now=True, Au)
+    sent_on = models.DateTimeField(auto_now=True, auto_now_add=True)
