@@ -55,7 +55,7 @@ def UserDetail(request, pk):
 
 # User Login view
 
-def LoginPage(request):
+def login_user(request):
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
@@ -64,7 +64,7 @@ def LoginPage(request):
             
             if user is not None:
                 login(request, user)
-                return redirect('/')
+                return redirect('dashboard')
             else:
                 messages.info(request, 'Username Or Password Is Incorrect')
             
