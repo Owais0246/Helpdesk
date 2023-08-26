@@ -124,6 +124,8 @@ def LocationDetail(request, pk):
     amc_form =CreateAmcForm(request.POST)
     amc =Amc.objects.filter(location=location)
     
+    products=Product.objects.all()
+    
     if user_form.is_valid():
         form= user_form.save(commit=False)
         form.is_customer_user = True
@@ -137,7 +139,7 @@ def LocationDetail(request, pk):
         form= amc_form.save(commit=False)
         form.company=company
         form.location=location
-        form.user=users
+        # form.user=users
         form.save()
         messages.success(request, 'User Created Successfully')
         return redirect('LocationDetail',pk)
@@ -148,7 +150,9 @@ def LocationDetail(request, pk):
         "user_form":user_form,
         "users":users,
         "customer":company, 
-        "location":location
+        "location":location,
+        "products":products,
+        "amc":amc,
         }
    
     return render(request, 'masters/location/location_detail.html', context)

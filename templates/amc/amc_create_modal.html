@@ -29,30 +29,17 @@ aria-hidden="true"
           <label for="firstnameofUser" class="form-label"
             >Product Name</label
           >
-          <input
-            type="text"
-            class="form-control"
-            id="product_name"
-            name="product_name"
+          <select name="product" id="product">
+            {% for prod in products%}
             
-            placeholder="Enter the Product Name"
-          />
+            <option value="{{prod}}">{{prod}}</option>
+            {% endfor %}
+          </select>
+          
           
         </div>
-        <div class="mb-3">
-          <label for="firstnameofUser" class="form-label"
-            >Part Number</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="part_number"
-            name="part_number"
-            
-            placeholder="Enter the Part Name"
-          />
-          
-        </div>
+        
+        
         <div class="mb-3">
           <label for="username" class="form-label"
             >Description</label

@@ -273,7 +273,7 @@
                           <div class="card card-body " >
                             <h5 class="card-title">{{amc.pk.title}}</h5>
                             <p class="card-text">
-                              <strong>Product Name</strong>{{amc.product_name}}
+                              <strong>Product</strong>{{amc.product}}
                             </p>
                             <p class="card-text">
                               {% comment %} <strong>Contact: </strong>{{location.loc_poc_contact_no}} {% endcomment %}
@@ -282,7 +282,7 @@
                               {% comment %} <strong>Address: </strong>{{location.loc_poc_email}} {% endcomment %}
                             </p>
                             <a
-                              href="{% url 'LocationDetail' location.pk%}"
+                              href=""
                               class="btn btn-primary waves-effect waves-light"
                               >View</a>
                           </div>
