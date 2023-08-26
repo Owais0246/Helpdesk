@@ -8,13 +8,11 @@ from user.models import User
 class Amc(models.Model):
     company = models.ForeignKey(Company,on_delete=models.PROTECT, null=True,blank=True)
     location = models.ForeignKey(Location,on_delete=models.PROTECT, null=True,blank=True)
-    user = models.ForeignKey(User,on_delete=models.PROTECT, null=True,blank=True)    
-    product_name = models.ForeignKey(Product,on_delete=models.PROTECT, null=True,blank=True)
-    part_number=models.CharField(max_length=200,blank=False)    
-    serial_number=models.CharField(max_length=200,blank=False)
+    # user = models.ForeignKey(User,on_delete=models.PROTECT, null=True,blank=True)    
+    product= models.ForeignKey(Product,on_delete=models.PROTECT, null=True,blank=True)
     description = models.CharField(max_length=200,blank=True)
     startdate = models.DateTimeField()
-    duration= models.DateTimeField()
+    duration= models.IntegerField()
     
     def __str__(self):
-        return self.company + self.pk 
+        return str(self.company) +str(self.pk)

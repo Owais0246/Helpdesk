@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 #AMC Views
-@login_required
+
 def create_amc(request):
     user=User.objects.filter()
     Location= Location.objects.filter

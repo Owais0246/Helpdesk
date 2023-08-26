@@ -12,6 +12,6 @@ urlpatterns = [
     path('add', UserCreateView.as_view(), name="CreateUser"),
     # path('<int:pk>/update', UserUpdateView.as_view(), name="UserUpdate"),
     path('<int:pk>', views.UserDetail, name="UserDetail"),
-    path('login', views.login_user, name="UserLogin"),
+    
    
 ]

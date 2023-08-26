@@ -74,7 +74,7 @@ def login_user(request):
 
 # User Logout View
 
-def LogoutUser (request):
+def logout_user (request):
     logout(request)
     return redirect ('Login')
 
