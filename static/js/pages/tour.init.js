@@ -5,7 +5,7 @@ $(document).ready(function () {
       {
         target: "ticket",
         title: "Raise a ticket",
-        content: "To create a ticket, click the 'Raise a ticket' button ",
+        content: "Click Button and select the type of product you want to submit ticket for",
         placement: "bottom",
         yOffset: 10,
         xOffset: -105,

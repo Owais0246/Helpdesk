@@ -22,6 +22,7 @@ Priority = [
 class Ticket(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
+    location_text = models.CharField(max_length=50, null=True, blank=True)
     product = models.CharField(max_length=50, null=True, blank=True)
     issue = models.TextField()
     ticket_document = models.ManyToManyField("Document", related_name="ticket_documents_no", blank=True)
@@ -58,4 +59,4 @@ class Message(models.Model):
     ticket_no = models.ForeignKey(Ticket,related_name="messages", on_delete=models.CASCADE, null=True, blank=True)
     messages = models.TextField()
     sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    sent_on = models.DateTimeField(auto_now=True, auto_now_add=True)
+    sent_on = models.DateTimeField(auto_now=True)

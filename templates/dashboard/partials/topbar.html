@@ -40,10 +40,13 @@
           btn btn-outline-info btn-rounded
           waves-effect waves-light
         "
+        data-bs-toggle="modal"
+                        data-bs-target="#select-modal"
         id="ticket"
       >
         Raise a Ticket
       </button>
+      
         </a>
       </li>
 
@@ -416,3 +419,4 @@
   </div>
 </div>
 <!-- end Topbar -->
+{% include "support/select_modal.html" %}
