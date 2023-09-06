@@ -25,7 +25,7 @@ class Ticket(models.Model):
     location_text = models.CharField(max_length=50, null=True, blank=True)
     product = models.CharField(max_length=50, null=True, blank=True)
     issue = models.TextField()
-    ticket_document = models.ManyToManyField("Document", related_name="ticket_documents_no", blank=True)
+    documents = models.ManyToManyField("Document", blank=True)
     downtime_required = models.BooleanField(default=False)
     contact_person = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.CharField(max_length=50)
@@ -39,9 +39,11 @@ class Ticket(models.Model):
     priority = models.CharField(max_length=100, choices=Priority, default='Mid')
     feedback = models.TextField()
     ticket_message = models.ManyToManyField("Message", blank=True)
+    
+    def __str__(self):
+        return self.product
 
 class Document(models.Model):
-    ticket = models.ForeignKey(Ticket, related_name="documents_no", on_delete=models.CASCADE)
     file = models.FileField(upload_to='documents/')
 
     def __str__(self):
