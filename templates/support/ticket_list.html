@@ -1,0 +1,328 @@
+{% extends "dashboard/horizontal_base.html" %} {% load static i18n %} 
+{% block head_title%} {% trans "Company Details" %}{% endblock head_title %}
+
+{% block extra_css %}
+
+<!-- third party css -->
+<link
+  href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<!-- third party css end -->
+
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Helpdeskk</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Ticket</a>
+            </li>
+         
+            <li class="breadcrumb-item active">List</li>
+     
+          </ol>
+        </div>
+        <h4 class="page-title">Tickets List</h4>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-xl-3">
+          <div class="widget-rounded-circle card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="avatar-lg rounded-circle bg-primary">
+                    <i class="fe-tag font-22 avatar-title text-white"></i>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-end">
+                    <h3 class="text-dark mt-1">
+                      <span data-plugin="counterup">{{ticket|length }}</span>
+                    </h3>
+                    <p class="text-muted mb-1 text-truncate">Total Tickets</p>
+                  </div>
+                </div>
+              </div>
+              <!-- end row-->
+            </div>
+          </div>
+          <!-- end widget-rounded-circle-->
+        </div>
+        <!-- end col-->
+    
+        <div class="col-md-6 col-xl-3">
+          <div class="widget-rounded-circle card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="avatar-lg rounded-circle bg-warning">
+                    <i class="fe-clock font-22 avatar-title text-white"></i>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-end">
+                    <h3 class="text-dark mt-1">
+                      <span data-plugin="counterup">624</span>
+                    </h3>
+                    <p class="text-muted mb-1 text-truncate">Pending Tickets</p>
+                  </div>
+                </div>
+              </div>
+              <!-- end row-->
+            </div>
+          </div>
+          <!-- end widget-rounded-circle-->
+        </div>
+        <!-- end col-->
+    
+        <div class="col-md-6 col-xl-3">
+          <div class="widget-rounded-circle card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="avatar-lg rounded-circle bg-success">
+                    <i class="fe-check-circle font-22 avatar-title text-white"></i>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-end">
+                    <h3 class="text-dark mt-1">
+                      <span data-plugin="counterup">3195</span>
+                    </h3>
+                    <p class="text-muted mb-1 text-truncate">Closed Tickets</p>
+                  </div>
+                </div>
+              </div>
+              <!-- end row-->
+            </div>
+          </div>
+          <!-- end widget-rounded-circle-->
+        </div>
+        <!-- end col-->
+    
+        <div class="col-md-6 col-xl-3">
+          <div class="widget-rounded-circle card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="avatar-lg rounded-circle bg-danger">
+                    <i class="fe-trash-2 font-22 avatar-title text-white"></i>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="text-end">
+                    <h3 class="text-dark mt-1">
+                      <span data-plugin="counterup">{{ticket_user|length}}</span>
+                    </h3>
+                    <p class="text-muted mb-1 text-truncate">Assigned Tickets</p>
+                  </div>
+                </div>
+              </div>
+              <!-- end row-->
+            </div>
+          </div>
+          <!-- end widget-rounded-circle-->
+        </div>
+        <!-- end col-->
+      </div>
+      <!-- end row -->
+    
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <button
+                type="button"
+                class="btn btn-sm btn-blue waves-effect waves-light float-end"
+              >
+                <i class="mdi mdi-plus-circle"></i> Add Ticket
+              </button>
+              <h4 class="header-title mb-4">Manage Tickets</h4>
+    
+              <div class="table-responsive">
+                <table
+                  class="
+                    table table-hover
+                    m-0
+                    table-centered
+                    dt-responsive
+                    nowrap
+                    w-100
+                  "
+                  id="tickets-table"
+                >
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Requested By</th>
+                      <th>Subject</th>
+                      <th>Assignee</th>
+                      <th>Priority</th>
+                      <th>Status</th>
+                      <th>Created Date</th>
+                      <th>Due Date</th>
+                      <th class="hidden-sm">Action</th>
+                    </tr>
+                  </thead>
+    
+                  <tbody>
+                    {% for ticket in ticket %}
+                    <tr>
+                      <td><b>{{ticket.id}}</b></td>
+
+                      <td>
+                        <a href="javascript: void(0);" class="text-body">
+                          <span class="ms-2">{{ticket.company}} - {{ticket.location}}</span>
+                        </a>
+                      </td>
+    
+                      <td>{{ticket.issue}}</td>
+    
+                      <td>
+                            <p class="ms-2">{{ticket.assignee}}</p>
+                      </td>
+    
+                      <td>
+                        <p class="badge bg-{% if ticket.priority == 'High' %}danger text-light
+                        {% elif ticket.priority == 'Mid' %}warning text-light
+                        {% elif ticket.priority == 'Low' %}success text-light
+                        {% endif %}">{{ticket.priority}}</p>
+                      </td>
+    
+                      <td>
+                        <p class="badge bg-{% if ticket.status == 'Pending' %}warning
+                        {% elif ticket.status == 'Open' %}primary 
+                        {% elif ticket.status == 'Closed' %}secondary
+                        {% elif ticket.status == 'Hold' %}danger         
+                        {% endif %}">{{ticket.status}}</p>
+                      </td>
+    
+                      <td>2017/04/28</td>
+    
+                      <td>2017/04/28</td>
+    
+                      <td>
+                        <div class="btn-group dropdown">
+                          <a
+                            href="javascript: void(0);"
+                            class="
+                              table-action-btn
+                              dropdown-toggle
+                              arrow-none
+                              btn btn-light btn-sm
+                            "
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            ><i class="mdi mdi-dots-horizontal"></i
+                          ></a>
+                          <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"
+                              ><i
+                                class="
+                                  mdi mdi-pencil
+                                  me-2
+                                  text-muted
+                                  font-18
+                                  vertical-middle
+                                "
+                              ></i
+                              >Edit Ticket</a
+                            >
+                            <a class="dropdown-item" href="#"
+                              ><i
+                                class="
+                                  mdi mdi-check-all
+                                  me-2
+                                  text-muted
+                                  font-18
+                                  vertical-middle
+                                "
+                              ></i
+                              >Close</a
+                            >
+                            <a class="dropdown-item" href="#"
+                              ><i
+                                class="
+                                  mdi mdi-delete
+                                  me-2
+                                  text-muted
+                                  font-18
+                                  vertical-middle
+                                "
+                              ></i
+                              >Remove</a
+                            >
+                            <a class="dropdown-item" href="#"
+                              ><i
+                                class="
+                                  mdi mdi-star
+                                  me-2
+                                  font-18
+                                  text-muted
+                                  vertical-middle
+                                "
+                              ></i
+                              >Mark as Unread</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+    
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- container -->
+    {% endblock %} {% block extra_javascript %}
+    
+    <!-- Third party js -->
+    <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+    <!-- Third party js ends -->
+    
+    <!-- Init js -->
+    <script src="{% static 'js/pages/tickets.js' %}"></script>
+    <!-- Init js end -->
+    
+    {% endblock %}
+    
+
+    {% comment %} <div class="card">
+        <div class="card-body">
+
+            {% for ticket in ticket  %}
+            {{ticket.id}}
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock %} {% endcomment %}

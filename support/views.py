@@ -17,5 +17,10 @@ def create_ticket(request):
 
 def ticket_list(request):
     ticket = Ticket.objects.all()
-    
-    return render(request, 'support/ticket_list.html', {'ticket': ticket})
+    ticket_user = Ticket.objects.filter(assignee=request.user)
+
+    context = {
+        'ticket': ticket, 
+        'ticket_user':ticket_user
+    }
+    return render(request, 'support/ticket_list.html', context)
