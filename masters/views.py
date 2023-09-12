@@ -78,7 +78,7 @@ def create_customer_user(request,pk):
         form.user_company=company
         form.user_loc=location
         form.save()
-        return redirect('CompanyDetail',company_pk)
+        return redirect('CompanyDetail', company_pk)
     
     context = {        
         "user_form":user_form,

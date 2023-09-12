@@ -30,7 +30,7 @@ class Product(models.Model):
     serial_number=models.CharField(max_length=200,blank=False)    
     created_on = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=200,blank=True)
-    location= models.CharField(max_length=50)
+    # location= models.CharField(max_length=50)
     
     def __str__(self):
         return self.product_name +" - " + self.serial_number
