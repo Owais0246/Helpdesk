@@ -32,7 +32,6 @@ class Ticket(models.Model):
     spare_by_zaco = models.BooleanField(default=False)
     sr_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     ticket_call_time = models.ManyToManyField("Call_Time", blank=True)
-    spare_available = models.BooleanField(default=False)
     cost = models.CharField(max_length=150)
     amount_return = models.CharField( max_length=150)
     status = models.CharField(max_length=100, choices=Status, default='Pending')
@@ -40,6 +39,8 @@ class Ticket(models.Model):
     feedback = models.TextField()
     ticket_message = models.ManyToManyField("Message", blank=True)
     assignee = models.ForeignKey(User, related_name='assignee', on_delete=models.PROTECT, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    closed_at = models.DateTimeField()
     
     def __str__(self):
         return self.product
@@ -58,6 +59,7 @@ class Call_Time(models.Model):
     field_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
 class Message(models.Model):
+    sent_on = models.DateTimeField(auto_now_add=True)
     messages = models.TextField()
     sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     sent_on = models.DateTimeField(auto_now=True)
