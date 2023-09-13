@@ -10,5 +10,16 @@ class TicketForm(forms.ModelForm):
 
     class Meta:
         model = Ticket
-        fields = ('product','issue','downtime_required','contact_person', 'phone_number', 'spare_by_zaco')
+        fields = ('product','issue','downtime_required','contact_person', 'phone_number', 'spare_by_zaco', 'problem')
     
+
+class AssignTicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ('assignee', 'priority', 'status')
+
+
+class CallTimeForm(forms.ModelForm):
+    class Meta:
+        model = Call_Time
+        fields = [ 'field_engineer']

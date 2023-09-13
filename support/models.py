@@ -40,7 +40,8 @@ class Ticket(models.Model):
     ticket_message = models.ManyToManyField("Message", blank=True)
     assignee = models.ForeignKey(User, related_name='assignee', on_delete=models.PROTECT, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    closed_at = models.DateTimeField()
+    closed_at = models.DateTimeField(null=True)
+    problem = models.TextField(null=True, blank=True)
     
     def __str__(self):
         return self.product
@@ -52,6 +53,7 @@ class Document(models.Model):
         return self.file.name
 
 class Call_Time(models.Model):
+    ticket_id = models.ForeignKey('Ticket', related_name='ticket_call_times', on_delete=models.CASCADE, null=True, blank=True)
     schedule = models.DateTimeField(blank=True, null=True)
     clock_in = models.DateTimeField(blank=True, null=True)
     clock_out = models.DateTimeField(blank=True, null=True)
