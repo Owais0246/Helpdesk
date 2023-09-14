@@ -1,0 +1,153 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">AMC</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Create</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Elements</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Create AMC</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
+          
+          <form action= "" method='POST'>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="firstnameofUser" class="form-label"
+                >Company Name</label
+              >
+              <select name="company" id="company">
+                <option value="#">Select Company</option>
+                {% for company in companies%}
+                
+                <option value="{{company}}">{{company}}</option>
+                {% endfor %}
+              </select>
+              
+              
+            </div>
+            <div class="mb-3">
+              <label for="firstnameofUser" class="form-label"
+                >Location Name</label
+              >
+              <select name="location" id="location">
+                <option value="#">Select Location</option>
+                {% for location in locations%}
+                
+                <option value="{{location}}">{{location}}</option>
+                {% endfor %}
+              </select>
+              
+              
+            </div>
+            <div class="mb-3">
+              <label for="firstnameofUser" class="form-label"
+                >Product Name</label
+              >
+              <select name="product" id="product">
+                <option value="#">Select Product</option>
+                {% for prod in products%}
+                <option value="{{prod}}">{{prod}}</option>
+                {% endfor %}
+              </select>
+              
+              
+            </div>
+            
+            
+            <div class="mb-3">
+              <label for="username" class="form-label"
+                >Description</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="description"
+                name="description"
+                
+                placeholder="Enter the description"
+              />
+              
+            </div>
+            
+            <div class="mb-3">
+              <label for="contact_number" class="form-label"
+                >Start Date</label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="start_date"
+                name="start_date"
+                
+                placeholder="Enter the Start Date"
+              />
+              
+            </div>
+            <div class="mb-3"
+            >
+              <label for="email" class="form-label"
+                >Duration(in years)</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="duration"
+                name="duration"
+                
+                placeholder="Enter the duration in years"
+              />
+              
+            </div>
+            
+          
+            <button
+              type="submit"
+              class="btn btn-primary waves-effect waves-light"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+        <!-- end card-body-->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+
+    
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col-->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+{% endblock %}
