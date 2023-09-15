@@ -45,10 +45,11 @@ def ticket_list(request):
 
 def ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk = pk)
-    ticket1 = Ticket.objects.filter(pk = pk)
+    ticket1 = Ticket.objects.get(pk = pk)
     assign_form = AssignTicketForm(request.POST or None, instance= ticket)
     close_form = CloseForm(request.POST or None, instance= ticket)
     eng = User.objects.filter(is_field_engineer=True)
+    sr_eng = User.objects.filter(is_sr_engineer=True)
     amc= Amc.objects.get(product=ticket.product.pk)
 
     
@@ -56,6 +57,8 @@ def ticket(request, pk):
         assign = assign_form.save(commit=False)
         ticket.status = 'Open'
         assign.save()
+        messages=f"Your ticket has been assigned to {ticket.assignee.first_name}"
+        ticket.ticket_message.create(messages=messages, sender=request.user)
         return redirect('Ticket', pk)
     
 
@@ -64,7 +67,14 @@ def ticket(request, pk):
         eng = request.POST.get("field_engineer")
         field_engineer = User.objects.get(pk=eng)
         ticket.ticket_call_time.create(schedule=schedule, ticket_id=ticket, field_engineer=field_engineer)
+        messages=f"Service is sceduled on {schedule} and the engineer would be {field_engineer.first_name}"
+        ticket.ticket_message.create(messages=messages, sender=request.user)
+        
         return redirect('Ticket', pk)
+    
+    elif "sr_engineer" in request.POST:
+        sr_engineer = request.POST.get("sr_engineer")
+        ticket1.update(sr_engineer=sr_engineer)
     
     elif "ticket_message" in request.POST:
         message = request.POST.get("ticket_message")
@@ -91,7 +101,8 @@ def ticket(request, pk):
         'assign_form':assign_form,
         'eng':eng,
         'close_form':close_form,
-        'amc':amc
+        'amc':amc,
+        'sr_eng':sr_eng
 
     }
     return render(request, 'support/ticket.html', context)

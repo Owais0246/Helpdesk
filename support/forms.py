@@ -33,3 +33,9 @@ class CloseForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = [ 'feedback','amount_return','cost']
+        
+
+class SrForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['sr_engineer']

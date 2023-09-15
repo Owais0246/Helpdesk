@@ -313,7 +313,19 @@
       </div>
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title font-16 mb-3">Reports</h5>
+          <div class="row">
+            <div class="col-6">
+              <h5 class="card-title font-16 mb-3">Reports</h5>
+            </div>
+           
+            <div class="col-6 text-end">
+              {% if ticket.sr_engineer == None %}
+              <button type="button" class="btn btn-primary  mb-3" data-bs-toggle="modal" data-bs-target="#sr_eng">
+                Involve Sr Engineer</button>
+              {% else %}
+              <h5 class="card-title font-16 mb-3">Sr Engineer :{{ticket.sr_engineer.first_name}}</h5>
+                          </div>
+              {% endif %}
 
 
           {% for doc in ticket.documents.all %}
@@ -409,6 +421,7 @@
 {% include "support/assign.html" %}
 {% include "support/close.html" %}
 {% include "support/call.html" %}
+{% include "support/eng.html" %}
 
 
 
