@@ -12,7 +12,7 @@ class Amc(models.Model):
     product= models.ForeignKey(Product,on_delete=models.PROTECT)
     description = models.CharField(max_length=200)
     startdate = models.DateField()
-    duration= models.IntegerField()
+    expiry= models.DateField(null=True,blank=True)
     
     def __str__(self):
         return str(self.company) + " - " +str(self.pk)

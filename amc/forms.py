@@ -6,7 +6,7 @@ class CreateAmcForm(forms.ModelForm):
     class Meta:
         model = Amc
         fields = ('company','location','product','startdate',
-                  'duration','description')
+                  'expiry','description')
         # 
         # labels = {
         #     'loc_name': 'Location Name',
