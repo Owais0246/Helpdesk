@@ -7,6 +7,8 @@ urlpatterns = [
     path('ticket', views.create_ticket, name="CreateTicket"),
     path('list', views.ticket_list, name="TicketList"),
     path('ticket/<int:pk>', views.ticket, name="Ticket"),
+    path('download/<int:file_id>/', views.download_file, name='download_file'),
+
     
     ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

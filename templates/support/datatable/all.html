@@ -1,0 +1,157 @@
+<div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <button
+            type="button"
+            class="btn btn-sm btn-blue waves-effect waves-light float-end"
+          >
+            <i class="mdi mdi-plus-circle"></i> Add Ticket
+          </button>
+          <h4 class="header-title mb-4">Manage Tickets</h4>
+
+          <div class="table-responsive">
+            <table
+              class="
+                table table-hover
+                m-0
+                table-centered
+                dt-responsive
+                nowrap
+                w-100
+              "
+              id="tickets-table"
+            >
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Requested By</th>
+                  <th>Subject</th>
+                  <th>Assignee</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Created Date</th>
+                  <th>Due Date</th>
+                  <th class="hidden-sm">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                {% for ticket in ticket %}
+                <tr>
+                  <td><b>{{ticket.id}}</b></td>
+
+                  <td>
+                    <a href="{% url "Ticket" ticket.pk %}" class="text-body">
+                      <span class="ms-2">{{ticket.company}} - {{ticket.location}}</span>
+                    </a>
+                  </td>
+
+                  <td>{{ticket.product}} - {{ticket.issue}}</td>
+
+                  <td>
+                        <p class="ms-2">{{ticket.assignee}}</p>
+                  </td>
+
+                  <td>
+                    <p class="badge bg-{% if ticket.priority == 'High' %}danger text-light
+                    {% elif ticket.priority == 'Mid' %}warning text-light
+                    {% elif ticket.priority == 'Low' %}success text-light
+                    {% endif %}">{{ticket.priority}}</p>
+                  </td>
+
+                  <td>
+                    <p class="badge bg-{% if ticket.status == 'Pending' %}warning
+                    {% elif ticket.status == 'Open' %}primary 
+                    {% elif ticket.status == 'Closed' %}secondary
+                    {% elif ticket.status == 'Hold' %}danger         
+                    {% endif %}">{{ticket.status}}</p>
+                  </td>
+
+                  <td>{{ticket.created_at}}</td>
+
+                  <td>2017/04/28</td>
+
+                  <td>
+                    <div class="btn-group dropdown">
+                      <a
+                        href="javascript: void(0);"
+                        class="
+                          table-action-btn
+                          dropdown-toggle
+                          arrow-none
+                          btn btn-light btn-sm
+                        "
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="mdi mdi-dots-horizontal"></i
+                      ></a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#"
+                          ><i
+                            class="
+                              mdi mdi-pencil
+                              me-2
+                              text-muted
+                              font-18
+                              vertical-middle
+                            "
+                          ></i
+                          >Edit Ticket</a
+                        >
+                        <a class="dropdown-item" href="#"
+                          ><i
+                            class="
+                              mdi mdi-check-all
+                              me-2
+                              text-muted
+                              font-18
+                              vertical-middle
+                            "
+                          ></i
+                          >Close</a
+                        >
+                        <a class="dropdown-item" href="#"
+                          ><i
+                            class="
+                              mdi mdi-delete
+                              me-2
+                              text-muted
+                              font-18
+                              vertical-middle
+                            "
+                          ></i
+                          >Remove</a
+                        >
+                        <a class="dropdown-item" href="#"
+                          ><i
+                            class="
+                              mdi mdi-star
+                              me-2
+                              font-18
+                              text-muted
+                              vertical-middle
+                            "
+                          ></i
+                          >Mark as Unread</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+
+                
+                {% endfor %}
+
+
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>

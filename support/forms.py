@@ -21,5 +21,15 @@ class AssignTicketForm(forms.ModelForm):
 
 class CallTimeForm(forms.ModelForm):
     class Meta:
-        model = Call_Time
-        fields = [ 'field_engineer']
+        model = Ticket
+        fields = [ 'ticket_call_time']
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = [ 'ticket_message']
+
+class CloseForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = [ 'feedback','amount_return','cost']

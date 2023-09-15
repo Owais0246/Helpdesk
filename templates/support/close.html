@@ -1,0 +1,82 @@
+<div
+id="close-modal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="close-modalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="close-modalLabel">
+        Modal Heading
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+                <div class="form-floating col-6">
+                <input
+                    type="text"
+                    class="form-control"
+                    id="cost"
+                    placeholder="cost"
+                    name = "cost"
+                />
+                <label for="cost">Cost</label>
+                </div>
+                <div class="form-floating col-6">
+                  <input
+                      type="text"
+                      class="form-control"
+                      id="amount_return"
+                      placeholder="amount_return"
+                      name = "amount_return"
+                  />
+                  <label for="amount_return">Amount Return</label>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label for="feedback" class="form-label"
+                    >Feedback</label
+                    >
+                    <textarea
+                    class="form-control"
+                    id="feedback"
+                    rows="5"
+                    name ="feedback"
+                    ></textarea>
+              </div>
+
+
+            </div>
+
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        data-bs-dismiss="modal"
+      >
+        Close
+      </button>
+      <button type="submit" class="btn btn-primary" name='close'>
+        Save changes
+      </button>
+    </form>
+    </div>
+  </div>
+  <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -57,7 +57,7 @@ class Call_Time(models.Model):
     schedule = models.DateTimeField(blank=True, null=True)
     clock_in = models.DateTimeField(blank=True, null=True)
     clock_out = models.DateTimeField(blank=True, null=True)
-    update = models.TextField()
+    update = models.TextField(blank=True, null=True)
     field_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
 class Message(models.Model):
