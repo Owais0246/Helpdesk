@@ -41,7 +41,7 @@
                 <option value="#">Select Company</option>
                 {% for company in companies%}
                 
-                <option value="{{company}}">{{company}}</option>
+                <option value="{{company.pk}}">{{company}}</option>
                 {% endfor %}
               </select>
               
@@ -55,7 +55,7 @@
                 <option value="#">Select Location</option>
                 {% for location in locations%}
                 
-                <option value="{{location}}">{{location}}</option>
+                <option value="{{location.pk}}">{{location}}</option>
                 {% endfor %}
               </select>
               
@@ -68,7 +68,7 @@
               <select name="product" id="product">
                 <option value="#">Select Product</option>
                 {% for prod in products%}
-                <option value="{{prod}}">{{prod}}</option>
+                <option value="{{prod.pk}}">{{prod}}</option>
                 {% endfor %}
               </select>
               
