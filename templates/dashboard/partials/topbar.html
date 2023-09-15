@@ -104,9 +104,10 @@
           <div class="dropdown-divider"></div>
 
           <!-- item-->
-          <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="event.preventDefault();
-            document.getElementById('logout-form').submit();">
-              <i class="fe-log-out"></i>
+          <a href="{% url 'logout' %}" class="dropdown-item notify-item" >Logout
+            {% comment %} onclick="event.preventDefault(); {% endcomment %}
+            {% comment %} document.getElementById('logout-form').submit();" {% endcomment %}
+              {% comment %} <i class="fe-log-out"></i>
               <span>{% trans "Logout" %}</span>
 
               <form method="post" id="logout-form" action="#">
@@ -114,7 +115,7 @@
                   {% if redirect_field_value %}
                   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                   {% endif %}
-              </form>
+              </form> {% endcomment %}
           </a>
         </div>
       </li>

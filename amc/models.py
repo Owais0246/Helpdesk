@@ -11,7 +11,7 @@ class Amc(models.Model):
     # user = models.ForeignKey(User,on_delete=models.PROTECT, null=True,blank=True)    
     product= models.ForeignKey(Product,on_delete=models.PROTECT)
     description = models.CharField(max_length=200)
-    start_date = models.DateField( null=True,blank=True)
+    startdate = models.DateField()
     duration= models.IntegerField()
     
     def __str__(self):

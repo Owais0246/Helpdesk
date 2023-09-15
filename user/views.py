@@ -76,7 +76,7 @@ def login_user(request):
 
 def logout_user (request):
     logout(request)
-    return redirect ('Login')
+    return redirect ('login')
 
 
 # @method_decorator(login_required, name='dispatch')
