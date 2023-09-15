@@ -1,5 +1,47 @@
-{% extends "dashboard/horizontal_base.html" %} {% load static i18n %} 
+{% extends "dashboard/horizontal_base.html" %} {% load static i18n %}
 {% block head_title%} {% trans "Company Details" %}{% endblock head_title %}
+{% block extra_css %}
+
+<!-- third party css -->
+<style>
+  .demo {
+    height: 500px;
+    display: block;
+    overflow: auto;
+  }
+
+  .msg-right {
+    background: #3BA1EE;
+    padding: 10px;
+    text-align: right;
+    color: #fff;
+    margin: 5px;
+    width: 70%;
+    float: right;
+    margin-right: 30px;
+  }
+
+  .msg-left {
+    background: #ddd;
+    padding: 10px;
+    margin: 5px;
+    width: 70%;
+    float: left;
+    margin-left: 30px;
+  }
+</style>
+<link href="{% static 'libs/spectrum-colorpicker2/spectrum.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/flatpickr/flatpickr.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/clockpicker/bootstrap-clockpicker.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet"
+  type="text/css" />
+<link href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet"
+  type="text/css" />
+
+
+<!-- third party css end -->
+
+{% endblock %}
 {% block content %}
 
 <div class="container-fluid">
@@ -20,7 +62,7 @@
             {% endcomment %}
           </ol>
         </div>
-        <h4 class="page-title">Raise Ticket</h4>
+        <h4 class="page-title">{{ticket.product}} - {{ticket.issue}}</h4>
       </div>
     </div>
   </div>
@@ -34,18 +76,15 @@
           <div class="float-sm-end mb-2 mb-sm-0">
             <div class="row g-2">
               <div class="col-auto">
-                <a
-                  href="#"
-                  class="btn btn-sm btn-link"
-                  ><i class="mdi mdi-keyboard-backspace"></i> Back</a
-                >
+                <a href="{% url "TicketList" %}" class="btn btn-sm btn-link"><i class="mdi mdi-keyboard-backspace"></i>
+                  Back</a>
               </div>
               <div class="col-auto">
-                <select class="form-select form-select-sm form">
-                  <option selected="">Watch</option>
-                  <option value="1">Remind me</option>
-                  <option value="2">Close</option>
-                </select>
+                {% if ticket.status != 'Closed' %}
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#close-modal">
+                  Close Ticket</button>
+
+                {% endif %}
               </div>
             </div>
           </div>
@@ -63,39 +102,30 @@
             <div class="col-md-6">
               <!-- Reported by -->
               <label class="mt-2 mb-1">Reported By :</label>
-              
-                <div class="w-100">
-                  <p>{{ticket.company|title}} - {{ticket.location|title}}</p>
-              
+
+              <div class="w-100">
+                <p>{{ticket.company|title}} - {{ticket.location|title}}</p>
+
               </div>
               <!-- end Reported by -->
             </div>
             <!-- end col -->
-            <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#call"
-          > call</button>
+
             <div class="col-md-6">
               <!-- assignee -->
               <label class="mt-2 mb-1">Assigned To :</label>
 
-                <div class="w-100">
+              <div class="w-100">
 
-                  {% if ticket.assignee is None %}
-                  <button
-              type="button"
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#standard-modal"
-            > Assign Ticket</button>
-                  {% else %}
-                  <p>{{ticket.assignee|title}}</p>
-                  {% endif %}
-                </div>
+                {% if ticket.assignee is None %}
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#standard-modal">
+                  Assign Ticket</button>
+                {% else %}
+                <p>{{ticket.assignee|title}}</p>
+                {% endif %}
               </div>
-              <!-- end assignee -->
+            </div>
+            <!-- end assignee -->
             <!-- end col -->
           </div>
           <!-- end row -->
@@ -115,6 +145,7 @@
               <div class="row">
                 <div class="col-auto">
                   {{ticket.status}}
+
                 </div>
               </div>
               <!-- end assignee -->
@@ -148,31 +179,31 @@
             </div>
 
 
-              <div class="col-md-6">
-                <!-- Status -->
-                <label class="mt-2 form-label">Cost Involved :</label>
-                <div class="row">
-                  <div class="col-auto">
-                    {{ticket.cost}}
-                  </div>
+            <div class="col-md-6">
+              <!-- Status -->
+              <label class="mt-2 form-label">Cost Involved :</label>
+              <div class="row">
+                <div class="col-auto">
+                  {{ticket.cost}}
                 </div>
-                <!-- end Status -->
               </div>
-              <!-- end col -->
- 
-              <div class="col-md-6">
-                <!-- Status -->
-                <label class="mt-2 form-label">Amount Returned :</label>
-                <div class="row">
-                  <div class="col-auto">
-                    {{ticket.amount_return}}
-                  </div>
-                </div>
-                <!-- end Status -->
-              </div>
+              <!-- end Status -->
+            </div>
+            <!-- end col -->
 
-              <!-- end col -->
-          
+            <div class="col-md-6">
+              <!-- Status -->
+              <label class="mt-2 form-label">Amount Returned :</label>
+              <div class="row">
+                <div class="col-auto">
+                  {{ticket.amount_return}}
+                </div>
+              </div>
+              <!-- end Status -->
+            </div>
+
+            <!-- end col -->
+
             {% endif %}
             <!-- end col -->
           </div>
@@ -189,7 +220,7 @@
           <p class="text-muted mb-0">
             {{ticket.feedback}}
           </p>
-            {% endif %}
+          {% endif %}
         </div>
         <!-- end card-body-->
       </div>
@@ -197,120 +228,54 @@
 
       <div class="card">
         <div class="card-body">
-          <div class="float-end">
-            <select class="form-select form-select-sm">
-              <option selected="">Recent</option>
-              <option value="1">Old</option>
-            </select>
-          </div>
+
           <!-- end dropdown-->
 
-          <h4 class="mb-4 mt-0 font-16">Discussion (68)</h4>
+          <h4 class="mb-4 mt-0 font-16">Discussion ({{ticket.ticket_message.all.count}})</h4>
+
+          <!-- message-->
 
           <div class="clerfix"></div>
+          <div id="demo" class="demo">
 
-          <div class="d-flex align-items-start">
-            <img
-              class="me-2 rounded-circle"
-              src="{% static 'images/users/user-9.jpg' %}"
-              alt="Generic placeholder image"
-              height="32"
-            />
-            <div class="w-100">
+            {% for message in ticket.ticket_message.all %}
+
+            <div class="msg-{% if message.sender == request.user %}right {% else %}left{% endif %}">
               <h5 class="mt-0 mb-1">
-                Jonathan Andrews
-                <small class="text-muted float-end">3 hours ago</small>
+                {{message.sender}}
               </h5>
-              Nice work, makes me think of The Money Pit.
+              </h5>
+              {{message.messages}}
+
 
               <br />
-              <a
-                href="javascript: void(0);"
-                class="text-muted font-13 d-inline-block mt-2"
-                ><i class="mdi mdi-reply"></i> Reply</a
-              >
+              <small>{{message.sent_on|timesince}} ago</small>
             </div>
+            {% comment %} <div class="msg-right">
+              Hello
+            </div> {% endcomment %}
+            {% endfor %}
+
+
+            <!-- message-->
+
           </div>
-
-          <div class="d-flex align-items-start mt-3">
-            <img
-              class="me-2 rounded-circle"
-              src="{% static 'images/users/user-2.jpg' %}"
-              alt="Generic placeholder image"
-              height="32"
-            />
-            <div class="w-100">
-              <h5 class="mt-0 mb-1">
-                Thelma Fridley
-                <small class="text-muted float-end">5 hours ago</small>
-              </h5>
-              It would be very nice to have.
-
-              <br />
-              <a
-                href="javascript: void(0);"
-                class="text-muted font-13 d-inline-block mt-2"
-                ><i class="mdi mdi-reply"></i> Reply</a
-              >
-            </div>
-          </div>
-
-          <div class="d-flex align-items-start mt-3">
-            <a class="pe-2" href="#">
-              <img
-                src="{% static 'images/users/user-9.jpg' %}"
-                class="rounded-circle"
-                alt="Generic placeholder image"
-                height="32"
-              />
-            </a>
-            <div class="w-100">
-              <h5 class="mt-0 mb-1">
-                Jonathan Andrews
-                <small class="text-muted float-end">1 day ago</small>
-              </h5>
-              i'm in the middle of a timelapse animation myself! (Very different
-              though.) Awesome stuff.
-
-              <br />
-              <a
-                href="javascript: void(0);"
-                class="text-muted font-13 d-inline-block mt-2"
-              >
-                <i class="mdi mdi-reply"></i> Reply
-              </a>
-            </div>
-          </div>
-
-          <div class="text-center mt-2">
-            <a href="javascript:void(0);" class="text-danger"
-              ><i class="mdi mdi-spin mdi-loading me-1"></i> Load more
-            </a>
-          </div>
-
           <div class="border rounded mt-4">
-            <form action="#" class="comment-area-box">
-              <textarea
-                rows="3"
-                class="form-control border-0 resize-none"
-                placeholder="Your message..."
-              ></textarea>
-              <div
-                class="
+            <form method="post" class="comment-area-box">
+
+              {% csrf_token %}
+              <textarea rows="3" class="form-control border-0 resize-none" placeholder="Your message..."
+                name="ticket_message"></textarea>
+              <div class="
                   p-2
                   bg-light
                   d-flex
                   justify-content-between
                   align-items-center
-                "
-              >
+                ">
                 <div>
-                  <a href="#" class="btn btn-sm px-1 btn-light"
-                    ><i class="mdi mdi-upload"></i
-                  ></a>
-                  <a href="#" class="btn btn-sm px-1 btn-light"
-                    ><i class="mdi mdi-at"></i
-                  ></a>
+                  <a href="#" class="btn btn-sm px-1 btn-light"><i class="mdi mdi-upload"></i></a>
+                  <a href="#" class="btn btn-sm px-1 btn-light"><i class="mdi mdi-at"></i></a>
                 </div>
                 <button type="submit" class="btn btn-sm btn-success">
                   <i class="mdi mdi-send me-1"></i>Submit
@@ -329,100 +294,50 @@
     <div class="col-xl-4 col-lg-5">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title font-16 mb-3">Attachments</h5>
+          <div class="row">
+            <div class="col-6">
+              <h5 class="card-title font-16 mb-3 mt-2 text-left">Ticket Details</h5>
+            </div>
+          </div>
+          <div class="row align-items-center">
+            <p>Product : <span class="mb-0 font-12">{{ticket.product}}</span></p>
+            <p>Downtime Required : <span class="mb-0 font-12">{% if ticket.downtime_required %}Yes {% else %} No{% endif%}</span></p>
+            <p>Location : <span class="mb-0 font-12">{{ticket.location}}</span></p>
+            <p>On-site Contact Person : <span class="mb-0 font-12">{{ticket.contact_person}}</span></p>
+            <p>Phone Number : <span class="mb-0 font-12">{{ticket.phone_number}}</span></p>
+            <p>Spare Carried By Zaco : <span class="mb-0 font-12">{% if ticket.spare_by_zaco %}Yes {% else %} No{% endif%}</span></p>
+
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title font-16 mb-3">Reports</h5>
+
+
+          {% for doc in ticket.documents.all %}
 
           <div class="card mb-1 shadow-none border">
             <div class="p-2">
               <div class="row align-items-center">
                 <div class="col-auto">
                   <div class="avatar-sm">
-                    <span
-                      class="
+                    <span class="
                         avatar-title
                         badge-soft-primary
                         text-primary
                         rounded
-                      "
-                    >
-                      pdf
+                      ">
+                      File
                     </span>
                   </div>
                 </div>
                 <div class="col ps-0">
-                  <a href="javascript:void(0);" class="text-muted fw-bold"
-                    >invoice-dec-2019.pdf</a
-                  >
-                  <p class="mb-0 font-12">2.3 MB</p>
+                  <a href="javascript:void(0);" class="text-muted fw-bold">{{doc.file.name}}</a>
                 </div>
                 <div class="col-auto">
                   <!-- Button -->
-                  <a
-                    href="javascript:void(0);"
-                    class="btn btn-link font-16 text-muted"
-                  >
-                    <i class="dripicons-download"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card mb-1 shadow-none border">
-            <div class="p-2">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <div class="avatar-sm">
-                    <span
-                      class="
-                        avatar-title
-                        badge-soft-primary
-                        text-primary
-                        rounded
-                      "
-                    >
-                      doc
-                    </span>
-                  </div>
-                </div>
-                <div class="col ps-0">
-                  <a href="javascript:void(0);" class="text-muted fw-bold"
-                    >paypal-statement.docs</a
-                  >
-                  <p class="mb-0 font-12">0.25 MB</p>
-                </div>
-                <div class="col-auto">
-                  <!-- Button -->
-                  <a
-                    href="javascript:void(0);"
-                    class="btn btn-link font-16 text-muted"
-                  >
-                    <i class="dripicons-download"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card mb-0 shadow-none border">
-            <div class="p-2">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <div class="avatar-sm">
-                    <span class="avatar-title bg-secondary rounded"> pdf </span>
-                  </div>
-                </div>
-                <div class="col ps-0">
-                  <a href="javascript:void(0);" class="text-muted fw-bold"
-                    >visa-credit-card.pdf</a
-                  >
-                  <p class="mb-0 font-12">1.05 MB</p>
-                </div>
-                <div class="col-auto">
-                  <!-- Button -->
-                  <a
-                    href="javascript:void(0);"
-                    class="btn btn-link font-16 text-muted"
-                  >
+                  <a href="{% url 'download_file' doc.id %}" class="btn btn-link font-16 text-muted">
                     <i class="dripicons-download"></i>
                   </a>
                 </div>
@@ -431,24 +346,41 @@
           </div>
 
 
-          
+          {% endfor %}
+
 
         </div>
 
 
-        
+
       </div>
 
-      
 
-
+      {% comment %} <div class="row">
+        <div class="col-md-6"> <!-- Adjust the column size as needed -->
+          <p class="text-left">Your inline text here</p>
+        </div>
+        <div class="col-md-6 text-right"> <!-- Adjust the column size as needed -->
+          <button class="btn btn-primary">Your Button</button>
+        </div>
+      </div> {% endcomment %}
 
 
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title font-16 mb-3">Call Time</h5>
-          {% for call in ticket.ticket_call_time.all  %}
+          <div class="row">
+            <div class="col-6">
+              <h5 class="card-title font-16 mb-3 mt-2 text-left">Call Time</h5>
+            </div>
+            <div class="col-6 text-end">
+              <button type="button" class="btn btn-primary  mb-3" data-bs-toggle="modal" data-bs-target="#call">
+                Schedule call time</button>
+
+            </div>
+
+          </div>
+          {% for call in ticket.ticket_call_time.all %}
           <div class="card mb-1 shadow-none border">
             <div class="p-2">
               <div class="row align-items-center">
@@ -456,9 +388,8 @@
 
                 </div>
                 <div class="col ps-0">
-                  <p>Scheduled at : <span class="mb-0 font-12">{{call.schedule}}</span></p
-                  >
-                  <p class="mb-0 font-12">{{call.field_engineer}}</p>
+                  <p>Scheduled at : <span class="mb-0 font-12">{{call.schedule}}</span></p>
+                  <p class="mb-0 font-12">Engineer: {{call.field_engineer.first_name}}</p>
                 </div>
               </div>
             </div>
@@ -466,14 +397,35 @@
           {% endfor %}
         </div>
       </div>
+    </div>
   </div>
-</div>
-  
+
   <!-- end row -->
 </div>
 <!-- container -->
 
 
 {% include "support/assign.html" %}
+{% include "support/close.html" %}
 {% include "support/call.html" %}
+
+
+
+
+{% block extra_javascript %}
+<!-- Third party js -->
+<script src="{% static 'libs/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'libs/spectrum-colorpicker2/spectrum.min.js' %}"></script>
+<script src="{% static 'libs/clockpicker/bootstrap-clockpicker.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/form-pickers.init.js' %}"></script>
+<!-- Init js end -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+<script language="JavaScript" type="text/javascript">
+  $('#demo').scrollTop($('#demo')[0].scrollHeight);
+</script>
 {% endblock %}
