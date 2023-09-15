@@ -4,16 +4,21 @@ from .forms import TicketForm, AssignTicketForm, CallTimeForm, CloseForm
 from .models import Ticket, Document
 from user.models import User
 import datetime
-
+from amc.models import Amc
+from masters.models import Product
 
 def create_ticket(request):
     user = request.user
+    amc = Amc.objects.filter(company = user.user_company)
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
+            prod = request.POST.get('product')
+            product = Product.objects.get(pk=prod)
             ticket = form.save(commit=False)  # Save the TicketSupport object
             ticket.company = user.user_company
             ticket.location = user.user_loc
+            ticket.product = product
             ticket.save()
             for doc in request.FILES.getlist('documents'):
                 ticket.documents.create(file=doc)  # Create Document objects and associate them with the ticket
@@ -21,7 +26,7 @@ def create_ticket(request):
     else:
         form = TicketForm()
 
-    return render(request, 'support/create_ticket.html', {'form': form, 'user':user})
+    return render(request, 'support/create_ticket.html', {'form': form, 'user':user, 'amc':amc,})
 
 def ticket_list(request):
     ticket = Ticket.objects.all()
@@ -34,6 +39,7 @@ def ticket_list(request):
         'ticket_user':ticket_user,
         'ticket_active':ticket_active,
         'ticket_close':ticket_close,
+  
     }
     return render(request, 'support/ticket_list.html', context)
 
@@ -43,11 +49,12 @@ def ticket(request, pk):
     assign_form = AssignTicketForm(request.POST or None, instance= ticket)
     close_form = CloseForm(request.POST or None, instance= ticket)
     eng = User.objects.filter(is_field_engineer=True)
+    amc= Amc.objects.get(product=ticket.product.pk)
 
     
     if assign_form.is_valid():
         assign = assign_form.save(commit=False)
-        assign.status = 'Open'
+        ticket.status = 'Open'
         assign.save()
         return redirect('Ticket', pk)
     
@@ -72,6 +79,7 @@ def ticket(request, pk):
         status='Closed'
         closed_at = datetime.datetime.now()
         ticket1.update(cost=cost,amount_return=amount_return,feedback=feedback,status=status,closed_at=closed_at)
+        ticket.ticket_message.create(messages=feedback, sender=request.user)
         return redirect('Ticket', pk)
         
 
@@ -83,6 +91,7 @@ def ticket(request, pk):
         'assign_form':assign_form,
         'eng':eng,
         'close_form':close_form,
+        'amc':amc
 
     }
     return render(request, 'support/ticket.html', context)

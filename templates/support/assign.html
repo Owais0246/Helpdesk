@@ -22,7 +22,10 @@ aria-hidden="true"
     <div class="modal-body">
       <form method="post">
         {% csrf_token %}
-        {{assign_form}}
+        <label>Assign To :</label>
+        {{assign_form.assignee}}
+        <label>Set Priority :</label>
+        {{assign_form.priority}}
 
 
     </div>

@@ -1,5 +1,36 @@
 {% extends "dashboard/horizontal_base.html" %} {% load static i18n %} 
 {% block head_title%} {% trans "Company Details" %}{% endblock head_title %}
+{% block extra_css %}
+
+<!-- third party css -->
+<link
+  href="{% static 'libs/mohithg-switchery/switchery.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/multiselect/css/multi-select.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/select2/css/select2.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/selectize/css/selectize.bootstrap3.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<!-- third party css end -->
+
+{% endblock %}
 {% block content %}
 
 <div class="container-fluid">
@@ -32,16 +63,34 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <div class="form-floating md-3">
-                    <input
-                        type="text"
+
+
+
+
+
+
+
+           
+                    <div class="col-md-6">
+                      <p>Select Product</p>
+                      
+                      <select
                         class="form-control"
-                        id="product"
-                        placeholder="Product"
+                        data-toggle="select2"
+                        data-width="100%"
                         name = "product"
-                    />
-                    <label for="product">Product</label>
+                      >
+                        <option>Select Product</option>
+                        {% for amc in amc  %}
+                          <option value="{{amc.product.pk}}">{{amc.product}}</option>
+
+                          {% endfor %}
+                        
+                      </select>
                     </div>
+    
+
+
                 </div>
 
                 <div class="col-md-3 mb-3">
@@ -150,5 +199,23 @@
     </div>
   </div>
 </div>
+
+{% endblock %}
+{% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/selectize/js/standalone/selectize.min.js' %}"></script>
+<script src="{% static 'libs/mohithg-switchery/switchery.min.js' %}"></script>
+<script src="{% static 'libs/multiselect/js/jquery.multi-select.js' %}"></script>
+<script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'libs/jquery-mockjax/jquery.mockjax.min.js' %}"></script>
+<script src="{% static 'libs/devbridge-autocomplete/jquery.autocomplete.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
+<!-- Init js end -->
 
 {% endblock %}

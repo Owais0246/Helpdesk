@@ -16,7 +16,7 @@ class TicketForm(forms.ModelForm):
 class AssignTicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ('assignee', 'priority', 'status')
+        fields = ('assignee', 'priority',)
 
 
 class CallTimeForm(forms.ModelForm):

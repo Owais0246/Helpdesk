@@ -23,7 +23,7 @@ class Ticket(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     location_text = models.CharField(max_length=50, null=True, blank=True)
-    product = models.CharField(max_length=50, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     issue = models.TextField()
     documents = models.ManyToManyField("Document", blank=True)
     downtime_required = models.BooleanField(default=False)
@@ -44,7 +44,7 @@ class Ticket(models.Model):
     problem = models.TextField(null=True, blank=True)
     
     def __str__(self):
-        return self.product
+        return self.issue
 
 class Document(models.Model):
     file = models.FileField(upload_to='documents/')
