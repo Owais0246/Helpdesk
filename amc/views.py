@@ -10,18 +10,25 @@ from django.contrib.auth.decorators import login_required
 #AMC Views
 
 def create_amc(request):
-    user=User.objects.filter()
-    Location= Location.objects.filter
+    companies=Company.objects.all()
+    locations= Location.objects.all()
+    products= Product.objects.all()
     form = CreateAmcForm(request.POST)
     if form.is_valid():
-        var = form.save(commit=False)
-        var.company= company
-        var.location= location
-        var.user= request.user
-        var.save()
+        print("form is okay")
+        form.save()
+        # var = form.save(commit=False)
+        # var.company= company
+        # var.location= location
+        # var.user= request.user
+        # var.save()
         return redirect('AmcList')
+    else:print("form not okay")
     context = {
         'form':form,
+        'companies':companies,
+        'locations':locations,
+        'products':products,
         
     }
     return render(request,'amc/amc_create.html',context)

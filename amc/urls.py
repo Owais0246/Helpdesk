@@ -10,6 +10,5 @@ urlpatterns = [
     path('amc_update/<int:pk>', AmcUpdateView.as_view(), name="AmcUpdate"),
     path('amc_detail/<int:pk>', views.AmcDetail, name="AmcDetail"),
     
-      
     ]
 
