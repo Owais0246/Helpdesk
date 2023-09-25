@@ -44,7 +44,7 @@ class Ticket(models.Model):
     problem = models.TextField(null=True, blank=True)
     
     def __str__(self):
-        return self.issue
+        return self.issue + " - " + "ZCPL/"+str(self.pk)
 
 class Document(models.Model):
     file = models.FileField(upload_to='documents/')
