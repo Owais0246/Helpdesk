@@ -1,0 +1,52 @@
+<!-- Aadhar Document Modal -->
+<div class="modal fade" id="aadharModal" tabindex="-1" aria-labelledby="aadharModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aadharModalLabel">Aadhar Document</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      {{userdoc.first_name}}
+      <div class="modal-body">
+        <!-- Embed tag with a unique ID for Aadhar document -->
+        <embed id="aadharEmbed" width="100%" height="500px">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COVID Document Modal -->
+<div class="modal fade" id="covidModal" tabindex="-1" aria-labelledby="covidModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="covidModalLabel">COVID Document</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Embed tag with a unique ID for COVID document -->
+        <embed id="covidEmbed" width="100%" height="500px">
+          <iframe id="aadharViewer"></iframe>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // JavaScript to handle modal opening and dynamic content loading
+  $('#aadharModal').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget);
+      var documentUrl = button.data('document-url'); // Extract the document URL from data attribute
+      var aadharEmbed = document.getElementById('aadharEmbed');
+      aadharEmbed.src = documentUrl; // Set the embed tag's src to display the Aadhar document
+  });
+
+  $('#covidModal').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget);
+      var documentUrl = button.data('document-url'); // Extract the document URL from data attribute
+      var covidEmbed = document.getElementById('covidEmbed');
+      covidEmbed.src = documentUrl; // Set the embed tag's src to display the COVID document
+  });
+</script>

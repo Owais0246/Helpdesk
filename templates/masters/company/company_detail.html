@@ -57,8 +57,7 @@
             <div class="col-6">
               <div class="avatar-lg rounded-circle bg-light">
                 <i
-                  class="fe-check-square font-26 avatar-title text-success"
-                ></i>
+                  class="fe-check-square font-26 avatar-title text-success"></i>
               </div>
             </div>
             <div class="col-6">
@@ -142,23 +141,19 @@
               href="#"
               class="dropdown-toggle arrow-none card-drop"
               data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               <i class="dripicons-dots-3"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
               <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item"
-                ><i class="mdi mdi-pencil me-1"></i>Edit</a
-              >
+              <a href="javascript:void(0);" class="dropdown-item">
+                <i class="mdi mdi-pencil me-1"></i>Edit</a>
               <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item"
-                ><i class="mdi mdi-delete me-1"></i>Delete</a
-              >
+              <a href="javascript:void(0);" class="dropdown-item">
+                <i class="mdi mdi-delete me-1"></i>Delete</a>
               <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item"
-                ><i class="mdi mdi-email-outline me-1"></i>Email</a
-              >
+              <a href="javascript:void(0);" class="dropdown-item">
+                <i class="mdi mdi-email-outline me-1"></i>Email</a>
             </div>
           </div>
           <!-- project title-->
@@ -216,8 +211,7 @@
                     href="#home-b1"
                     data-bs-toggle="tab"
                     aria-expanded="false"
-                    class="nav-link"
-                  >
+                    class="nav-link">
                     Home
                   </a>
                 </li>
@@ -226,21 +220,11 @@
                     href="#location"
                     data-bs-toggle="tab"
                     aria-expanded="true"
-                    class="nav-link active"
-                  >
+                    class="nav-link active">
                     Location
                   </a>
                 </li>
-                {% comment %} <li class="nav-item">
-                  <a
-                    href="#messages-b1"
-                    data-bs-toggle="tab"
-                    aria-expanded="false"
-                    class="nav-link"
-                  >
-                    Messages
-                  </a>
-                </li> {% endcomment %}
+
               </ul>
               <div class="tab-content" >
                 <div class="tab-pane" id="home-b1">
@@ -269,12 +253,12 @@
                       <div class="grid-container"><h3>{{customer.company_name.title}} Locations</h3></div>
                     </div>
                     <div class="col-lg-2">
-                      <div class="grid-container"><button
+                      <div class="grid-container">
+                        <button
                         type="button"
                         class="btn btn-primary"
                         data-bs-toggle="modal"
-                        data-bs-target="#location-modal"
-                      >
+                        data-bs-target="#location-modal">
                         Add Location
                       </button>
                     {% include "masters/company/location_modal.html" %}
@@ -299,8 +283,7 @@
                         </p>
                         <a
                           href="{% url 'LocationDetail' location.pk%}"
-                          class="btn btn-primary waves-effect waves-light"
-                          >View</a>
+                          class="btn btn-primary waves-effect waves-light">View</a>
                       </div>
                     </div>{% endfor %}
                   </div>

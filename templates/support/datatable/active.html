@@ -41,7 +41,7 @@
 
               {% for ticket in ticket_active %}
               <tr>
-                <td><b>{{ticket.id}}</b></td>
+                <td><b>{{ticket.uuid}}</b></td>
 
                 <td>
                   <a href="{% url "Ticket" ticket.pk %}" class="text-body">
@@ -97,10 +97,7 @@
                             text-muted
                             font-18
                             vertical-middle
-                          "
-                        ></i
-                        >Edit Ticket</a
-                      >
+                          "></i>Edit Ticket</a>
                       <a class="dropdown-item" href="#"
                         ><i
                           class="

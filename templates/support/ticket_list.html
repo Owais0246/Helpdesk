@@ -7,13 +7,11 @@
 <link
   href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}"
   rel="stylesheet"
-  type="text/css"
-/>
+  type="text/css"/>
 <link
   href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"
   rel="stylesheet"
-  type="text/css"
-/>
+  type="text/css"/>
 <!-- third party css end -->
 
 {% endblock %}
@@ -40,113 +38,6 @@
         <h4 class="page-title">Tickets List</h4>
       </div>
     </div>
-                                                          {% comment %} 
-                                                              <div class="row">
-                                                                  <div class="col-md-6 col-xl-3">
-                                                                    <div class="widget-rounded-circle card">
-                                                                      <div class="card-body">
-                                                                        <div class="row">
-                                                                          <div class="col-6">
-                                                                            <div class="avatar-lg rounded-circle bg-primary">
-                                                                              <i class="fe-tag font-22 avatar-title text-white"></i>
-                                                                            </div>
-                                                                          </div>
-                                                                          <div class="col-6">
-                                                                            <div class="text-end">
-                                                                              <h3 class="text-dark mt-1">
-                                                                                <span data-plugin="counterup">{{ticket|length }}</span>
-                                                                              </h3>
-                                                                              <p class="text-muted mb-1 text-truncate">Total Tickets</p>
-                                                                            </div>
-                                                                          </div>
-                                                                        </div>
-                                                                        <!-- end row-->
-                                                                      </div>
-                                                                    </div>
-                                                                    <!-- end widget-rounded-circle-->
-                                                                  </div>
-                                                                  <!-- end col-->
-                                                              
-                                                                  <div class="col-md-6 col-xl-3">
-                                                                    <div class="widget-rounded-circle card">
-                                                                      <div class="card-body">
-                                                                        <div class="row">
-                                                                          <div class="col-6">
-                                                                            <div class="avatar-lg rounded-circle bg-warning">
-                                                                              <i class="fe-clock font-22 avatar-title text-white"></i>
-                                                                            </div>
-                                                                          </div>
-                                                                          <div class="col-6">
-                                                                            <div class="text-end">
-                                                                              <h3 class="text-dark mt-1">
-                                                                                <span data-plugin="counterup">624</span>
-                                                                              </h3>
-                                                                              <p class="text-muted mb-1 text-truncate">Pending Tickets</p>
-                                                                            </div>
-                                                                          </div>
-                                                                        </div>
-                                                                        <!-- end row-->
-                                                                      </div>
-                                                                    </div>
-                                                                    <!-- end widget-rounded-circle-->
-                                                                  </div>
-                                                                  <!-- end col-->
-                                                              
-                                                                  <div class="col-md-6 col-xl-3">
-                                                                    <div class="widget-rounded-circle card">
-                                                                      <div class="card-body">
-                                                                        <div class="row">
-                                                                          <div class="col-6">
-                                                                            <div class="avatar-lg rounded-circle bg-success">
-                                                                              <i class="fe-check-circle font-22 avatar-title text-white"></i>
-                                                                            </div>
-                                                                          </div>
-                                                                          <div class="col-6">
-                                                                            <div class="text-end">
-                                                                              <h3 class="text-dark mt-1">
-                                                                                <span data-plugin="counterup">3195</span>
-                                                                              </h3>
-                                                                              <p class="text-muted mb-1 text-truncate">Closed Tickets</p>
-                                                                            </div>
-                                                                          </div>
-                                                                        </div>
-                                                                        <!-- end row-->
-                                                                      </div>
-                                                                    </div>
-                                                                    <!-- end widget-rounded-circle-->
-                                                                  </div>
-                                                                  <!-- end col-->
-                                                              
-                                                                  <div class="col-md-6 col-xl-3">
-                                                                    <div class="widget-rounded-circle card">
-                                                                      <div class="card-body">
-                                                                        <div class="row">
-                                                                          <div class="col-6">
-                                                                            <div class="avatar-lg rounded-circle bg-danger">
-                                                                              <i class="fe-trash-2 font-22 avatar-title text-white"></i>
-                                                                            </div>
-                                                                          </div>
-                                                                          <div class="col-6">
-                                                                            <div class="text-end">
-                                                                              <h3 class="text-dark mt-1">
-                                                                                <span data-plugin="counterup">{{ticket_user|length}}</span>
-                                                                              </h3>
-                                                                              <p class="text-muted mb-1 text-truncate">Assigned Tickets</p>
-                                                                            </div>
-                                                                          </div>
-                                                                        </div>
-                                                                        <!-- end row-->
-                                                                      </div>
-                                                                    </div>
-                                                                    <!-- end widget-rounded-circle-->
-                                                                  </div>
-                                                                  <!-- end col-->
-                                                                </div>
-                                                                <!-- end row -->
-                                                              {% endcomment %}
-
-
-
           <div class="card">
           <div class="card-body">
             <h4 class="header-title mb-4">Tabs Justified</h4>
@@ -157,8 +48,7 @@
                   href="#home1"
                   data-bs-toggle="tab"
                   aria-expanded="false"
-                  class="nav-link"
-                >
+                  class="nav-link">
              
                   <div class="widget-rounded-circle card border">
                     <div class="card-body">
@@ -190,8 +80,7 @@
                   href="#profile1"
                   data-bs-toggle="tab"
                   aria-expanded="true"
-                  class="nav-link active"
-                >
+                  class="nav-link active">
                   
                   <div class="widget-rounded-circle card border">
                     <div class="card-body">
@@ -223,8 +112,7 @@
                   href="#messages1"
                   data-bs-toggle="tab"
                   aria-expanded="false"
-                  class="nav-link"
-                >
+                  class="nav-link">
                                
                 <div class="widget-rounded-circle card border">
                   <div class="card-body">
@@ -256,8 +144,7 @@
                   href="#messages2"
                   data-bs-toggle="tab"
                   aria-expanded="false"
-                  class="nav-link"
-                >
+                  class="nav-link">
                 <div class="widget-rounded-circle card border">
                   <div class="card-body">
                     <div class="row">
@@ -322,16 +209,3 @@
     <!-- Init js end -->
     
     {% endblock %}
-    
-
-    {% comment %} <div class="card">
-        <div class="card-body">
-
-            {% for ticket in ticket  %}
-            {{ticket.id}}
-            {% endfor %}
-
-        </div>
-    </div>
-</div>
-{% endblock %} {% endcomment %}

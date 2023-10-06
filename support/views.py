@@ -6,6 +6,8 @@ from user.models import User
 import datetime
 from amc.models import Amc
 from masters.models import Product
+from django.http import FileResponse
+import os
 
 def create_ticket(request):
     user = request.user
@@ -45,11 +47,12 @@ def ticket_list(request):
 
 def ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk = pk)
-    ticket1 = Ticket.objects.get(pk = pk)
+    ticket1 = Ticket.objects.filter(pk = pk)
     assign_form = AssignTicketForm(request.POST or None, instance= ticket)
     close_form = CloseForm(request.POST or None, instance= ticket)
     eng = User.objects.filter(is_field_engineer=True)
     sr_eng = User.objects.filter(is_sr_engineer=True)
+    is_service_agent = User.objects.filter(is_service_agent=True)
     amc= Amc.objects.get(product=ticket.product.pk)
 
     
@@ -57,7 +60,9 @@ def ticket(request, pk):
         assign = assign_form.save(commit=False)
         ticket.status = 'Open'
         assign.save()
-        messages=f"Your ticket has been assigned to {ticket.assignee.first_name}"
+        messages=f'''Your ticket has been assigned to {ticket.assignee.first_name} {ticket.assignee.last_name} you can contact them at
+        {ticket.assignee.user_contact_no} or email at {ticket.assignee.email}
+        '''
         ticket.ticket_message.create(messages=messages, sender=request.user)
         return redirect('Ticket', pk)
     
@@ -67,15 +72,22 @@ def ticket(request, pk):
         eng = request.POST.get("field_engineer")
         field_engineer = User.objects.get(pk=eng)
         ticket.ticket_call_time.create(schedule=schedule, ticket_id=ticket, field_engineer=field_engineer)
-        messages=f"Service is sceduled on {schedule} and the engineer would be {field_engineer.first_name}"
+        messages=f'''Service is sceduled on {schedule} and the engineer would be {field_engineer.first_name} {field_engineer.last_name}
+        you can contact them at {field_engineer.user_contact_no} or email at {field_engineer.email}
+        '''
         ticket.ticket_message.create(messages=messages, sender=request.user)
+        
+        messages1=f''' {field_engineer.first_name} {field_engineer.last_name} is fully vaccinated you can access the vaccine certificate and ID proof
+        from schedule call section
+        '''
+        ticket.ticket_message.create(messages=messages1, sender=request.user)
         
         return redirect('Ticket', pk)
     
     elif "sr_engineer" in request.POST:
         sr_engineer = request.POST.get("sr_engineer")
         ticket1.update(sr_engineer=sr_engineer)
-    
+        return redirect('Ticket', pk)   
     elif "ticket_message" in request.POST:
         message = request.POST.get("ticket_message")
         sender = request.user
@@ -83,34 +95,72 @@ def ticket(request, pk):
         return redirect('Ticket', pk)
     
     elif 'close' in request.POST:
-        cost = request.POST.get("cost")
-        amount_return = request.POST.get("amount_return")
         feedback = request.POST.get("feedback")
         status='Closed'
         closed_at = datetime.datetime.now()
-        ticket1.update(cost=cost,amount_return=amount_return,feedback=feedback,status=status,closed_at=closed_at)
-        ticket.ticket_message.create(messages=feedback, sender=request.user)
+        time = closed_at.strftime('%d/%m/%Y, %I:%M:%S %p')
+        ticket1.update(feedback=feedback,status=status,closed_at=closed_at)
+        ticket.ticket_message.create(messages=f''' Your tickect {ticket.uuid} has been closed at {time} here is the summary of the ticket
+                                     {feedback}''', sender=request.user)
         return redirect('Ticket', pk)
-        
-
     
+    elif 'transport_cost' in request.POST:
+        fe_cost = request.POST.get("fe_cost")
+        spare_cost = request.POST.get("spare_cost")
+        transport_cost = request.POST.get("transport_cost")
+        amount_return = request.POST.get("amount_return")
+        Ticket.objects.filter(pk = pk).update(fe_cost=fe_cost, spare_cost=spare_cost, transport_cost=transport_cost, amount_return=amount_return )
+        return redirect('Ticket', pk)
+    
+    
+    costing = 0  
+    exp = 0  
+    if ticket.transport_cost is not None and ticket.spare_cost is not None and ticket.fe_cost:
+        costing = ticket.transport_cost + ticket.spare_cost + ticket.fe_cost
+    if ticket.amount_return is not None:
+        exp = costing - ticket.amount_return
+    if ticket.amount_return is None:
+        exp = costing
         
     
     context = {
-        'ticket': ticket, 
+        'ticket':ticket, 
         'assign_form':assign_form,
         'eng':eng,
         'close_form':close_form,
         'amc':amc,
-        'sr_eng':sr_eng
+        'sr_eng':sr_eng,
+        'is_service_agent':is_service_agent,
+        'costing':costing,
+        'exp': exp,
 
     }
     return render(request, 'support/ticket.html', context)
 
 
-def download_file(request, file_id):
-    uploaded_file = Document.objects.get(pk=file_id)
-    response = HttpResponse(uploaded_file.file, content_type='application/force-download')
-    response['Content-Disposition'] = f'attachment; filename="{uploaded_file.file.name}"'
-    return response
+def show_pdf(request):
+    filepath = os.path.join('static', 'sample.pdf')
+    return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
 
+def download_file(request, file_id, file_type):
+    if file_type == 'document':
+        file_object = Document.objects.get(pk=file_id)
+        file_path = file_object.file.path
+    elif file_type == 'aadhar':
+        user_object = User.objects.get(pk=file_id)
+        file_path = user_object.aadhar.path
+    elif file_type == 'covid':
+        user_object = User.objects.get(pk=file_id)
+        file_path = user_object.covid.path
+    else:
+        # Handle invalid file types or file not found scenarios
+        return HttpResponse("Invalid request", status=400)
+
+    try:
+        with open(file_path, 'rb') as file:
+            response = HttpResponse(file.read(), content_type='application/force-download')
+            response['Content-Disposition'] = f'attachment; filename="{file_path.split("/")[-1]}"'
+            return response
+    except FileNotFoundError:
+        # Handle file not found error
+        return HttpResponse("File not found", status=404)

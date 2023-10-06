@@ -5,8 +5,7 @@ class="modal fade"
 tabindex="-1"
 role="dialog"
 aria-labelledby="standard-modalLabel"
-aria-hidden="true"
->
+aria-hidden="true">
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
@@ -17,74 +16,64 @@ aria-hidden="true"
         type="button"
         class="btn-close"
         data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
+        aria-label="Close"></button>
     </div>
     <div class="modal-body">
    
       <form method='POST'>
         {% csrf_token %}
         <div class="mb-3">
-          <label for="nameofCustomer" class="form-label"
-            >Location Name</label
-          >
+          <label for="nameofCustomer" class="form-label">
+            Location Name</label>
           <input
             type="text"
             class="form-control"
             id="loc_name"
             name="loc_name"
             
-            placeholder="Enter the Customer's Loaction Name"
-          />
+            placeholder="Enter the Customer's Loaction Name"/>
           
         </div>
         <div class="mb-3">
-          <label for="contact_number" class="form-label"
-            >Contact Number</label
-          >
+          <label for="contact_number" class="form-label">
+            Contact Number</label>
           <input
             type="number"
             class="form-control"
             id="loc_poc_contact_no"
             name="loc_poc_contact_no"
             
-            placeholder="Enter the POC's Contact Number"
-          />
+            placeholder="Enter the POC's Contact Number"/>
           
         </div>
         <div class="mb-3">
-          <label for="email" class="form-label"
-            >Email</label
-          >
+          <label for="email" class="form-label">
+            Email</label>
           <input
             type="email"
             class="form-control"
             id="loc_poc_email"
             name="loc_poc_email"
             
-            placeholder="Enter the POC's Email id"
-          />
+            placeholder="Enter the POC's Email id"/>
           
         </div>
         <div class="mb-3">
-          <label for="addressofCustomer" class="form-label"
-            >Address</label
-          >
+          <label for="addressofCustomer" class="form-label">
+            Address</label>
           <input
             type="text"
             class="form-control"
             id="loc_address"
             name="loc_address"
             
-            placeholder="Enter the Address of the Location"
-          />
+            placeholder="Enter the Address of the Location"/>
           
         </div>
       
         <button
           type="submit"
-          class="btn btn-primary waves-effect waves-light"
-        >
+          class="btn btn-primary waves-effect waves-light">
           Submit
         </button>
       </form>
@@ -93,8 +82,7 @@ aria-hidden="true"
       <button
         type="button"
         class="btn btn-light"
-        data-bs-dismiss="modal"
-      >
+        data-bs-dismiss="modal">
         Close
       </button>
       

@@ -34,66 +34,53 @@
           <form method='POST'>
             {% csrf_token %}
             <div class="mb-3">
-              <label for="nameofCustomer" class="form-label"
-                >Product Name</label
-              >
+              <label for="nameofCustomer" class="form-label">Product Name</label>
               <input
                 type="text"
                 class="form-control"
                 id="product_name"
                 name="product_name"
                 
-                placeholder="Enter the Product Name"
-              />
+                placeholder="Enter the Product Name"/>
               
             </div>
             <div class="mb-3">
               <label for="part_number" class="form-label"
-                >Part Number</label
-              >
+                >Part Number</label>
               <input
                 type="text"
                 class="form-control"
                 id="part_number"
                 name="part_number"
                 
-                placeholder="Enter the Part Number"
-              />
+                placeholder="Enter the Part Number"/>
               
             </div>
             <div class="mb-3">
-              <label for="addressofCustomer" class="form-label"
-                >Serial Number</label
-              >
+              <label for="addressofCustomer" class="form-label">Serial Number</label>
               <input
                 type="text"
                 class="form-control"
                 id="serial_number"
                 name="serial_number"
                 
-                placeholder="Enter the Serial number"
-              />
+                placeholder="Enter the Serial number"/>
               
             </div>
             <div class="mb-3">
-              <label for="desc" class="form-label"
-                >Description</label
-              >
-              <input
-                type="textarea"
+
+              <label for="description" class="form-label">Description</label>
+                <textarea
                 class="form-control"
                 id="description"
-                name="description"
-                
-                placeholder="Enter the Description"
-              />
+                rows="5"
+                name ="description"></textarea>
               
             </div>
           
             <button
               type="submit"
-              class="btn btn-primary waves-effect waves-light"
-            >
+              class="btn btn-primary waves-effect waves-light">
               Submit
             </button>
           </form>

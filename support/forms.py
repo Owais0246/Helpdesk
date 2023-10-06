@@ -32,10 +32,15 @@ class MessageForm(forms.ModelForm):
 class CloseForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = [ 'feedback','amount_return','cost']
+        fields = [ 'feedback']
         
 
 class SrForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ['sr_engineer']
+        
+class CostForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = [ 'feedback']

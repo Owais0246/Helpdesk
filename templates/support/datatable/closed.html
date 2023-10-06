@@ -41,7 +41,7 @@
 
               {% for ticket in ticket_close %}
               <tr>
-                <td><b>{{ticket.id}}</b></td>
+                <td><b>{{ticket.uuid}}</b></td>
 
                 <td>
                   <a href="{% url "Ticket" ticket.pk %}" class="text-body">

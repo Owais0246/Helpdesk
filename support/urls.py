@@ -7,7 +7,10 @@ urlpatterns = [
     path('ticket', views.create_ticket, name="CreateTicket"),
     path('list', views.ticket_list, name="TicketList"),
     path('ticket/<int:pk>', views.ticket, name="Ticket"),
-    path('download/<int:file_id>/', views.download_file, name='download_file'),
+    # path('download/<int:file_id>/', views.download_file, name='download_file'),
+    path('download/<int:file_id>/<str:file_type>/', views.download_file, name='download_file'),
+
+    
 
     
     ]

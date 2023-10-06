@@ -29,7 +29,7 @@ class Product(models.Model):
     part_number=models.CharField(max_length=200,blank=False)    
     serial_number=models.CharField(max_length=200,blank=False)    
     created_on = models.DateTimeField(auto_now_add=True)
-    description = models.CharField(max_length=200,blank=True)
+    description = models.TextField(null=True, blank=True)
     # location= models.CharField(max_length=50)
     
     def __str__(self):

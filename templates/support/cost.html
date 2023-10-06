@@ -1,0 +1,94 @@
+<div
+id="cost-modal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="cost-modalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="close-modalLabel">
+        Add Service Cost
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+                
+                  
+          <div class="form-floating col-6">
+            <input
+                type="text"
+                class="form-control"
+                id="fe_cost"
+                placeholder="fe_cost"
+                name = "fe_cost"/>
+            <label for="fe_cost">Feild Engineer Cost</label>
+            </div>
+
+            <div class="form-floating col-6">
+              <input
+                  type="text"
+                  class="form-control"
+                  id="spare_cost"
+                  placeholder="spare_cost"
+                  name = "spare_cost"/>
+              <label for="spare_cost">Spare Cost</label>
+              </div>
+              
+
+            </div>
+<br>
+            <div class="row">
+                
+                  
+              <div class="form-floating col-6">
+                <input
+                    type="text"
+                    class="form-control"
+                    id="transport_cost"
+                    placeholder="transport_cost"
+                    name = "transport_cost"/>
+                <label for="transport_cost">Transport Cost</label>
+                </div>
+    
+                <div class="form-floating col-6">
+                  <input
+                      type="text"
+                      class="form-control"
+                      id="amount_return"
+                      placeholder="amount_return"
+                      name = "amount_return"/>
+                  <label for="amount_return">Amount Return</label>
+                  </div>
+                  
+    
+                </div>
+
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        data-bs-dismiss="modal">
+        Close
+      </button>
+      <button type="submit" class="btn btn-primary" name='cost'>
+        Save changes
+      </button>
+    </form>
+    </div>
+  </div>
+  <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

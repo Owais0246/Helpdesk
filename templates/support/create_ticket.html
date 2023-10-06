@@ -6,28 +6,23 @@
 <link
   href="{% static 'libs/mohithg-switchery/switchery.min.css' %}"
   rel="stylesheet"
-  type="text/css"
-/>
+  type="text/css"/>
 <link
   href="{% static 'libs/multiselect/css/multi-select.css' %}"
   rel="stylesheet"
-  type="text/css"
-/>
+  type="text/css"/>
 <link
   href="{% static 'libs/select2/css/select2.min.css' %}"
   rel="stylesheet"
-  type="text/css"
-/>
+  type="text/css"/>
 <link
   href="{% static 'libs/selectize/css/selectize.bootstrap3.css' %}"
   rel="stylesheet"
-  type="text/css"
-/>
+  type="text/css"/>
 <link
   href="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css' %}"
   rel="stylesheet"
-  type="text/css"
-/>
+  type="text/css"/>
 <!-- third party css end -->
 
 {% endblock %}
@@ -63,13 +58,6 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-3 mb-3">
-
-
-
-
-
-
-
            
                     <div class="col-md-6">
                       <p>Select Product</p>
@@ -78,8 +66,7 @@
                         class="form-control"
                         data-toggle="select2"
                         data-width="100%"
-                        name = "product"
-                      >
+                        name = "product">
                         <option>Select Product</option>
                         {% for amc in amc  %}
                           <option value="{{amc.product.pk}}">{{amc.product}}</option>
@@ -88,9 +75,6 @@
                         
                       </select>
                     </div>
-    
-
-
                 </div>
 
                 <div class="col-md-3 mb-3">
@@ -100,8 +84,7 @@
                         class="form-control"
                         id="contact_person"
                         placeholder="Contact person"
-                        name = "contact_person"
-                    />
+                        name = "contact_person"/>
                     <label for="contact_person">Contact person</label>
                     </div>
                 </div>
@@ -113,8 +96,7 @@
                         class="form-control"
                         id="phone_number"
                         placeholder="Phone number"
-                        name = "phone_number"
-                    />
+                        name = "phone_number"/>
                     <label for="phone_number">Phone number</label>
                     </div>
                 </div>
@@ -124,22 +106,18 @@
                         type="checkbox"
                         class="form-check-input"
                         id="downtime_required"
-                        name ="downtime_required"
-                        />
-                        <label class="form-check-label" for="downtime_required"
-                        >Downtime required</label
-                        >
+                        name ="downtime_required"/>
+                        <label class="form-check-label" for="downtime_required">
+                          Downtime required</label>
                     </div>
                     <div class="form-check">
                         <input
                         type="checkbox"
                         class="form-check-input"
                         id="spare_by_zaco"
-                        name = "spare_by_zaco"
-                        />
-                        <label class="form-check-label" for="spare_by_zaco"
-                        >Spare by zaco</label
-                        >
+                        name = "spare_by_zaco"/>
+                        <label class="form-check-label" for="spare_by_zaco">
+                          Spare by zaco</label>
                     </div>
                 </div>
 
@@ -150,8 +128,7 @@
                       class="form-control"
                       id="issue"
                       placeholder="Phone number"
-                      name = "issue"
-                  />
+                      name = "issue"/>
                   <label for="issue">Problem Overview</label>
                   </div>
               </div>
@@ -160,30 +137,26 @@
                 <div class="row">
                 <div class="col-md-6 mb-6">
                     <div class="mb-3">
-                        <label for="problem" class="form-label"
-                        >Problem</label
-                        >
+                        <label for="problem" class="form-label">
+                          Problem</label>
                         <textarea
                         class="form-control"
                         id="problem"
                         rows="5"
-                        name ="problem"
-                        ></textarea>
+                        name ="problem"></textarea>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="">
-                      <label for="documents" class="form-label"
-                        >Upload Reports</label
-                      >
+                      <label for="documents" class="form-label">
+                        Upload Reports</label>
                       <input
                         class="form-control"
                         type="file"
                         id="documents"
                         name = "documents"
-                        multiple
-                      />
+                        multiple/>
                     </div>
                   </div>
             <div class="col-md-6" style="margin-top: 10px;">

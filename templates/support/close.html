@@ -4,8 +4,7 @@ class="modal fade"
 tabindex="-1"
 role="dialog"
 aria-labelledby="close-modalLabel"
-aria-hidden="true"
->
+aria-hidden="true">
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
@@ -16,47 +15,23 @@ aria-hidden="true"
         type="button"
         class="btn-close"
         data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
+        aria-label="Close"></button>
     </div>
     <div class="modal-body">
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
-                <div class="form-floating col-6">
-                <input
-                    type="text"
-                    class="form-control"
-                    id="cost"
-                    placeholder="cost"
-                    name = "cost"
-                />
-                <label for="cost">Cost</label>
-                </div>
-                <div class="form-floating col-6">
-                  <input
-                      type="text"
-                      class="form-control"
-                      id="amount_return"
-                      placeholder="amount_return"
-                      name = "amount_return"
-                  />
-                  <label for="amount_return">Amount Return</label>
-                  </div>
+                
                   
                   <div class="mb-3">
                     <label for="feedback" class="form-label"
-                    >Feedback</label
-                    >
+                    >Activity Summary</label>
                     <textarea
                     class="form-control"
                     id="feedback"
                     rows="5"
-                    name ="feedback"
-                    ></textarea>
+                    name ="feedback"></textarea>
               </div>
-
-
             </div>
 
 
@@ -65,8 +40,7 @@ aria-hidden="true"
       <button
         type="button"
         class="btn btn-light"
-        data-bs-dismiss="modal"
-      >
+        data-bs-dismiss="modal">
         Close
       </button>
       <button type="submit" class="btn btn-primary" name='close'>
