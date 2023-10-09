@@ -5,7 +5,7 @@ from .models import Amc
 class CreateAmcForm(forms.ModelForm):
     class Meta:
         model = Amc
-        fields = ('company','location','product','startdate',
+        fields = ('company','location','product','start_date',
                   'expiry','description')
         # 
         # labels = {
