@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import TicketForm, AssignTicketForm, CallTimeForm, CloseForm
-from .models import Ticket, Document
+from .forms import TicketForm, AssignTicketForm, CallTimeForm, CloseForm, ClockIn, ClockOut
+from .models import Ticket, Document, Call_Time
 from user.models import User
 import datetime
 from amc.models import Amc
@@ -24,7 +24,7 @@ def create_ticket(request):
             ticket.save()
             for doc in request.FILES.getlist('documents'):
                 ticket.documents.create(file=doc)  # Create Document objects and associate them with the ticket
-            return redirect('TicketList')
+            return redirect('/')
     else:
         form = TicketForm()
 
@@ -54,6 +54,7 @@ def ticket(request, pk):
     sr_eng = User.objects.filter(is_sr_engineer=True)
     is_service_agent = User.objects.filter(is_service_agent=True)
     amc= Amc.objects.get(product=ticket.product.pk)
+    call_filter = Call_Time.objects.filter(ticket_id=pk).filter(field_engineer=request.user)
 
     
     if assign_form.is_valid():
@@ -113,6 +114,7 @@ def ticket(request, pk):
         return redirect('Ticket', pk)
     
     
+    
     costing = 0  
     exp = 0  
     if ticket.transport_cost is not None and ticket.spare_cost is not None and ticket.fe_cost:
@@ -133,6 +135,7 @@ def ticket(request, pk):
         'is_service_agent':is_service_agent,
         'costing':costing,
         'exp': exp,
+        'call_filter':call_filter,
 
     }
     return render(request, 'support/ticket.html', context)
@@ -164,3 +167,38 @@ def download_file(request, file_id, file_type):
     except FileNotFoundError:
         # Handle file not found error
         return HttpResponse("File not found", status=404)
+    
+
+def clock_in(request, pk):
+    call = Call_Time.objects.get(pk=pk)
+    ticket = Ticket.objects.get(pk = call.ticket_id.pk)
+    call_form = ClockIn(request.POST or None, instance= call)
+    if call_form.is_valid():
+        call_form.save()
+        time = request.POST.get('clock_in')
+        ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer} has reached your location at {time}''', sender=request.user)
+        return redirect('Ticket', call.ticket_id.pk)
+    context = {
+
+        'call_form':call_form,
+        'call':call,
+    }
+    return render(request, 'support/clock_in.html', context)
+
+
+def clock_out(request, pk):
+    call = Call_Time.objects.get(pk=pk)
+    ticket = Ticket.objects.get(pk = call.ticket_id.pk)
+    call_form = ClockOut(request.POST or None, instance= call)
+    if call_form.is_valid():
+        call_form.save()
+        time = request.POST.get('clock_out')
+        update = request.POST.get('update')
+        ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer} has left your location at {time} Call Summary: {update}''', sender=request.user)
+        return redirect('Ticket', call.ticket_id.pk)
+    context = {
+
+        'call_form':call_form,
+        'call':call,
+    }
+    return render(request, 'support/clock_out.html', context)

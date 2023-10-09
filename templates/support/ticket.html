@@ -80,12 +80,14 @@
                   Back</a>
               </div>
               <div class="col-auto">
+                {% if request.user.is_service_admin == True or ticket.assignee == request.user %}
                 {% if ticket.status != 'Closed' %}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#close-modal">
                   Close Ticket</button>
                 {% elif ticket.status == 'Closed' and ticket.transport_cost == None%}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cost-modal">
                   Add Service Cost</button>
+                {% endif %}
                 {% endif %}
               </div>
             </div>
@@ -119,7 +121,7 @@
 
               <div class="w-100">
 
-                {% if ticket.assignee is None %}
+                {% if ticket.assignee is None and request.user.is_service_admin == True %}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#standard-modal">
                   Assign Ticket</button>
                 {% else %}
@@ -262,7 +264,7 @@
 
             <div class="msg-{% if message.sender == request.user %}right {% else %}left{% endif %}">
               <h5 class="mt-0 mb-1">
-                {{message.sender}}
+                {{message.sender.first_name}} {{message.sender.last_name}}
               </h5>
               </h5>
               {{message.messages}}
@@ -285,7 +287,7 @@
 
               {% csrf_token %}
               <textarea rows="3" class="form-control border-0 resize-none" placeholder="Your message..."
-                name="ticket_message"></textarea>
+                name="ticket_message" {% if request.user.is_field_engineer == True %} disabled {% endif %}></textarea>
               <div class="
                   p-2
                   bg-light
@@ -293,11 +295,8 @@
                   justify-content-between
                   align-items-center
                 ">
-                <div>
-                  <a href="#" class="btn btn-sm px-1 btn-light"><i class="mdi mdi-upload"></i></a>
-                  <a href="#" class="btn btn-sm px-1 btn-light"><i class="mdi mdi-at"></i></a>
-                </div>
-                <button type="submit" class="btn btn-sm btn-success">
+                
+                <button type="submit" class="btn btn-sm btn-success"  {% if request.user.is_field_engineer == True %} disabled {% endif %}>
                   <i class="mdi mdi-send me-1"></i>Submit
                 </button>
               </div>
@@ -339,12 +338,13 @@
             </div>
            
             <div class="col-6 text-end">
-              {% if ticket.sr_engineer == None %}
+              {% if ticket.status != 'Closed' %}
+              {% if ticket.sr_engineer == None and request.user.is_service_admin == True or ticket.assignee == request.user  %}
               <button type="button" class="btn btn-primary  mb-3" data-bs-toggle="modal" data-bs-target="#sr_eng">
                 Involve Sr Engineer</button>
               {% else %}
               <h5 class="card-title font-16 mb-3">Sr Engineer :{{ticket.sr_engineer.first_name}}</h5>
-              {% endif %}
+              {% endif %}{% endif %}
  </div>
 </div>
 
@@ -407,14 +407,43 @@
               <h5 class="card-title font-16 mb-3 mt-2 text-left">Call Time</h5>
             </div>
             <div class="col-6 text-end">
+              {% if request.user.is_service_admin == True or ticket.assignee == request.user and ticket.status != 'Closed' %}
               <button type="button" class="btn btn-primary  mb-3" data-bs-toggle="modal" data-bs-target="#call">
                 Schedule call time</button>
+                {% endif %}
                 
 
             </div>
-
+            
           </div>
-          {% for call in ticket.ticket_call_time.all %}
+
+{% if request.user.is_field_engineer == True %}
+          
+          {% for call in call_filter %}
+          <div class="card mb-1 shadow-none border">
+            <div class="p-2">
+              <div class="row align-items-center">
+                <div class="col-auto">
+
+                </div>
+                <div class="col ps-0">
+                  <p class="mb-0 font-14">Scheduled on : <span class="mb-0 font-12">{{call.schedule}}</span></p>
+                  <p class="mb-0 font-16">Engineer: {{call.field_engineer.first_name}} {{call.field_engineer.last_name}}</p>
+
+                  <a href="{% url 'ClockIn' call.pk %}" class="btn btn-soft-primary">Clock In</a>
+                  <a href="{% url 'ClockOut' call.pk%}" class="btn btn-soft-primary ">Clock Out</a>
+
+                  
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+{% else %}
+{% for call in ticket.ticket_call_time.all %}
           <div class="card mb-1 shadow-none border">
             <div class="p-2">
               <div class="row align-items-center">
@@ -436,6 +465,7 @@
             </div>
           </div>
           {% endfor %}
+          {% endif %}
         </div>
       </div>
     </div>

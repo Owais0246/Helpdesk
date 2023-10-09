@@ -7,6 +7,8 @@ urlpatterns = [
     path('ticket', views.create_ticket, name="CreateTicket"),
     path('list', views.ticket_list, name="TicketList"),
     path('ticket/<int:pk>', views.ticket, name="Ticket"),
+    path('clock_in/<int:pk>', views.clock_in, name="ClockIn"),
+    path('clock_out/<int:pk>', views.clock_out, name="ClockOut"),
     # path('download/<int:file_id>/', views.download_file, name='download_file'),
     path('download/<int:file_id>/<str:file_type>/', views.download_file, name='download_file'),
 
