@@ -69,10 +69,10 @@ def generate_uuid():
             counter += 1
         else:
             # If not, reset the counter
-            counter = 1
+            counter += 1
     else:
         # No objects exist yet, start the counter at 1
-        counter = 1
+        counter += 1
 
     # Format the UUID
     uuid = f"ZCPL/{month:02}/{day:02}/{year}/{counter:05}"

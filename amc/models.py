@@ -10,9 +10,14 @@ class Amc(models.Model):
     location = models.ForeignKey(Location,on_delete=models.PROTECT)
     # user = models.ForeignKey(User,on_delete=models.PROTECT, null=True,blank=True)    
     product= models.ForeignKey(Product,on_delete=models.PROTECT)
-    description = models.CharField(max_length=200)
-    startdate = models.DateField()
+    description = models.TextField(max_length=200)
+    start_date = models.DateField(null=True,blank=True)
     expiry= models.DateField(null=True,blank=True)
+    sla= models.TextField(max_length=1000)
+    escalation_matrix_1= models.TextField(max_length=1000, null=True,blank=True)
+    escalation_matrix_2= models.TextField(max_length=1000, null=True,blank=True)
+    escalation_matrix_3= models.TextField(max_length=1000, null=True,blank=True)
+    escalation_matrix_4= models.TextField(max_length=1000, null=True,blank=True)
     
     def __str__(self):
         return str(self.company) + " - " +str(self.pk)

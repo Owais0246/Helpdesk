@@ -44,3 +44,13 @@ class CostForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = [ 'feedback']
+        
+class ClockIn(forms.ModelForm):
+    class Meta:
+        model = Call_Time
+        fields = [ 'clock_in']
+    
+class ClockOut(forms.ModelForm):
+    class Meta:
+        model = Call_Time
+        fields = [ 'clock_out', 'update']
