@@ -35,6 +35,11 @@ def dashboard(request):
         ticket = ticket_active
         ticket_close = None
         
+    elif request.user.is_superuser == True:
+        ticket = Ticket.objects.all()
+        ticket_active = Ticket.objects.all()
+        ticket_close = Ticket.objects.all()
+        
         
     context = {
         'ticket': ticket,
