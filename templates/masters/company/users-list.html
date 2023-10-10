@@ -1,0 +1,316 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Responsive Tables | RWD Tables" %}{% endblock head_title %} 
+{% block extra_css %}
+
+<!-- third party css -->
+
+<link
+  href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-select-bs4/css//select.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<!-- third party css end -->
+<style>
+    /* Style for the dropdown */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        float:right;
+    }
+
+    /* Style for the button */
+    .dropbtn {
+        background-color: #f9f9f9;
+        border: none;
+        color: #333;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    /* Style for dropdown items */
+    .dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    /* Change background color on hover */
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+</style>
+{% endblock %}
+ {% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Helpdeskk</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Customer</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Responsive</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Users List</h4>
+      
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+               {% comment %} <div style="width:100%;align-items:center;justify-content:right;display:flex;">
+                <button class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create User</button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <!-- Dropdown items go here -->
+                    <a class="dropdown-item" href="#">Option 1</a>
+                    <a class="dropdown-item" href="#">Option 2</a>
+                    <!-- Add more options as needed -->
+                </div>
+              </div>  {% endcomment %}
+              <div class="dropdown">
+                <button class="dropbtn">Create User</button>
+                <div class="dropdown-content">
+                  <a href="{% url 'create-service-admin' %}">Service Admin</a>
+                  <a href="{% url 'create-service-agent' %}">Service Agent</a>
+                  <a href="{% url 'create-field-engineer' %}">Field Engineer</a>
+                  <a href="{% url 'create-sr-engineer' %}">Senior Engineer</a>
+                  <!-- Add more options as needed -->
+                </div>
+              </div>
+            
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+                    
+                    <thead>
+                    <tr>
+                      
+                      <th data-priority="1">First Name</th>
+                      <th data-priority="2">Last Name</th>
+                      <th data-priority="3">UserName</th>
+                      <th data-priority="4">Email</th>
+                      <th data-priority="5">User Contact</th>
+                      <th data-priority="6">Aadhar</th>
+                      <th data-priority="7">Covid</th>
+                      <th data-priority="8">Edit</th>
+                      <th data-priority="9">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <h4>Service Admin</h4>
+                    {% for admin in service_admin_view  %}
+                    <tr>
+                     {% comment %} <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th> {% endcomment %}
+                      <td>{{admin.first_name}}</td>
+                      <td>{{admin.last_name}}</td>
+                      <td>{{admin.username}}</td>
+                      <td>{{admin.email}}</td>
+                      <td>{{admin.user_contact_no}}</td>
+                      <td>{{admin.aadhar}}</td>
+                      <td>{{admin.covid}}</td>
+                      <td><a href="{% url 'edit-service-admin' admin.id %}">Edit</a></td>
+                      <td><a href="{% url 'delete-service-admin' admin.id %}">Delete</a></td>
+                      
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+                <h4>Service Agent</h4>
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+                  <thead>
+                    <tr>
+                      
+                      <th data-priority="1">First Name</th>
+                      <th data-priority="2">Last Name</th>
+                      <th data-priority="3">UserName</th>
+                      <th data-priority="4">Email</th>
+                      <th data-priority="5">User Contact</th>
+                      <th data-priority="6">Aadhar</th>
+                      <th data-priority="7">Covid</th>
+                      <th data-priority="8">Edit</th>
+                      <th data-priority="9">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for agent in service_agent_view  %}
+                    <tr>
+                     {% comment %} <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th> {% endcomment %}
+                      <td>{{agent.first_name}}</td>
+                      <td>{{agent.last_name}}</td>
+                      <td>{{agent.username}}</td>
+                      <td>{{agent.email}}</td>
+                      <td>{{agent.user_contact_no}}</td>
+                      <td>{{agent.aadhar}}</td>
+                      <td>{{agent.covid}}</td>
+                      <td><a href="{% url 'edit-service-agent' agent.id %}">Edit</a></td>
+                      <td><a href="{% url 'delete-service-agent' agent.id %}">Delete</a></td>
+                      
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+
+
+                <h4>Field Engineer</h4>
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+                  <thead>
+                    <tr>
+                      
+                      <th data-priority="1">First Name</th>
+                      <th data-priority="2">Last Name</th>
+                      <th data-priority="3">UserName</th>
+                      <th data-priority="4">Email</th>
+                      <th data-priority="5">User Contact</th>
+                      <th data-priority="6">Aadhar</th>
+                      <th data-priority="7">Covid</th>
+                      <th data-priority="8">Edit</th>
+                      <th data-priority="9">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for field in field_engineer_view  %}
+                    <tr>
+                     {% comment %} <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th> {% endcomment %}
+                      <td>{{field.first_name}}</td>
+                      <td>{{field.last_name}}</td>
+                      <td>{{field.username}}</td>
+                      <td>{{field.email}}</td>
+                      <td>{{field.user_contact_no}}</td>
+                      <td>{{field.aadhar}}</td>
+                      <td>{{field.covid}}</td>
+                      <td><a href="{% url 'edit-field-engineer' field.id %}">Edit</a></td>
+                      <td><a href="{% url 'delete-field-engineer' field.id %}">Delete</a></td>
+                      
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+
+                <h4>Senior Engineer</h4>
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+                  <thead>
+                    <tr>
+                      
+                      <th data-priority="1">First Name</th>
+                      <th data-priority="2">Last Name</th>
+                      <th data-priority="3">UserName</th>
+                      <th data-priority="4">Email</th>
+                      <th data-priority="5">User Contact</th>
+                      <th data-priority="6">Aadhar</th>
+                      <th data-priority="7">Covid</th>
+                      <th data-priority="8">Edit</th>
+                      <th data-priority="9">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for sr in sr_engineer_view  %}
+                    <tr>
+                     {% comment %} <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th> {% endcomment %}
+                      <td>{{sr.first_name}}</td>
+                      <td>{{sr.last_name}}</td>
+                      <td>{{sr.username}}</td>
+                      <td>{{sr.email}}</td>
+                      <td>{{sr.user_contact_no}}</td>
+                      <td>{{sr.aadhar}}</td>
+                      <td>{{sr.covid}}</td>
+                      <td><a href="{% url 'edit-sr-engineer' sr.id %}">Edit</a></td>
+                      <td><a href="{% url 'delete-sr-engineer' sr.id %}">Delete</a></td>
+                      
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+              <!-- end .table-responsive -->
+            </div>
+            <!-- end .table-rep-plugin-->
+          </div>
+          <!-- end .responsive-table-plugin-->
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  
+</div>
+<!-- container -->
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %} {% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+<!-- Init js end -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+{% endblock %}

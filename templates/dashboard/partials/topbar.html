@@ -308,6 +308,45 @@
       </li>
       {% endif %}
 
+      <li class="dropdown d-none d-xl-block">
+        <a
+          class="nav-link dropdown-toggle waves-effect waves-light"
+          data-bs-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="false"
+          aria-expanded="false"
+        >
+          Users
+          <i class="mdi mdi-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu">
+          <!-- item-->
+          <a href="{% url 'service-admin-list' %}" class="dropdown-item">
+            <i class="fe-briefcase me-1"></i>
+            <span>Service Admin</span>
+          </a>
+          <a href="{% url 'service-agent-list' %}" class="dropdown-item">
+            <i class="fe-briefcase me-1"></i>
+            <span>Service Agent</span>
+          </a>
+          <a href="{% url 'field-engineer-list' %}" class="dropdown-item">
+            <i class="fe-briefcase me-1"></i>
+            <span>Field Engineer</span>
+          </a>
+          <a href="{% url 'sr-engineer-list' %}" class="dropdown-item">
+            <i class="fe-briefcase me-1"></i>
+            <span>Senior Engineer</span>
+          </a>
+
+        
+
+          <div class="dropdown-divider"></div>
+
+          
+        </div>
+      </li>
+
       
     </ul>
     <div class="clearfix"></div>

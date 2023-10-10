@@ -1,0 +1,180 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Cutomer</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Create</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Elements</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Create User</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
+
+          <form action= "" method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="firstnameofUser" class="form-label">
+                Fisrt Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="first_name"
+                name="first_name"
+                value="{{ service_form.instance.first_name }}"
+                
+                placeholder="Enter the First Name"/>
+              
+            </div>
+            <div class="mb-3">
+              <label for="firstnameofUser" class="form-label">
+                Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="last_name"
+                name="last_name"
+                value="{{ service_form.instance.last_name }}"
+                
+                placeholder="Enter the Last Name"/>
+              
+            </div>
+            {% comment %} <div class="mb-3">
+              <label for="username" class="form-label">
+                Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                value="{{ service_form.instance.username }}"
+                
+                placeholder="Enter the Username"/>
+              
+            </div> {% endcomment %}
+            
+            <div class="mb-3">
+              <label for="contact_number" class="form-label">
+                Contact Number</label>
+              <input
+                type="number"
+                class="form-control"
+                id="user_contact_no"
+                name="user_contact_no"
+                value="{{ service_form.instance.user_contact_no }}"
+                
+                placeholder="Enter the User's Contact Number"/>
+              
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">
+                Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                value="{{ service_form.instance.email }}"
+                
+                placeholder="Enter the User's Email id"/>
+              
+            </div>
+            <div class="mb-3 form-check">
+              <label for="checking" class="form-check-label">
+                Aadhar</label>
+              {% comment %} <input
+                type="file"
+                class="form-control"
+                id="aadhar"
+                name="aadhar"
+                value="{{ service_form.instance.aadhar }}"
+                /> {% endcomment %}
+                {{ service_form.aadhar }}
+              
+            </div>
+            <div class="mb-3 form-check">
+              <label for="checking" class="form-check-label">
+                Covid</label>
+              {% comment %} <input
+                type="file"
+                class="form-control"
+                id="covid"
+                name="covid"
+                value="{{ service_form.instance.covid }}"
+                /> {% endcomment %}
+                {{ service_form.covid }}
+              
+            </div>
+             {% comment %} <div class="mb-3">
+              <label for="Passowrd1" class="form-label">
+                Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password1"
+                name="password1"
+                
+                placeholder="Enter the Password"/>
+              
+            </div>
+            <div class="mb-3">
+              <label for="Passowrd2" class="form-label">
+                Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password2"
+                name="password2"
+                
+                placeholder="Enter the confirm Password"/>
+              
+            </div>  {% endcomment %}
+          
+            <button
+              type="submit"
+              class="btn btn-primary waves-effect waves-light">
+              Submit
+            </button>
+          </form>
+        </div>
+        <!-- end card-body-->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+
+    
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col-->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+{% endblock %}

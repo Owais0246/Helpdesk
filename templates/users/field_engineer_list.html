@@ -42,7 +42,7 @@
             {% comment %} <li class="breadcrumb-item active">Responsive</li> {% endcomment %}
           </ol>
         </div>
-        <h4 class="page-title">Cutomers</h4>
+        <h4 class="page-title">Field Engineer Users</h4>
       
       </div>
     </div>
@@ -55,19 +55,35 @@
         <div class="card-body">
 
                 <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="{% url 'create-field-engineer' %}" class="btn btn-light">Create</a>
+                    </div>
                   <thead>
                     <tr>
-                      <th>Company</th>
-                      <th data-priority="1">Contact No</th>
-                      <th data-priority="3">Address</th>
+                        <th data-priority="1">First Name</th>
+                        <th data-priority="2">Last Name</th>
+                        <th data-priority="3">UserName</th>
+                        <th data-priority="4">Email</th>
+                        <th data-priority="5">User Contact</th>
+                        <th data-priority="6">Aadhar</th>
+                        <th data-priority="7">Covid</th>
+                        <th data-priority="8">Edit</th>
+                        <th data-priority="9">Delete</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for customer in customers  %}
+                    {% for field in field_engineer_view  %}
                     <tr>
-                     <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th>
-                      <td>{{customer.company_contact_no}}</td>
-                      <td>{{customer.address}}</td>
+                     {% comment %} <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th> {% endcomment %}
+                      <td>{{field.first_name}}</td>
+                      <td>{{field.last_name}}</td>
+                      <td>{{field.username}}</td>
+                      <td>{{field.email}}</td>
+                      <td>{{field.user_contact_no}}</td>
+                      <td>{{field.aadhar}}</td>
+                      <td>{{field.covid}}</td>
+                      <td><a href="{% url 'edit-field-engineer' field.id %}">Edit</a></td>
+                      <td><a href="{% url 'delete-field-engineer' field.id %}">Delete</a></td>
                       
                     </tr>
                     {% endfor %}
@@ -94,15 +110,6 @@
   
 </div>
 <!-- container -->
-
-
-
-
-
-
-
-
-
 
 
 
