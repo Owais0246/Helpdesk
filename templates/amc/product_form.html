@@ -1,4 +1,77 @@
 <div id="empty-form" style="display: none;">
-    {{ products_formset.empty_form.as_p }}
+  <div class="row">
+      
+    <div class=" col-4 col-md-3 mb-3">
+      <label for="username" class="form-label"
+        >Product Name</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="product_name"
+        name="product_name"
+        
+        placeholder="Enter the Product Name"
+      />
+      
+    </div>
+    <div class=" col-4 col-md-3 mb-3">
+      <label for="username" class="form-label"
+        >Model</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="part_number"
+        name="part_number"
+        
+        placeholder="Enter the Model"
+      />
+      
+    </div>
+    <div class=" col-4 col-md-3 mb-3">
+      <label for="username" class="form-label"
+        >Serial Number</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="serial_number"
+        name="serial_number"
+        
+        placeholder="Enter the Serial Number"
+      />
+      
+    </div>
+    <div class=" col-4 col-md-3 mb-3">
+      <label for="username" class="form-label"
+        >Product Description</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="description"
+        name="description"
+        
+        placeholder="Enter the description"
+      />
+      
+    </div>
+    <div class=" col-4 col-md-3 mb-3">
+      <label for="firstnameofUser" class="form-label"
+        >Location Name</label
+      >
+      <select name="location" id="location">
+        <option value="#">Select Location</option>
+        {% for location in locations%}
+        
+        <option value="{{location.pk}}">{{location}}</option>
+        {% endfor %}
+      </select>
+      
+      
+    </div>
+  </div>
+
   </div>
   

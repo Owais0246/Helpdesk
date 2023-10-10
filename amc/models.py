@@ -7,7 +7,7 @@ from masters.models import Company,Location
 
 class Amc(models.Model):
     company = models.ForeignKey(Company,on_delete=models.PROTECT)
-    description = models.TextField(max_length=200)
+    amc_description = models.TextField(max_length=200)
     start_date = models.DateField(null=True,blank=True)
     expiry= models.DateField(null=True,blank=True)
     sla= models.TextField(max_length=1000)

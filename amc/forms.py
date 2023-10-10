@@ -8,8 +8,9 @@ from django.forms import formset_factory
 class CreateAmcForm(forms.ModelForm):
     class Meta:
         model = Amc
-        fields = ('start_date',
-                  'expiry','description','sla','escalation_matrix_1','escalation_matrix_2','escalation_matrix_3','escalation_matrix_4')
+        fields = ('start_date','expiry','amc_description','sla',
+                  'escalation_matrix_1','escalation_matrix_2',
+                  'escalation_matrix_3','escalation_matrix_4')
         
         labels = {
             'loc_name': 'Location Name',
@@ -39,6 +40,6 @@ ProductFormSet = formset_factory(ProductForm, extra=1)
 class AmcForm(forms.ModelForm):
     class Meta:
         model = Amc
-        fields = ['company', 'description', 'start_date', 'expiry', 'sla', 'escalation_matrix_1', 'escalation_matrix_2', 'escalation_matrix_3', 'escalation_matrix_4']
+        fields = ['amc_description', 'start_date', 'expiry', 'sla', 'escalation_matrix_1', 'escalation_matrix_2', 'escalation_matrix_3', 'escalation_matrix_4']
 
     products = ProductFormSet()

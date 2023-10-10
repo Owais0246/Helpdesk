@@ -73,7 +73,7 @@ def ticket(request, pk):
         eng = request.POST.get("field_engineer")
         field_engineer = User.objects.get(pk=eng)
         ticket.ticket_call_time.create(schedule=schedule, ticket_id=ticket, field_engineer=field_engineer)
-        messages=f'''Service is sceduled on {schedule} and the engineer would be {field_engineer.first_name} {field_engineer.last_name}
+        messages=f'''Service is scheduled on {schedule} and the engineer would be {field_engineer.first_name} {field_engineer.last_name}
         you can contact them at {field_engineer.user_contact_no} or email at {field_engineer.email}
         '''
         ticket.ticket_message.create(messages=messages, sender=request.user)

@@ -38,21 +38,36 @@ from django.forms import inlineformset_factory
 # Amc creation new view
 
 def create_amc(request, pk):
+    company=Company.objects.get(id=pk)
+    locations=Location.objects.filter(loc_company=company)
+    products_formset = ProductFormSet(request.POST)
     if request.method == 'POST':
         amc_form = AmcForm(request.POST)
         if amc_form.is_valid():
-            # Save AMC data
-            amc = amc_form.save()
+            print("Amc  valid")
+            amc1 = amc_form.save(commit=False)
+            amc1.company= company
+            amc=amc1.save()
             
             # Process product formset data
             products_formset = ProductFormSet(request.POST)
             if products_formset.is_valid():
+                print("Product  valid")
                 for product_form in products_formset:
                     product_name = product_form.cleaned_data.get('product_name')
                     part_number = product_form.cleaned_data.get('part_number')
                     serial_number = product_form.cleaned_data.get('serial_number')
                     description = product_form.cleaned_data.get('description')
                     location = product_form.cleaned_data.get('location')
+                    
+                    print(product_name)
+                    print(part_number)
+                    print(serial_number)
+                    print(description)
+                    print(location)
+
+  
+     
                     
                     # Save product data related to the AMC
                     Product.objects.create(
@@ -70,7 +85,7 @@ def create_amc(request, pk):
         amc_form = AmcForm()
         products_formset = ProductFormSet()
 
-    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset})
+    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset,'company':company,'locations':locations})
 
 
 
