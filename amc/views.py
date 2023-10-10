@@ -40,7 +40,7 @@ from django.forms import inlineformset_factory
 def create_amc(request, pk):
     company=Company.objects.get(id=pk)
     locations=Location.objects.filter(loc_company=company)
-    products_formset = ProductFormSet(request.POST)
+    # products_formset = ProductFormSet(request.POST)
     if request.method == 'POST':
         amc_form = AmcForm(request.POST)
         if amc_form.is_valid():
@@ -54,11 +54,12 @@ def create_amc(request, pk):
             if products_formset.is_valid():
                 print("Product  valid")
                 for product_form in products_formset:
-                    product_name = product_form.cleaned_data.get('product_name')
-                    part_number = product_form.cleaned_data.get('part_number')
-                    serial_number = product_form.cleaned_data.get('serial_number')
-                    description = product_form.cleaned_data.get('description')
-                    location = product_form.cleaned_data.get('location')
+                    product_name = request.POST["product_name"]
+                    part_number = request.POST["part_number"]
+                    serial_number = request.POST["serial_number"]
+                    description = request.POST["description"]
+                    location_id = request.POST["location"]
+                    location = Location.objects.get(pk=location_id)
                     
                     print(product_name)
                     print(part_number)
@@ -70,7 +71,7 @@ def create_amc(request, pk):
      
                     
                     # Save product data related to the AMC
-                    Product.objects.create(
+                Product.objects.create(
                         product_name=product_name,
                         part_number=part_number,
                         serial_number=serial_number,
