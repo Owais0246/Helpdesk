@@ -249,7 +249,7 @@
           name="part_number"
           placeholder="Enter the Model"
         />
-      /div>
+      </div>
       <div class=" col-4 col-md-3 mb-3">
         <label for="username" class="form-label"
           >Serial Number</label
@@ -286,7 +286,7 @@
           <option value="#">Select Location</option>
           {% for location in locations%}
           
-          <option value="{{location}}">{{location}}</option>
+          <option value="{{location.pk}}">{{location}}</option>
           {% endfor %}
         </select>
         

@@ -54,31 +54,31 @@ def create_amc(request, pk):
             if products_formset.is_valid():
                 print("Product  valid")
                 for product_form in products_formset:
-                    product_name = request.POST["product_name"]
-                    part_number = request.POST["part_number"]
-                    serial_number = request.POST["serial_number"]
-                    description = request.POST["description"]
-                    location_id = request.POST["location"]
-                    location = Location.objects.get(pk=location_id)
+                    product_name = product_form.cleaned_data.get("product_name")
+                    part_number = product_form.cleaned_data.get('part_number')
+                    serial_number = product_form.cleaned_data.get('serial_number')
+                    description = product_form.cleaned_data.get('description')
+                    location_id = product_form.cleaned_data.get('location')
+                    location= Location.objects.get(pk=location_id)
                     
-                    print(product_name)
-                    print(part_number)
-                    print(serial_number)
-                    print(description)
-                    print(location)
+                    # print(product_name)
+                    # print(part_number)
+                    # print(serial_number)
+                    # print(description)
+                    # print(location)
 
   
      
                     
                     # Save product data related to the AMC
-                Product.objects.create(
-                        product_name=product_name,
-                        part_number=part_number,
-                        serial_number=serial_number,
-                        description=description,
-                        location=location,
-                        amc=amc
-                    )
+                    Product.objects.create(
+                            product_name=product_name,
+                            part_number=part_number,
+                            serial_number=serial_number,
+                            description=description,
+                            location=location,
+                            amc=amc
+                        )
                     
                 # Redirect or do something else after successful form submission
                 return redirect('/')
