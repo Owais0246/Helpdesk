@@ -8,20 +8,48 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 #AMC Views
+# Amc creation old view
+# def create_amc(request):
+#     companies=Company.objects.all()
+#     locations= Location.objects.all()
+#     products= Product.objects.all()
+#     form = CreateAmcForm(request.POST)
+#     if form.is_valid():
+#         print("form is okay")
+#         form.save()
+#         # var = form.save(commit=False)
+#         # var.company= company
+#         # var.location= location
+#         # var.user= request.user
+#         # var.save()
+#         return redirect('AmcList')
+#     else:print("form not okay")
+#     context = {
+#         'form':form,
+#         'companies':companies,
+#         'locations':locations,
+#         'products':products,
+        
+#     }
+#     return render(request,'amc/amc_create.html',context)
 
-def create_amc(request):
-    companies=Company.objects.all()
-    locations= Location.objects.all()
+# Amc creation new view
+def create_amc(request,pk):
+    companies=Company.objects.get(id=pk)
+    print(companies.company_name)
+    # companies=Company.objects.all()
+    locations= Location.objects.filter(loc_company_id=companies)  
+    # locations= Location.objects.all()
     products= Product.objects.all()
     form = CreateAmcForm(request.POST)
     if form.is_valid():
         print("form is okay")
-        form.save()
-        # var = form.save(commit=False)
-        # var.company= company
+        # form.save()
+        var = form.save(commit=False)
+        var.company= companies
         # var.location= location
         # var.user= request.user
-        # var.save()
+        var.save()
         return redirect('AmcList')
     else:print("form not okay")
     context = {

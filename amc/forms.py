@@ -5,8 +5,8 @@ from .models import Amc
 class CreateAmcForm(forms.ModelForm):
     class Meta:
         model = Amc
-        fields = ('company','location','product','start_date',
-                  'expiry','description')
+        fields = ('location','product','start_date',
+                  'expiry','description','sla','escalation_matrix_1','escalation_matrix_2','escalation_matrix_3','escalation_matrix_4')
         # 
         # labels = {
         #     'loc_name': 'Location Name',
@@ -15,3 +15,5 @@ class CreateAmcForm(forms.ModelForm):
         #     'loc_address': 'Address',
 
         # }
+        
+        

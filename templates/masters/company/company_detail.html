@@ -212,7 +212,7 @@
                     data-bs-toggle="tab"
                     aria-expanded="false"
                     class="nav-link">
-                    Home
+                    AMC
                   </a>
                 </li>
                 <li class="nav-item">
@@ -228,21 +228,46 @@
               </ul>
               <div class="tab-content" >
                 <div class="tab-pane" id="home-b1">
-                  <p>
-                    Vakal text here dolor sit amet, consectetuer adipiscing elit.
-                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                    natoque penatibus et magnis dis parturient montes, nascetur
-                    ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu,
-                    pretium quis, sem. Nulla consequat massa quis enim.
-                  </p>
-                  <p class="mb-0">
-                    Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
-                    arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
-                    justo. Nullam dictum felis eu pede mollis pretium. Integer
-                    tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean
-                    vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
-                    consequat vitae, eleifend ac, enim.
-                  </p>
+                  <div class="row">
+                    <div class="col-lg-10">
+                      <div class="grid-container"><h3>{{customer.company_name.title}} AMC</h3></div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="grid-container">
+                        <a href="{% url 'AmcCreate' customer.pk %}">
+                        <button
+                        type="button"
+                        class="btn btn-primary"
+                        {% comment %} data-bs-toggle="modal"
+                        data-bs-target="#location-modal"> {% endcomment %}
+                        
+                      </button>Add AMC</a>
+                    {% comment %} {% include "masters/company/location_modal.html" %} {% endcomment %}
+                    </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+
+                    {% for location in locations %}
+                    <div class="col-lg-3 border-gray border mb-3">
+                      <div class="card card-body " >
+                        <h5 class="card-title">{{location.loc_name.title}}</h5>
+                        <p class="card-text">
+                          <strong>Email: </strong>{{location.loc_poc_email}}
+                        </p>
+                        <p class="card-text">
+                          <strong>Contact: </strong>{{location.loc_poc_contact_no}}
+                        </p>
+                        <p class="card-text">
+                          <strong>Address: </strong>{{location.loc_poc_email}}
+                        </p>
+                        <a
+                          href="{% url 'LocationDetail' location.pk%}"
+                          class="btn btn-primary waves-effect waves-light">View</a>
+                      </div>
+                    </div>{% endfor %}
+                  </div>
                 </div>
                 <div class="tab-pane show active"  id="location">
                   
