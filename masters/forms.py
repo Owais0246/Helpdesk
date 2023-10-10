@@ -26,6 +26,9 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ('product_name','part_number','serial_number','description')
         # ,'location'
+        
+        
+
 
         
      
