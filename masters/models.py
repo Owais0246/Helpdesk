@@ -1,4 +1,5 @@
 from django.db import models
+# from amc.models import Amc
 
 # Create your models here.
 
@@ -23,14 +24,15 @@ class Location(models.Model):
     def __str__(self):
         return self.loc_name
 
-
 class Product(models.Model):
     product_name=models.CharField(max_length=200,blank=False)    
     part_number=models.CharField(max_length=200,blank=False)    
     serial_number=models.CharField(max_length=200,blank=False)    
     created_on = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
-    # location= models.CharField(max_length=50)
+    location= models.ForeignKey(Location, on_delete=models.PROTECT, related_name='asset_location')
+    amc = models.ForeignKey('amc.Amc', on_delete=models.CASCADE, related_name='products', null=True, blank=True)
+
     
     def __str__(self):
         return self.product_name +" - " + self.serial_number

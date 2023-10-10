@@ -156,7 +156,7 @@
           <form action= "" method='POST'>
             {% csrf_token %}
             
-            <div class="row">
+            {% comment %} <div class="row">
             <div  class=" col-4 col-md-3 mb-3">
               <label for="firstnameofUser" class="form-label"
                 >Product Name</label
@@ -300,14 +300,23 @@
                 placeholder="Enter the escalation matrix 4"
               />
               
-            </div>
+            </div> {% endcomment %}
+
+
+
+
             
-            <button
-              type="submit"
-              class="btn btn-primary waves-effect waves-light"
-            >
-              Submit
-            </button>
+             {{ amc_form.as_p }}
+    
+    <div id="product-formset">
+        {{ product_formset.management_form }}
+        {% for form in product_formset.forms %}
+            {{ form.as_p }}
+        {% endfor %}
+    </div>
+    
+    <button type="button" id="add-product">Add Product</button>
+    <input type="submit" value="Save">
           
           </form>
         </div>
@@ -331,4 +340,29 @@
   <!-- end row -->
 </div>
 <!-- container -->
+
+
+
+
+<script>
+    var formCount = {{ product_formset.total_form_count }};
+    
+    document.getElementById('add-product').addEventListener('click', function() {
+        var formset = document.getElementById('product-formset');
+        var newForm = formset.children[0].cloneNode(true);
+        
+        // Update form IDs and names to avoid formset collision
+        var formCountField = newForm.querySelector('input[name$="-TOTAL_FORMS"]');
+        formCount++;
+        formCountField.setAttribute('value', formCount);
+        
+        // Clear values in the new form fields
+        newForm.querySelectorAll('input[type="text"], input[type="number"]').forEach(function(input) {
+            input.value = '';
+        });
+        
+        formset.appendChild(newForm);
+    });
+</script>
+
 {% endblock %}

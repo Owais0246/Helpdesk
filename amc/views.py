@@ -1,10 +1,12 @@
 from django.shortcuts import render,HttpResponse,redirect,reverse
-from .forms import CreateAmcForm
+from .forms import CreateAmcForm, ProductForm
 from django.views import generic
 from . models import Amc
 from masters.models import Company,Location,Product
 from user.models import User
 from django.contrib.auth.decorators import login_required
+from django.forms import inlineformset_factory
+
 # Create your views here.
 
 #AMC Views
@@ -34,32 +36,54 @@ from django.contrib.auth.decorators import login_required
 #     return render(request,'amc/amc_create.html',context)
 
 # Amc creation new view
-def create_amc(request,pk):
-    companies=Company.objects.get(id=pk)
-    print(companies.company_name)
-    # companies=Company.objects.all()
-    locations= Location.objects.filter(loc_company_id=companies)  
-    # locations= Location.objects.all()
-    products= Product.objects.all()
-    form = CreateAmcForm(request.POST)
-    if form.is_valid():
-        print("form is okay")
-        # form.save()
-        var = form.save(commit=False)
-        var.company= companies
-        # var.location= location
-        # var.user= request.user
-        var.save()
-        return redirect('AmcList')
-    else:print("form not okay")
-    context = {
-        'form':form,
-        'companies':companies,
-        'locations':locations,
-        'products':products,
+
+def create_amc(request, pk):
+    ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1, can_delete=True)
+    
+    if request.method == 'POST':
+        amc_form = CreateAmcForm(request.POST)
+        product_formset = ProductFormSet(request.POST, instance=Amc())
         
-    }
-    return render(request,'amc/amc_create.html',context)
+        if amc_form.is_valid() and product_formset.is_valid():
+            amc = amc_form.save(commit=False)
+            amc.company = Company.objects.get(pk=pk)
+            amc.save()
+            product_formset.instance = amc
+            product_formset.save()
+            return redirect('/')
+    else:
+        amc_form = CreateAmcForm(initial={'company': pk})
+        product_formset = ProductFormSet(instance=Amc())
+    
+    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset})
+
+
+# def create_amc(request,pk):
+#     companies=Company.objects.get(id=pk)
+#     print(companies.company_name)
+#     # companies=Company.objects.all()
+#     locations= Location.objects.filter(loc_company_id=companies)  
+#     # locations= Location.objects.all()
+#     products= Product.objects.all()
+#     form = CreateAmcForm(request.POST)
+#     if form.is_valid():
+#         print("form is okay")
+#         # form.save()
+#         var = form.save(commit=False)
+#         var.company= companies
+#         # var.location= location
+#         # var.user= request.user
+#         var.save()
+#         return redirect('AmcList')
+#     else:print("form not okay")
+#     context = {
+#         'form':form,
+#         'companies':companies,
+#         'locations':locations,
+#         'products':products,
+        
+#     }
+#     return render(request,'amc/amc_create.html',context)
 
 class AmcListView(generic.ListView):
     template_name = 'amc/amc_list.html'
