@@ -257,24 +257,14 @@
                 <div class="tab-pane" id="home-b1">
                     <h3>{{customer.company_name.title}} AMC</h3>
                     <div class="mb-3">
-                    {% include 'amc/amc_create_modal.html' %}
-                        <button
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#amc-create-modal"
-                        >
-                        Add AMC
-                        </button>
+                      
                     </div>
                     <div class="row">
                         {% for amc in amc %}
                         <div class="col-lg-3 border-gray border mb-3">
                           <div class="card card-body " >
-                            <h5 class="card-title">{{amc.pk.title}}</h5>
-                            <p class="card-text">
-                              <strong>Product</strong>{{amc.product}}
-                            </p>
+                            <h5 class="card-title">{{amc.company}} - AMC ID:{{amc.pk}}</h5>
+                            
                             <p class="card-text">
                               {% comment %} <strong>Contact: </strong>{{location.loc_poc_contact_no}} {% endcomment %}
                             </p>
@@ -296,16 +286,19 @@
                 <div class="tab-pane show active"  id="location">
                   <h3>{{customer.company_name.title}} Users</h3>
                     <div class="mb-3">
+                      
                     {% include 'users/user_modal.html' %}
                         <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn btn-primary float-end"
                         data-bs-toggle="modal"
                         data-bs-target="#user-modal"
                         >
                         Add User
                         </button>
                     </div>
+                    </div>
+                  </div>
                   {% comment %} card  {% endcomment %}
                   
                 <div class="row">

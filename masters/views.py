@@ -122,7 +122,7 @@ def LocationDetail(request, pk):
     users =User.objects.filter(user_loc=location)
     
     amc_form =CreateAmcForm(request.POST)
-    amc =Amc.objects.filter(location=location)
+    amc =Amc.objects.filter(company=company)
     
     products=Product.objects.all()
     

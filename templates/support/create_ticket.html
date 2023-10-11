@@ -61,15 +61,15 @@
            
                     <div class="col-md-6">
                       <p>Select Product</p>
-                      
+
                       <select
                         class="form-control"
                         data-toggle="select2"
                         data-width="100%"
                         name = "product">
                         <option>Select Product</option>
-                        {% for amc in amc  %}
-                          <option value="{{amc.product.pk}}">{{amc.product}}</option>
+                        {% for product in product  %}
+                          <option value="{{product.pk}}">{{product.product_name}} - {{product.part_number}} </option>
 
                           {% endfor %}
                         

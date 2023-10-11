@@ -5,13 +5,16 @@ from .models import Ticket, Document, Call_Time
 from user.models import User
 import datetime
 from amc.models import Amc
-from masters.models import Product
+from masters.models import Product, Company, Location
 from django.http import FileResponse
 import os
 
 def create_ticket(request):
     user = request.user
-    amc = Amc.objects.filter(company = user.user_company)
+    company = Location.objects.filter(loc_company = user.user_company.pk)
+    # amc = Amc.objects.get(company=company)
+    product = Product.objects.filter(amc__company_id=user.user_company.pk)
+
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
@@ -28,7 +31,7 @@ def create_ticket(request):
     else:
         form = TicketForm()
 
-    return render(request, 'support/create_ticket.html', {'form': form, 'user':user, 'amc':amc,})
+    return render(request, 'support/create_ticket.html', {'form': form, 'user':user, 'product':product,})
 
 def ticket_list(request):
     ticket = Ticket.objects.all()
@@ -41,6 +44,7 @@ def ticket_list(request):
         'ticket_user':ticket_user,
         'ticket_active':ticket_active,
         'ticket_close':ticket_close,
+        
   
     }
     return render(request, 'support/ticket_list.html', context)
@@ -53,7 +57,8 @@ def ticket(request, pk):
     eng = User.objects.filter(is_field_engineer=True)
     sr_eng = User.objects.filter(is_sr_engineer=True)
     is_service_agent = User.objects.filter(is_service_agent=True)
-    amc= Amc.objects.get(product=ticket.product.pk)
+    selected_product = Product.objects.get(pk=ticket.product.pk)
+    amc = selected_product.amc
     call_filter = Call_Time.objects.filter(ticket_id=pk).filter(field_engineer=request.user)
 
     

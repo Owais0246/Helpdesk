@@ -1,7 +1,7 @@
 from django import forms
 from .models import Amc
 from masters.models import Product, Location
-from django.forms import formset_factory
+from django.forms import inlineformset_factory
 
 
 
@@ -27,19 +27,15 @@ class ProductForm(forms.ModelForm):
         
         
 
-class ProductForm(forms.Form):
-    product_name = forms.CharField(max_length=200)
-    part_number = forms.CharField(max_length=200)
-    serial_number = forms.CharField(max_length=200)
-    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 2, 'cols': 15}), required=False)
-    location = forms.ModelChoiceField(queryset=Location.objects.all())
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['product_name', 'part_number', 'serial_number', 'description', 'location']
     
     
-ProductFormSet = formset_factory(ProductForm, extra=1)
+ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)
 
-class AmcForm(forms.ModelForm):
+class AMCForm(forms.ModelForm):
     class Meta:
         model = Amc
         fields = ['amc_description', 'start_date', 'expiry', 'sla', 'escalation_matrix_1', 'escalation_matrix_2', 'escalation_matrix_3', 'escalation_matrix_4']
-
-    products = ProductFormSet()

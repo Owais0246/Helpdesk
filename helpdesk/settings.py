@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'support.apps.SupportConfig',
     'mathfilters',
-    
+    'crispy_forms',
+    'crispy_bootstrap4',
+
     
 ]
 
@@ -147,3 +149,7 @@ if DEBUG:
     from django.conf import settings
     from django.conf.urls.static import static
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+

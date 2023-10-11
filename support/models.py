@@ -55,6 +55,7 @@ def generate_uuid():
     year = today.year
     month = today.month
     day = today.day
+    counter = 1
 
     # Get the last created object
     last_obj = Ticket.objects.order_by('-created_at').first()

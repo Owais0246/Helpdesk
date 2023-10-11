@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse,redirect,reverse
-from .forms import CreateAmcForm, ProductForm, AmcForm, ProductFormSet
+from .forms import CreateAmcForm, ProductForm, AMCForm, ProductFormSet
 from django.views import generic
 from . models import Amc
 from masters.models import Company,Location,Product
@@ -39,54 +39,63 @@ from django.forms import inlineformset_factory
 
 def create_amc(request, pk):
     company=Company.objects.get(id=pk)
-    locations=Location.objects.filter(loc_company=company)
-    # products_formset = ProductFormSet(request.POST)
-    if request.method == 'POST':
-        amc_form = AmcForm(request.POST)
-        if amc_form.is_valid():
-            print("Amc  valid")
-            amc1 = amc_form.save(commit=False)
-            amc1.company= company
-            amc=amc1.save()
+    location=Location.objects.filter(loc_company=company)
+    # # products_formset = ProductFormSet(request.POST)
+    # if request.method == 'POST':
+    #     amc_form = AmcForm(request.POST)
+    #     if amc_form.is_valid():
+    #         print("Amc  valid")
+    #         amc1 = amc_form.save(commit=False)
+    #         amc1.company= company
+    #         amc=amc1.save()
             
-            # Process product formset data
-            products_formset = ProductFormSet(request.POST)
-            if products_formset.is_valid():
-                print("Product  valid")
-                for product_form in products_formset:
-                    product_name = product_form.cleaned_data.get("product_name")
-                    part_number = product_form.cleaned_data.get('part_number')
-                    serial_number = product_form.cleaned_data.get('serial_number')
-                    description = product_form.cleaned_data.get('description')
-                    location_id = product_form.cleaned_data.get('location')
-                    location= Location.objects.get(pk=location_id)
+    #         # Process product formset data
+    #         products_formset = ProductFormSet(request.POST)
+    #         if products_formset.is_valid():
+    #             for product_form in products_formset:
+    #                 product_name = product_form.cleaned_data.get('product_name')
+    #                 part_number = product_form.cleaned_data.get('part_number')
+    #                 serial_number = product_form.cleaned_data.get('serial_number')
+    #                 description = product_form.cleaned_data.get('description')
+    #                 location = product_form.cleaned_data.get('location')
                     
-                    # print(product_name)
-                    # print(part_number)
-                    # print(serial_number)
-                    # print(description)
-                    # print(location)
+    #                 # Save product data related to the AMC
+    #                 Product.objects.create(
+    #                     product_name=product_name,
+    #                     part_number=part_number,
+    #                     serial_number=serial_number,
+    #                     description=description,
+    #                     location=location,
+    #                     amc=amc
+    #                 )
+                    
+    #             # Redirect or do something else after successful form submission
+    #             return redirect('/')
+    # else:
+    #     amc_form = AmcForm()
+    #     products_formset = ProductFormSet()
+    
+    
+    
+    if request.method == 'POST':
+        amc_form = AMCForm(request.POST)
+        product_formset = ProductFormSet(request.POST, instance=Amc(company=company))
 
-  
-     
-                    
-                    # Save product data related to the AMC
-                    Product.objects.create(
-                            product_name=product_name,
-                            part_number=part_number,
-                            serial_number=serial_number,
-                            description=description,
-                            location=location,
-                            amc=amc
-                        )
-                    
-                # Redirect or do something else after successful form submission
-                return redirect('/')
+        if amc_form.is_valid() and product_formset.is_valid():
+            amc_instance = amc_form.save(commit=False)
+            amc_instance.company = company  # Assign the company to the AMC instance
+            amc_instance.save()
+            product_formset.instance = amc_instance
+            product_formset.save()
+
+            # Redirect or do something else after successful form submission
+            return redirect('/success/')  # Replace '/success/' with your success URL
     else:
-        amc_form = AmcForm()
-        products_formset = ProductFormSet()
+        amc_form = AMCForm()
+        product_formset = ProductFormSet(instance=Amc(company=company))
+    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'location':location})
 
-    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset,'company':company,'locations':locations})
+    # return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset,'company':company,'locations':locations})
 
 
 

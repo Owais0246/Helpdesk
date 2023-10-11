@@ -1,6 +1,8 @@
 {% extends "dashboard/horizontal_base.html" %} 
 {% load static i18n %} 
 {% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% load crispy_forms_tags %}
+
 {% block content %}
 <!-- Start Content-->
 <div class="container-fluid">
@@ -93,241 +95,157 @@
         <div class="card">
           <div class="card-body">
             {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
-            
-            <form method='POST'>
-              {% csrf_token %}
-
-              <div class=" col-4 col-md-4 mb-3">
-                <label for="username" class="form-label"
-                  >AMC Description</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="amc_description"
-                  name="amc_description"
-                  
-                  placeholder="Enter the description"
-                />
-                
-              </div>
-              
-              
-              <div class=" col-4 col-md-3 mb-3">
-                <label for="contact_number" class="form-label"
-                  >Start Date</label
-                >
-                <input
-                  type="date"
-                  class="form-control"
-                  id="startdate"
-                  name="start_date"
-                  
-                  placeholder="Enter the Start Date"
-                />
-                
-              </div>
-              <div class=" col-4 col-md-3 mb-3"
-              >
-                <label for="email" class="form-label"
-                  >End Date</label
-                >
-                <input
-                  type="date"
-                  class="form-control"
-                  id="expiry"
-                  name="expiry"
-                  
-                  placeholder="Enter the duration in years"
-                   
-                />
-                
-              </div>
-              <div class=" col-4 col-md-3 mb-3">
-                <label for="username" class="form-label"
-                  >SLA</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="sla"
-                  name="sla"
-                  
-                  placeholder="Enter the SLA"
-                />
-                
-              </div>
-              <div class=" col-4 col-md-3 mb-3">
-                <label for="username" class="form-label"
-                  >Escalation Matrix 1</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="escalation_matrix_1"
-                  name="escalation_matrix_1"
-                  
-                  placeholder="Enter the escalation matrix 1"
-                />
-                
-              </div>
-              <div class=" col-4 col-md-3 mb-3">
-                <label for="username" class="form-label"
-                  >Escalation Matrix 2</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="escalation_matrix_2"
-                  name="escalation_matrix_2"
-                  
-                  placeholder="Enter the escalation matrix 2"
-                />
-                
-              </div>
-              <div class=" col-4 col-md-3 mb-3">
-                <label for="username" class="form-label"
-                  >Escalation Matrix 3</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="escalation_matrix_3"
-                  name="escalation_matrix_3"
-                  
-                  placeholder="Enter the escalation matrix 3"
-                />
-                
-              </div>
-              <div class=" col-4 col-md-3 mb-3">
-                <label for="username" class="form-label"
-                  >Escalation Matrix 4</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="escalation_matrix_4"
-                  name="escalation_matrix_4"
-                  placeholder="Enter the escalation matrix 4"
-                />
-                
-              </div>
-              
-              
-            
-           
+<form method="post">
+  {% csrf_token %}
   
-  <!-- Product Formset -->
-  <div id="product-formset">
-    {{ products_formset.management_form }}
-    {% include 'amc/product_form.html' %}
-    {% for form in products_formset %}
-    <div class="row">
+  <!-- AMC Form Fields -->
+  <div class="row">
+  <div class=" col-4 col-md-4 mb-3">
+    <label for="username" class="form-label"
+      >AMC Description</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="amc_description"
+      name="amc_description"
       
-      <div class=" col-4 col-md-3 mb-3">
-        <label for="username" class="form-label"
-          >Product Name</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="product_name"
-          name="product_name"
-          
-          placeholder="Enter the Product Name"
-        />
-        
-      </div>
-      <div class=" col-4 col-md-3 mb-3">
-        <label for="username" class="form-label"
-          >Model</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="part_number"
-          name="part_number"
-          placeholder="Enter the Model"
-        />
-      </div>
-      <div class=" col-4 col-md-3 mb-3">
-        <label for="username" class="form-label"
-          >Serial Number</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="serial_number"
-          name="serial_number"
-          
-          placeholder="Enter the Serial Number"
-        />
-        
-      </div>
-      <div class=" col-4 col-md-3 mb-3">
-        <label for="username" class="form-label"
-          >Product Description</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="description"
-          name="description"
-          
-          placeholder="Enter the description"
-        />
-        
-      </div>
-      <div class=" col-4 col-md-3 mb-3">
-        <label for="firstnameofUser" class="form-label"
-          >Location Name</label
-        >
-        <select name="location" id="location">
-          <option value="#">Select Location</option>
-          {% for location in locations%}
-          
-          <option value="{{location.pk}}">{{location}}</option>
-          {% endfor %}
-        </select>
-        
-        
-      </div>
-    </div>
-    {% empty %}
-      No products added.
-    {% endfor %}
+      placeholder="Enter the description"
+    />
+    
   </div>
   
-  <button type="button" id="add-product" class="btn btn-success waves-effect waves-light">Add Product</button>
   
-  <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
-  {% comment %} <button type="submit" >Submit</button> {% endcomment %}
+  <div class=" col-4 col-md-3 mb-3">
+    <label for="contact_number" class="form-label"
+      >Start Date</label
+    >
+    <input
+      type="date"
+      class="form-control"
+      id="startdate"
+      name="start_date"
+      
+      placeholder="Enter the Start Date"
+    />
+    
+  </div>
+  <div class=" col-4 col-md-3 mb-3"
+  >
+    <label for="email" class="form-label"
+      >End Date</label
+    >
+    <input
+      type="date"
+      class="form-control"
+      id="expiry"
+      name="expiry"
+      
+      placeholder="Enter the duration in years"
+       
+    />
+    
+  </div>
+  <div class=" col-4 col-md-3 mb-3">
+    <label for="username" class="form-label"
+      >SLA</label
+    >
+    <textarea
+    class="form-control"
+    rows="5"
+    id="sla"
+    name="sla"
+    
+    placeholder="Enter the SLA"></textarea>
+    
+    
+  </div>
+  <div class=" col-4 col-md-3 mb-3">
+    <label for="username" class="form-label"
+      >Escalation Matrix 1</label
+    >
+    <textarea
+    class="form-control"
+    rows="5"
+    id="escalation_matrix_1"
+    name="escalation_matrix_1"
+    
+    placeholder="Enter the escalation matrix 1"></textarea>
 
+    
+  </div>
+  <div class=" col-4 col-md-3 mb-3">
+    <label for="username" class="form-label"
+      >Escalation Matrix 2</label
+    >
+    <textarea
+    class="form-control"
+    rows="5"
+    id="escalation_matrix_2"
+    name="escalation_matrix_2"
+    
+    placeholder="Enter the escalation matrix 2"></textarea>
+
+    
+  </div>
+  <div class=" col-4 col-md-3 mb-3">
+    <label for="username" class="form-label"
+      >Escalation Matrix 3</label
+    >
+    <textarea
+    class="form-control"
+    rows="5"
+    id="escalation_matrix_3"
+    name="escalation_matrix_3"
+    placeholder="Enter the escalation matrix 3"></textarea>
+    
+    
+  </div>
+  <div class=" col-4 col-md-3 mb-3">
+    <label for="username" class="form-label"
+      >Escalation Matrix 4</label
+    >
+    <textarea
+    class="form-control"
+    rows="5"
+    id="escalation_matrix_4"
+    name="escalation_matrix_4"
+    placeholder="Enter the escalation matrix 4"></textarea>
+
+    
+  </div>
+</div>
+  
+
+  <!-- Product Formset -->
+  <div id="product-formset">
+    {{ product_formset.management_form }}
+    {% for form in product_formset %}
+      {{ form|crispy }}
+    {% endfor %}
+  </div>
+
+  <button type="button" id="add-product">Add Product</button>
+  <button type="submit">Submit</button>
 </form>
 </div>
-<!-- end card-body-->
 </div>
-<!-- end card-->
 </div>
-<!-- end col -->
-
-
-<!-- end col -->
 </div>
-<!-- end row -->
-  
-  <!-- Your other form content here -->
-  <script language="JavaScript" type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 
-  <script>
-    // JavaScript to handle adding new product forms dynamically
-    $('#add-product').click(function() {
-      var form_idx = $('#id_form-TOTAL_FORMS').val();
-      $('#product-formset').append($('#empty-form').html().replace(/__prefix__/g, form_idx));
-      $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-    });
-  </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+  $('#add-product').click(function() {
+    var form_idx = $('#id_products-TOTAL_FORMS').val();
+    var newForm = $('#empty-form').html().replace(/__prefix__/g, form_idx);
+    $('#product-formset').append(newForm);
+    $('#id_products-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+  });
+</script>
+
+<div id="empty-form" style="display: none;">
+  <hr>
+  {{ product_formset.empty_form|crispy }}
 </div>
-<!-- container -->
 {% endblock %}
