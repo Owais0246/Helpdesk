@@ -40,42 +40,6 @@ from django.forms import inlineformset_factory
 def create_amc(request, pk):
     company=Company.objects.get(id=pk)
     location=Location.objects.filter(loc_company=company)
-    # # products_formset = ProductFormSet(request.POST)
-    # if request.method == 'POST':
-    #     amc_form = AmcForm(request.POST)
-    #     if amc_form.is_valid():
-    #         print("Amc  valid")
-    #         amc1 = amc_form.save(commit=False)
-    #         amc1.company= company
-    #         amc=amc1.save()
-            
-    #         # Process product formset data
-    #         products_formset = ProductFormSet(request.POST)
-    #         if products_formset.is_valid():
-    #             for product_form in products_formset:
-    #                 product_name = product_form.cleaned_data.get('product_name')
-    #                 part_number = product_form.cleaned_data.get('part_number')
-    #                 serial_number = product_form.cleaned_data.get('serial_number')
-    #                 description = product_form.cleaned_data.get('description')
-    #                 location = product_form.cleaned_data.get('location')
-                    
-    #                 # Save product data related to the AMC
-    #                 Product.objects.create(
-    #                     product_name=product_name,
-    #                     part_number=part_number,
-    #                     serial_number=serial_number,
-    #                     description=description,
-    #                     location=location,
-    #                     amc=amc
-    #                 )
-                    
-    #             # Redirect or do something else after successful form submission
-    #             return redirect('/')
-    # else:
-    #     amc_form = AmcForm()
-    #     products_formset = ProductFormSet()
-    
-    
     
     if request.method == 'POST':
         amc_form = AMCForm(request.POST)
@@ -89,11 +53,11 @@ def create_amc(request, pk):
             product_formset.save()
 
             # Redirect or do something else after successful form submission
-            return redirect('/success/')  # Replace '/success/' with your success URL
+            return redirect('CompanyDetail', pk)  # Replace '/success/' with your success URL
     else:
         amc_form = AMCForm()
         product_formset = ProductFormSet(instance=Amc(company=company))
-    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'location':location})
+    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'location':location, 'company':company,})
 
     # return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset,'company':company,'locations':locations})
 

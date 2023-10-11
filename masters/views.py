@@ -45,6 +45,7 @@ class CustomerListView(generic.ListView):
 
 def customer_detail(request, company_pk):
     customer_pk =Company.objects.get(id=company_pk)
+    amc =Amc.objects.filter(company=customer_pk)
     
     location_form=LocationForm(request.POST)
     locations=Location.objects.filter(loc_company=customer_pk)
@@ -60,6 +61,7 @@ def customer_detail(request, company_pk):
         "customer": customer_pk,
         "location_form":location_form,
         "locations":locations,
+        'amc':amc,
             
     }
     return render(request, 'masters/company/company_detail.html', context)
@@ -117,6 +119,8 @@ class LocationListView(generic.ListView):
 def LocationDetail(request, pk):
     location =Location.objects.get(id=pk)
     company =Company.objects.get(id=location.loc_company.pk)
+    # amc = Amc.objects.filter(company=company)
+
     
     user_form =CreateUser(request.POST)
     users =User.objects.filter(user_loc=location)

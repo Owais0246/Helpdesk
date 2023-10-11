@@ -31,7 +31,7 @@
   </div>
   <!-- end page title -->
 
-  <div class="row">
+  {% comment %} <div class="row">
     <div class="col-md-6 col-xl-3">
       <div class="widget-rounded-circle card">
         <div class="card-body">
@@ -137,7 +137,7 @@
       <!-- end widget-rounded-circle-->
     </div>
     <!-- end col-->
-  </div>
+  </div> {% endcomment %}
 
   <div class="row">
     <div class="col-xl-12 col-lg-12">
@@ -315,10 +315,7 @@
                         <p class="card-text">
                           {% comment %} <strong>Address: </strong>{{location.loc_poc_email}} {% endcomment %}
                         </p>
-                        <a
-                          href="{% url 'LocationDetail' location.pk%}"
-                          class="btn btn-primary waves-effect waves-light"
-                          >View</a>
+                    
                       </div>
                     </div>{% endfor %}
                   </div>
