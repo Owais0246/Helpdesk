@@ -23,14 +23,14 @@ class CreateAmcForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['product_name','part_number','serial_number','description','location']
+        fields = ['product_name','model_number','serial_number','description','location']
         
         
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['product_name', 'part_number', 'serial_number', 'description', 'location']
+        fields = ['product_name', 'model_number', 'serial_number', 'description', 'location']
     
     
 ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)

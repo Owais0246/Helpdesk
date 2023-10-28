@@ -1,6 +1,6 @@
-from user.models import User
 from django.db import models
 # from amc.models import Amc
+# from user.models import User
 
 
 # Create your models here.
@@ -11,7 +11,8 @@ class Company(models.Model):
     address = models.TextField()
     is_customer = models.BooleanField(default=False)
     is_self_company = models.BooleanField(default=False)
-    salesperson=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    # salesperson=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    
     
 
     def __str__(self):
