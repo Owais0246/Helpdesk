@@ -101,9 +101,11 @@ class AmcListView(generic.ListView):
 
 def AmcDetail(request, pk):
     amc_pk =Amc.objects.get(id=pk)
+    company= Company.objects.get(pk=amc_pk.company)
 
     context = {
         "amc": amc_pk,
+        "company":company
     }
     return render(request, 'amc/amc_detail.html', context)
 
