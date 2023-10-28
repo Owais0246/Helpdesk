@@ -15,10 +15,10 @@ class CreateUser(UserCreationForm):
 class ServiceAdminForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name','username','email','password1','password2','user_contact_no','aadhar','covid']
+        fields = ['first_name', 'last_name','username','email','password1','password2','user_contact_no','aadhaar_no','covid_cert']
 
 
 class ServiceUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name','email','user_contact_no','aadhar','covid']
+        fields = ['first_name', 'last_name','email','user_contact_no','aadhaar_no','covid_cert']

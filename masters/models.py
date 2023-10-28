@@ -1,5 +1,7 @@
+from user.models import User
 from django.db import models
 # from amc.models import Amc
+
 
 # Create your models here.
 
@@ -9,6 +11,8 @@ class Company(models.Model):
     address = models.TextField()
     is_customer = models.BooleanField(default=False)
     is_self_company = models.BooleanField(default=False)
+    salesperson=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    
 
     def __str__(self):
         return self.company_name
@@ -26,7 +30,7 @@ class Location(models.Model):
 
 class Product(models.Model):
     product_name=models.CharField(max_length=200,blank=False)    
-    part_number=models.CharField(max_length=200,blank=False)    
+    model_number=models.CharField(max_length=200,blank=False)    
     serial_number=models.CharField(max_length=200,blank=False)    
     created_on = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)

@@ -10,7 +10,7 @@ class CreateAmcForm(forms.ModelForm):
         model = Amc
         fields = ('start_date','expiry','amc_description','sla',
                   'escalation_matrix_1','escalation_matrix_2',
-                  'escalation_matrix_3','escalation_matrix_4')
+                  'escalation_matrix_3','escalation_matrix_4',)
         
         labels = {
             'loc_name': 'Location Name',

@@ -13,6 +13,7 @@ from amc.models import Amc
 
 def create_customer(request):
     customer_form=CompanyForm(request.POST)
+    user=User.objects.filter(salesperson=True)
     if customer_form.is_valid():
         form= customer_form.save(commit=False)
         form.is_customer=True
@@ -22,7 +23,7 @@ def create_customer(request):
 
     context = {
         'customer_form': customer_form,
-        
+        'user':user
     }
     return render(request, 'masters/company/company_create.html', context)
 

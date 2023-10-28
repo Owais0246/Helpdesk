@@ -66,6 +66,16 @@
                 placeholder="Enter the Customer's Address"/>
               
             </div>
+            <div class="mb-3">
+              <label for="salesperson" class="form-label">Salesperson</label>
+              <select name="salesperson" id="salesperson">
+                <option value="#">Select the sales person</option>
+                {% for user in user %}
+                  <option value="{{user.pk}}">{{user.first_name }}{{user.last_name}}</option>
+                {% endfor %}
+              </select>>
+              
+            </div>
           
             <button
               type="submit"

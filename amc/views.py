@@ -57,7 +57,7 @@ def create_amc(request, pk):
     else:
         amc_form = AMCForm()
         product_formset = ProductFormSet(instance=Amc(company=company))
-    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'location':location, 'company':company,})
+    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'location':location, 'company':company})
 
     # return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset,'company':company,'locations':locations})
 
