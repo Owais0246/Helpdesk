@@ -231,7 +231,27 @@
     
   </div>
 </div>
-  
+<!--Display product-->
+<table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th data-priority="1">Start Date
+        </th>
+      <th data-priority="3">Expiry Date</th>
+      <th data-priority="3">SLA</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for amc in amc  %}
+    <tr>
+     <th> <a href="{% url 'AmcDetail' amc.pk %}">{{amc.company}}</a></th>
+      <td>{{amc.start_date}}</td>
+      <td>{{amc.expiry}}</td>
+      <td>{{amc.sla}}</td>
+      
+    </tr>
+    {% endfor %}
 
   <!-- Product Formset -->
   <div id="product-formset">
