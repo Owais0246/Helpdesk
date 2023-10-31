@@ -1,8 +1,15 @@
-{% extends "dashboard/horizontal_base.html" %} 
-{% load static i18n %} 
-{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+{% block head_title%}{% trans "Form Components" %}{% endblock head_title %}
 {% load crispy_forms_tags %}
-
+<style>
+  #my-td{
+    height: 380px;
+    max-height: 380px;
+    scroll-behavior: auto;
+    overflow: hidden;
+  }
+</style>
 {% block content %}
 <!-- Start Content-->
 <div class="container-fluid">
@@ -16,12 +23,12 @@
               <a href="javascript: void(0);">AMC</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Create</a>
+              <a href="javascript: void(0);">Detail</a>
             </li>
             {% comment %} <li class="breadcrumb-item active">Elements</li> {% endcomment %}
           </ol>
         </div>
-        <h4 class="page-title">Create AMC</h4>
+        {% comment %} <h4 class="page-title">Create AMC</h4> {% endcomment %}
       </div>
     </div>
   </div>
@@ -33,26 +40,7 @@
       <!-- project card -->
       <div class="card d-block">
         <div class="card-body">
-          {% comment %} <div class="dropdown float-end">
-            <a
-              href="#"
-              class="dropdown-toggle arrow-none card-drop"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <i class="dripicons-dots-3"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end">
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-pencil me-1"></i>Edit</a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-delete me-1"></i>Delete</a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-email-outline me-1"></i>Email</a>
-            </div>
-          </div> {% endcomment %}
+          
           <!-- project title-->
           <h3 class="mt-0 font-20">Customer Details</h3>
           <!--company datatable-->
@@ -94,194 +82,122 @@
       <div class="col-xl-12 col-lg-12">
         <div class="card">
           <div class="card-body">
-            {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
-<form method="post">
-  {% csrf_token %}
-  
-  <!-- AMC Form Fields -->
-  <div class="row">
-  <div class=" col-4 col-md-4 mb-3">
-    <label for="username" class="form-label"
-      >AMC Description</label
-    >
-    <input
-      type="text"
-      class="form-control"
-      id="amc_description"
-      name="amc_description"
-      value={{amc.amc_description}}
-      disabled
-      
-      placeholder="Enter the description"
-    />
-    
-  </div>
-  
-  
-  <div class=" col-4 col-md-3 mb-3">
-    <label for="contact_number" class="form-label"
-      >Start Date</label
-    >
-    <input
-      type="date"
-      class="form-control"
-      id="startdate"
-      name="start_date"
-      value={{amc.start_date}}
-      disabled
-      
-      placeholder="Enter the Start Date"
-    />
-    
-  </div>
-  <div class=" col-4 col-md-3 mb-3"
-  >
-    <label for="email" class="form-label"
-      >End Date</label
-    >
-    <input
-      type="date"
-      class="form-control"
-      id="expiry"
-      name="expiry"
-      value={{amc.expiry}}
-      disabled
-      
-      placeholder="Enter the duration in years"
-       
-    />
-    
-  </div>
-  <div class=" col-4 col-md-3 mb-3">
-    <label for="username" class="form-label"
-      >SLA</label
-    >
-    <textarea
-    class="form-control"
-    rows="5"
-    id="sla"
-    name="sla"
+          <h3 class="mt-0 font-20">AMC Details</h3>
+          <!--AMC datatable-->
+          <div class="table-responsive">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm border">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>AMC Description</th>
+                        <td>{{amc.amc_description}}</td>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      <tr>
+                        <th scope="row">Start Date</th>
+                        <td>{{amc.start_date}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">End Date</th>
+                        <td>{{amc.expiry}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Escalation Matrix 1</th>
+                        <td>{{amc.escalation_matrix_1}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Escalation Matrix 2</th>
+                        <td>{{amc.escalation_matrix_2}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Escalation Matrix 3</th>
+                        <td>{{amc.escalation_matrix_3}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Escalation Matrix 4</th>
+                        <td>{{amc.escalation_matrix_4}}</td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-sm border" style="height:380px;max-height:380px;overflow:auto;scroll-behavior:auto;" >
+                  <table class="table mb-0" >
+                    
+                    <tbody>
+                      <h5>SLA</h5>
+                      <tr>
+                        {% comment %} <th scope="row">SLA</th> {% endcomment %}
+                        <td style="">{{amc.sla}}</td>
+                      </tr>
 
-    value={{amc.sla}}
-      disabled
-    placeholder="Enter the SLA"></textarea>
-    
-    
-  </div>
-  <div class=" col-4 col-md-3 mb-3">
-    <label for="username" class="form-label"
-      >Escalation Matrix 1</label
-    >
-    <textarea
-    class="form-control"
-    rows="5"
-    id="escalation_matrix_1"
-    name="escalation_matrix_1"
-    value={{amc.escalation_matrix_1}}
-      disabled
-    
-    placeholder="Enter the escalation matrix 1"></textarea>
+                    </tbody>
+                  </table>
+                </div>
+              
+              </div>
+            </div>
+         
+          </div>
 
-    
-  </div>
-  <div class=" col-4 col-md-3 mb-3">
-    <label for="username" class="form-label"
-      >Escalation Matrix 2</label
-    >
-    <textarea
-    class="form-control"
-    rows="5"
-    id="escalation_matrix_2"
-    name="escalation_matrix_2"
-    value={{amc.escalation_matrix_2}}
-      disabled
-    
-    placeholder="Enter the escalation matrix 2"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+          <h3 class="mt-0 font-20">Product Details</h3>
+          <!--AMC datatable-->
+          <div class="table-responsive">
+            <div class="container">
+              
+                <div >
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Product Name</th>
+                        <th>Model Number</th>
+                        <th>Serial Number</th>
+                        <th>Created on</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody >
+                      {% for product in products%}
+                      <tr>
+                        
+                        <td>{{product.product_name}}</td>
+                        <td>{{product.model_number}}</td>
+                        <td>{{product.serial_number}}</td>
+                        <td>{{product.created_on}}</td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.product_name}}</td>
+                      </tr>
+                      {% endfor %}
 
-    
-  </div>
-  <div class=" col-4 col-md-3 mb-3">
-    <label for="username" class="form-label"
-      >Escalation Matrix 3</label
-    >
-    <textarea
-    class="form-control"
-    rows="5"
-    id="escalation_matrix_3"
-    name="escalation_matrix_3"
-    value={{amc.escalation_matrix_3}}
-      disabled
-    placeholder="Enter the escalation matrix 3"></textarea>
-    
-    
-  </div>
-  <div class=" col-4 col-md-3 mb-3">
-    <label for="username" class="form-label"
-      >Escalation Matrix 4</label
-    >
-    <textarea
-    class="form-control"
-    rows="5"
-    id="escalation_matrix_4"
-    name="escalation_matrix_4"
-    value={{amc.escalation_matrix_4}}
-      disabled
-    placeholder="Enter the escalation matrix 4"></textarea>
 
-    
-  </div>
-</div>
-<!--Display product-->
-<table id="scroll-horizontal-datatable" class="table w-100 nowrap">
-  <thead>
-    <tr>
-      <th>Company</th>
-      <th data-priority="1">Start Date
-        </th>
-      <th data-priority="3">Expiry Date</th>
-      <th data-priority="3">SLA</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for amc in amc  %}
-    <tr>
-     <th> <a href="{% url 'AmcDetail' amc.pk %}">{{amc.company}}</a></th>
-      <td>{{amc.start_date}}</td>
-      <td>{{amc.expiry}}</td>
-      <td>{{amc.sla}}</td>
-      
-    </tr>
-    {% endfor %}
+                    
+                      
+                      
+                    </tbody>
+                  </table>
+                </div>
+                
+              
+             
+            </div>
+         
+          </div>
 
-  <!-- Product Formset -->
-  <div id="product-formset">
-    {{ product_formset.management_form }}
-    {% for form in product_formset %}
-      {{ form|crispy }}
-    {% endfor %}
-  </div>
+        </div>
+      </div>
+    </div>
 
-  <button type="button" id="add-product">Add Product</button>
-  <button type="submit">Submit</button>
-</form>
-</div>
-</div>
-</div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-  $('#add-product').click(function() {
-    var form_idx = $('#id_products-TOTAL_FORMS').val();
-    var newForm = $('#empty-form').html().replace(/__prefix__/g, form_idx);
-    $('#product-formset').append(newForm);
-    $('#id_products-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-  });
-</script>
-
-<div id="empty-form" style="display: none;">
-  <hr>
-  {{ product_formset.empty_form|crispy }}
-</div>
-{% endblock %}
+ 
+    {% endblock %}

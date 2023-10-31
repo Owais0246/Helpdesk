@@ -31,6 +31,8 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['product_name', 'model_number', 'serial_number', 'description', 'location']
+        
+        
     
     
 ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)
@@ -38,4 +40,4 @@ ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)
 class AMCForm(forms.ModelForm):
     class Meta:
         model = Amc
-        fields = ['amc_description', 'start_date', 'expiry', 'sla', 'escalation_matrix_1', 'escalation_matrix_2', 'escalation_matrix_3', 'escalation_matrix_4']
+        fields = ['amc_description', 'start_date', 'expiry', 'sla', 'escalation_matrix_1', 'escalation_matrix_2', 'escalation_matrix_3', 'escalation_matrix_4'] 

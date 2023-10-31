@@ -34,7 +34,7 @@ class Product(models.Model):
     model_number=models.CharField(max_length=200,blank=False)    
     serial_number=models.CharField(max_length=200,blank=False)    
     created_on = models.DateTimeField(auto_now_add=True)
-    description = models.TextField(null=True, blank=True)
+    description = models.CharField(max_length=255,null=True, blank=True)
     location= models.ForeignKey(Location, on_delete=models.PROTECT, related_name='asset_location')
     amc = models.ForeignKey('amc.Amc', on_delete=models.CASCADE, related_name='products', null=True, blank=True)
 

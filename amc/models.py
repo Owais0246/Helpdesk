@@ -16,3 +16,4 @@ class Amc(models.Model):
         
     def __str__(self):
         return str(self.company) + " - " +str(self.pk)
+    
