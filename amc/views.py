@@ -37,30 +37,61 @@ from django.forms import inlineformset_factory
 
 # Amc creation new view
 
-def create_amc(request, pk):
-    company=Company.objects.get(id=pk)
-    location=Location.objects.filter(loc_company=company)
+# def create_amc(request, pk):
+#     company=Company.objects.get(id=pk)
+#     # location=Location.objects.filter(loc_company=company)
+#     location=Location.objects.all()
     
+    
+#     if request.method == 'POST':
+#         amc_form = AMCForm(request.POST)
+#         product_formset = ProductFormSet(request.POST, instance=Amc(company=company))
+
+#         if amc_form.is_valid() and product_formset.is_valid():
+#             amc_instance = amc_form.save(commit=False)
+#             amc_instance.company = company  # Assign the company to the AMC instance
+#             amc_instance.save()
+#             product_formset.instance = amc_instance
+#             product_formset.save()
+
+#             # Redirect or do something else after successful form submission
+#             return redirect('CompanyDetail', pk)  # Replace '/success/' with your success URL
+#     else:
+#         amc_form = AMCForm()
+#         product_formset = ProductFormSet(instance=Amc(company=company))
+#     return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'locations':location, 'company':company})
+
+    # return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset,'company':company,'locations':locations})
+
+
+
+
+def create_amc(request, pk):
+    company = Company.objects.get(id=pk)
+    location = Location.objects.filter(loc_company=company)  # Retrieve location data
+
+    ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)
+
     if request.method == 'POST':
         amc_form = AMCForm(request.POST)
         product_formset = ProductFormSet(request.POST, instance=Amc(company=company))
 
         if amc_form.is_valid() and product_formset.is_valid():
             amc_instance = amc_form.save(commit=False)
-            amc_instance.company = company  # Assign the company to the AMC instance
+            amc_instance.company = company
             amc_instance.save()
+
             product_formset.instance = amc_instance
             product_formset.save()
 
-            # Redirect or do something else after successful form submission
-            return redirect('CompanyDetail', pk)  # Replace '/success/' with your success URL
+            # Redirect or render a success page after form submission
+            return redirect('CompanyDetail', pk)  # Replace 'CompanyDetail' with your success URL name
+
     else:
         amc_form = AMCForm()
         product_formset = ProductFormSet(instance=Amc(company=company))
-    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'location':location, 'company':company})
 
-    # return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'products_formset': products_formset,'company':company,'locations':locations})
-
+    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'locations': location, 'company': company})
 
 
 

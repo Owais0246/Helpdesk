@@ -4,8 +4,9 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<!-- Start Content-->
+
 <div class="container-fluid">
+
   <!-- start page title -->
   <div class="row">
     <div class="col-12">
@@ -27,32 +28,12 @@
   </div>
   <!-- end page title -->
 
-
   <div class="row">
     <div class="col-xl-12 col-lg-12">
       <!-- project card -->
       <div class="card d-block">
         <div class="card-body">
-          {% comment %} <div class="dropdown float-end">
-            <a
-              href="#"
-              class="dropdown-toggle arrow-none card-drop"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <i class="dripicons-dots-3"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end">
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-pencil me-1"></i>Edit</a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-delete me-1"></i>Delete</a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-email-outline me-1"></i>Email</a>
-            </div>
-          </div> {% endcomment %}
+          
           <!-- project title-->
           <h3 class="mt-0 font-20">Customer Details</h3>
           <!--company datatable-->
@@ -75,269 +56,210 @@
                 </tr>
               </tbody>
             </table>
+            <!--end table-->
           </div>
+          <!-- end card-body-->
         </div>
-        <!--end table-->
+         <!-- end card-->
+      
 
-        <!-- end card-body-->
-
-        <!-- end card-->
-
-        <!-- end card-->
-      </div>
-      <!-- end col -->
-
-      <!-- end row -->
+      
     </div>
+    <!-- end col -->
+  </div>
 
-    <div class="row">
-      <div class="col-xl-12 col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
-<form method="post">
-  {% csrf_token %}
-  
-  <!-- AMC Form Fields -->
   <div class="row">
-    <div class="col-md-6">
-      <div >
-        <label for="username" class="form-label"
-          >AMC Description</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="amc_description"
-          name="amc_description"
-          
-          placeholder="Enter the description"
-        />
+    <div class="col-xl-12 col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          {% comment %}
+          <h4 class="mb-3 header-title">Create Customer</h4>
+          {% endcomment %}
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <label for="username" class="form-label"
+                    >AMC Description</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="amc_description"
+                    name="amc_description"
+                    placeholder="Enter the description"
+                  />
+                </div>
+                <div>
+                  <label for="contact_number" class="form-label"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="startdate"
+                    name="start_date"
+                    placeholder="Enter the Start Date"
+                  />
+                </div>
+                <div>
+                  <label for="email" class="form-label">End Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="expiry"
+                    name="expiry"
+                    placeholder="Enter the duration in years"
+                  />
+                </div>
+                <div>
+                  <label for="username" class="form-label"
+                    >Escalation Matrix 1</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="escalation_matrix_1"
+                    name="escalation_matrix_1"
+                    placeholder="Enter the escalation matrix 1"
+                  />
+                </div>
+                <div>
+                  <label for="username" class="form-label"
+                    >Escalation Matrix 2</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="escalation_matrix_2"
+                    name="escalation_matrix_2"
+                    placeholder="Enter the escalation matrix 2"
+                  />
+                </div>
+                <div>
+                  <label for="username" class="form-label"
+                    >Escalation Matrix 3</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="escalation_matrix_3"
+                    name="escalation_matrix_3"
+                    placeholder="Enter the escalation matrix 3"
+                  />
+                  <div>
+                    <label for="username" class="form-label"
+                      >Escalation Matrix 4</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="escalation_matrix_4"
+                      name="escalation_matrix_4"
+                      placeholder="Enter the escalation matrix 4"
+                    />
+                  </div>
+                </div>
+              </div>  
+
+                <div class="col-md-6">
+                  <div>
+                    <label for="username" class="form-label">SLA</label>
+                    <textarea
+                      class="form-control"
+                      rows="20"
+                      id="sla"
+                      name="sla"
+                      placeholder="Enter the SLA"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Product Formset -->
+             {{ product_formset.management_form }}
+
+            <div class="container">
+              <div class="row clearfix">
+              <div class="col-md-12 column">
+                <table class="table table-bordered table-hover" id="tab_logic">
+                  <thead>
+                    <tr>
+                      <th class="text-center">#</th>
+                      <th>Product Name</th>
+                      <th>Model Number</th>
+                      <th>Serial Number</th>
+                      <th>Description</th>
+                      <th>Location</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id='addr0'>
+                      <td>1</td>
+                      <td>
+                      <input type="text" name='product_formset.product_name'  placeholder='Enter Product Name' class="form-control"/>
+                      </td>
+                      <td>
+                      <input type="text" name='product_formset.model_number' placeholder='Enter Model' class="form-control"/>
+                      </td>
+                      <td>
+                      <input type="text" name='product_formset.serial_number' placeholder='Enter Serial Number' class="form-control"/>
+                      </td>
+                      <td>
+                      <input type="text" name='product_formset.description' placeholder='Enter Description' class="form-control"/>
+                      </td>
+                      <td>
+                      
+                      <select name="product_formset.location" id="location">
+                        <option value="#">Select Location</option>
+                        {% for location in locations %}
+                          <option value="{{location.pk}}">{{location.loc_name}}</option>
+                        
+                        {% endfor %}
+                      </select>
+                      </td>
+                    </tr>
+                              <tr id='addr1'></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <button id="add_row" class="btn btn-default pull-left">Add Row</button>
+            <button id='delete_row' class="pull-right btn btn-default">Delete Row</button>
+            <button type="submit">Submit</button>
+            
+
+
+          </form>
+        </div>
       </div>
-      <div>
-        <label for="contact_number" class="form-label"
-          >Start Date</label
-        >
-        <input
-          type="date"
-          class="form-control"
-          id="startdate"
-          name="start_date"
-          placeholder="Enter the Start Date"
-        />
-      </div>
-      <div>
-        <label for="email" class="form-label"
-          >End Date</label
-        >
-        <input
-          type="date"
-          class="form-control"
-          id="expiry"
-          name="expiry"
-          placeholder="Enter the duration in years"
-        />
-      </div>
-      <div>
-        <label for="username" class="form-label"
-          >Escalation Matrix 1</label
-        >
-        <input
-        type="text"
-        class="form-control"
-        id="escalation_matrix_1"
-        name="escalation_matrix_1"
-        placeholder="Enter the escalation matrix 1"></input>
-      </div>
-      <div>
-        <label for="username" class="form-label"
-          >Escalation Matrix 2</label
-        >
-        <input
-        type="text"
-        class="form-control"
-        id="escalation_matrix_2"
-        name="escalation_matrix_2"
-        placeholder="Enter the escalation matrix 2"></input>
-      </div>
-      <div>
-        <label for="username" class="form-label"
-          >Escalation Matrix 3</label
-        >
-        <input
-        type="text"
-        class="form-control"
-        id="escalation_matrix_3"
-        name="escalation_matrix_3"
-        placeholder="Enter the escalation matrix 3"></input>
-      </div>
-      <div>
-        <label for="username" class="form-label"
-          >Escalation Matrix 4</label
-        >
-        <input
-        type="text"
-        class="form-control"
-        id="escalation_matrix_4"
-        name="escalation_matrix_4"
-        placeholder="Enter the escalation matrix 4"></input>
-      </div>
-      <!-- <div >
-        <label for="username" class="form-label"
-          >Escalation Matrix 2</label
-        >
-        <textarea
-        class="form-control"
-        rows="5"
-        id="escalation_matrix_2"
-        name="escalation_matrix_2"
-        placeholder="Enter the escalation matrix 2"></textarea>
-      </div>
-      <div >
-        <label for="username" class="form-label"
-          >Escalation Matrix 3</label
-        >
-        <textarea
-        class="form-control"
-        rows="5"
-        id="escalation_matrix_3"
-        name="escalation_matrix_3"
-        placeholder="Enter the escalation matrix 3"></textarea>
-      </div>
-      <div >
-        <label for="username" class="form-label"
-          >Escalation Matrix 4</label
-        >
-        <textarea
-        class="form-control"
-        rows="5"
-        id="escalation_matrix_4"
-        name="escalation_matrix_4"
-        placeholder="Enter the escalation matrix 4"></textarea>
-      </div> -->
-    </div>
-    
-    <div class="col-md-6">
-      <div >
-        <label for="username" class="form-label"
-          >SLA</label
-        >
-        <textarea
-        class="form-control"
-        rows="20"
-        id="sla"
-        name="sla"
-        placeholder="Enter the SLA"></textarea>
-      </div>
-    </div>
+    </div>  
+
   </div>
-
-
-
-
-
-
+  
+</div>
  
-  <div>
-    <div class="row">
-      {% comment %} <table class="border 1px">
-        <thead>
-          <tr style="display:flex; justify-content:space-between;">
-            <th>Product Name</th>
-            <th>Model Number</th>
-            <th>Serial Number</th>
-            <th>Description</th>
-            <th>Location</th>
-          </tr>
-        </thead>
-        
-        <tbody  id="product-formset">
-          {{ product_formset.management_form }}
-            {% for form in product_formset %}
-              <tr style="display:flex; justify-content:space-between;">
-               <td>{{ form.product_name }}</td>
-               <td>{{ form.model_number }}</td>
-               <td>{{ form.serial_number }}</td>
-               <td>{{ form.description }}</td>
-               <td>{{ form.location }}</td>
-              </tr> 
-            {% endfor %}
-        </tbody>
-      </table> {% endcomment %}
-  
-  
-      <table class="table table-bordered" >
-        <thead>
-          <tr>
-            <th scope="col">Product Name</th>
-            <th scope="col">Model Number</th>
-            <th scope="col">Serial Number</th>
-            <th scope="col">Description</th>
-            <th scope="col">Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{ product_formset.management_form }}
-          <tr id="product-formset">
-            {% for form in product_formset %}
-             
-               <td>{{ form.product_name }}</td>
-               <td>{{ form.model_number }}</td>
-               <td>{{ form.serial_number }}</td>
-               <td>{{ form.description }}</td>
-               <td>{{ form.location }}</td>
-              
-            {% endfor %}
-          </tr>
-        </tbody>
-      </table>
-  
-    </div>
-  <div id="abcd" style="width:100%; display: flex; justify:between; gap:10px">
-    <br>
-  </div>
-
-  </div>
-  <!-- Product Formset -->
-  {% comment %} <div id="product-formset">
-    {{ product_formset.management_form }}
-    {% for form in product_formset %}
-      {{ form|crispy }}
-    {% endfor %}
-  </div> {% endcomment %}
-
-  <button type="button" id="add-product">Add Product</button>
-  <button type="submit">Submit</button>
-  </div>
-</form>
 </div>
-</div>
-</div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-  $('#add-product').click(function() {
-    var form_idx = $('#id_products-TOTAL_FORMS').val();
-    var newForm = $('#empty-form').html().replace(/__prefix__/g, form_idx);
-    $('#abcd').append(newForm);
-    
-    $('#id_products-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-  });
+  $(document).ready(function(){
+    var i=1;
+   $("#add_row").click(function(event){
+    event.preventDefault();
+    b=i-1;
+    $('#addr'+i).html($('#addr'+b).html()).find('td:first-child').html(i+1);
+    $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+    i++; 
+});
+   $("#delete_row").click(function(event){
+    event.preventDefault();
+     if(i>1){
+   $("#addr"+(i-1)).html('');
+   i--;
+   }
+ });
+
+});
 </script>
-
-<div id="empty-form" style="display: none;">
-  <tr >
-      
-       
-    <td>{{ products_formset.product_name.empty_form }}</td>
-    <td>{{ products_formset.model_number.empty_form }}</td>
-    <td>{{ products_formset.serial_number.empty_form }}</td>
-    <td>{{ products_formset.description.empty_form }}</td>
-    <td>{{ products_formset.location.empty_form }}</td>
-   
-
-</tr>  {{ product_formset.empty_form|crispy }}
-</div>
 {% endblock %}

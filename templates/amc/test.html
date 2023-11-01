@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row clearfix">
+    <div class="col-md-12 column">
+      <table class="table table-bordered table-hover" id="tab_logic">
+        <thead>
+          <tr>
+            <th class="text-center">#</th>
+            <th>Product Name</th>
+            <th>Model Number</th>
+            <th>Serial Number</th>
+            <th>Description</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id='addr0'>
+            <td>1</td>
+            <td>
+            <input type="text" name='product_name'  placeholder='Enter Product Name' class="form-control"/>
+            </td>
+            <td>
+            <input type="text" name='model_number' placeholder='Enter Model' class="form-control"/>
+            </td>
+            <td>
+            <input type="text" name='serial_number' placeholder='Enter Serial Number' class="form-control"/>
+            </td>
+            <td>
+            <input type="text" name='description' placeholder='Enter Description' class="form-control"/>
+            </td>
+            <td>
+            {% comment %} <input type="text" name='location' placeholder='Enter Mobile' class="form-control"/> {% endcomment %}
+            <select name="location" id="location">
+              <option value="#">Select Location</option>
+              {% for location in locations %}
+                <option value="{{location.pk}}">{{location.loc_name}}</option>
+              
+              {% endfor %}
+            </select>
+            </td>
+          </tr>
+                    <tr id='addr1'></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <button id="add_row" class="btn btn-default pull-left">Add Row</button>
+  <button id='delete_row' class="pull-right btn btn-default">Delete Row</button>

@@ -35,7 +35,8 @@ class ProductForm(forms.ModelForm):
         
     
     
-ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)
+
+ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1, can_delete=True)
 
 class AMCForm(forms.ModelForm):
     class Meta:
