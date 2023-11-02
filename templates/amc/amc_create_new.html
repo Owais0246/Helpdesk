@@ -1,0 +1,265 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">AMC</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Create</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Elements</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Create AMC</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-xl-12 col-lg-12">
+      <!-- project card -->
+      <div class="card d-block">
+        <div class="card-body">
+          
+          <!-- project title-->
+          <h3 class="mt-0 font-20">Customer Details</h3>
+          <!--company datatable-->
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>Company Name</th>
+                  <td>{{company.company_name}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Contact Number</th>
+                  <td>{{company.company_contact_no}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Address</th>
+                  <td>{{company.address}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!--end table-->
+          </div>
+          <!-- end card-body-->
+        </div>
+         <!-- end card-->
+      
+
+      
+    </div>
+    <!-- end col -->
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12 col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          {% comment %}
+          <h4 class="mb-3 header-title">Create Customer</h4>
+          {% endcomment %}
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <label for="username" class="form-label"
+                    >AMC Description</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="amc_description"
+                    name="amc_description"
+                    placeholder="Enter the description"
+                  />
+                </div>
+                <div>
+                  <label for="contact_number" class="form-label"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="startdate"
+                    name="start_date"
+                    placeholder="Enter the Start Date"
+                  />
+                </div>
+                <div>
+                  <label for="email" class="form-label">End Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="expiry"
+                    name="expiry"
+                    placeholder="Enter the duration in years"
+                  />
+                </div>
+                <div>
+                  <label for="username" class="form-label"
+                    >Escalation Matrix 1</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="escalation_matrix_1"
+                    name="escalation_matrix_1"
+                    placeholder="Enter the escalation matrix 1"
+                  />
+                </div>
+                <div>
+                  <label for="username" class="form-label"
+                    >Escalation Matrix 2</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="escalation_matrix_2"
+                    name="escalation_matrix_2"
+                    placeholder="Enter the escalation matrix 2"
+                  />
+                </div>
+                <div>
+                  <label for="username" class="form-label"
+                    >Escalation Matrix 3</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="escalation_matrix_3"
+                    name="escalation_matrix_3"
+                    placeholder="Enter the escalation matrix 3"
+                  />
+                  <div>
+                    <label for="username" class="form-label"
+                      >Escalation Matrix 4</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="escalation_matrix_4"
+                      name="escalation_matrix_4"
+                      placeholder="Enter the escalation matrix 4"
+                    />
+                  </div>
+                </div>
+              </div>  
+
+                <div class="col-md-6">
+                  <div>
+                    <label for="username" class="form-label">SLA</label>
+                    <textarea
+                      class="form-control"
+                      rows="20"
+                      id="sla"
+                      name="sla"
+                      placeholder="Enter the SLA"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Product Formset -->
+             {{ product_formset.management_form }}
+
+            <div class="container">
+              <div class="row clearfix">
+              <div class="col-md-12 column">
+                <table class="table table-bordered table-hover" id="tab_logic">
+                  <thead>
+                    <tr>
+                      <th class="text-center">#</th>
+                      <th>Product Name</th>
+                      <th>Model Number</th>
+                      <th>Serial Number</th>
+                      <th>Description</th>
+                      <th>Location</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id='addr0'>
+                      <td>1</td>
+                      <td>
+                      <input type="text" name='product_formset.product_name'  placeholder='Enter Product Name' class="form-control"/>
+                      </td>
+                      <td>
+                      <input type="text" name='product_formset.model_number' placeholder='Enter Model' class="form-control"/>
+                      </td>
+                      <td>
+                      <input type="text" name='product_formset.serial_number' placeholder='Enter Serial Number' class="form-control"/>
+                      </td>
+                      <td>
+                      <input type="text" name='product_formset.description' placeholder='Enter Description' class="form-control"/>
+                      </td>
+                      <td>
+                      
+                      <select name="product_formset.location" id="location">
+                        <option value="#">Select Location</option>
+                        {% for location in locations %}
+                          <option value="{{location.pk}}">{{location.loc_name}}</option>
+                        
+                        {% endfor %}
+                      </select>
+                      </td>
+                    </tr>
+                              <tr id='addr1'></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <button id="add_row" class="btn btn-default pull-left">Add Row</button>
+            <button id='delete_row' class="pull-right btn btn-default">Delete Row</button>
+            <button type="submit">Submit</button>
+            
+
+
+          </form>
+        </div>
+      </div>
+    </div>  
+
+  </div>
+  
+</div>
+ 
+</div>
+
+<script>
+  $(document).ready(function(){
+    var i=1;
+   $("#add_row").click(function(event){
+    event.preventDefault();
+    b=i-1;
+    $('#addr'+i).html($('#addr'+b).html()).find('td:first-child').html(i+1);
+    $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+    i++; 
+});
+   $("#delete_row").click(function(event){
+    event.preventDefault();
+     if(i>1){
+   $("#addr"+(i-1)).html('');
+   i--;
+   }
+ });
+
+});
+</script>
+{% endblock %}

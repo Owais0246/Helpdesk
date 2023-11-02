@@ -262,6 +262,9 @@
                         <p class="card-text">
                           <strong>SLA: </strong>{{amc.sla}}
                         </p>
+                        <a
+                          href="{% url 'AmcDetail' amc.pk%}"
+                          class="btn btn-primary waves-effect waves-light">View</a>
                         {% comment %} 
                         <p class="card-text">
                           <strong>Contact: </strong>{{location.loc_poc_contact_no}}
