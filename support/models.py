@@ -48,7 +48,7 @@ class Ticket(models.Model):
     amount_return = models.IntegerField(null=True, blank=True)
     
     def __str__(self):
-        return self.issue + " - " + "ZCPL/"+str(self.pk)
+        return self.issue + " - " + "ZCPL/"+str(self.pk) + " - UUID -" + str(self.uuid)
     
 def generate_uuid():
     today = datetime.date.today()
@@ -100,6 +100,11 @@ class Call_Time(models.Model):
     clock_out = models.DateTimeField(blank=True, null=True)
     update = models.TextField(blank=True, null=True)
     field_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    
+    def get_field_engineer_email(self):
+        if self.field_engineer:
+            return self.field_engineer.email
+        return None
 
 class Message(models.Model):
     sent_on = models.DateTimeField(auto_now_add=True)

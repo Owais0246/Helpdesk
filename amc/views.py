@@ -73,8 +73,8 @@ def create_amc(request, pk):
     ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)
 
     if request.method == 'POST':
-        amc_form = AMCForm(request.POST)
-        product_formset = ProductFormSet(request.POST, instance=Amc(company=company))
+        amc_form = AMCForm(request.POST, request.FILES)
+        product_formset = ProductFormSet(request.POST, request.FILES, instance=Amc(company=company))
 
         if amc_form.is_valid() and product_formset.is_valid():
             amc_instance = amc_form.save(commit=False)

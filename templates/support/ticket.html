@@ -320,7 +320,7 @@
           </div>
           <div class="row align-items-center">
             <p>Product : <span class="mb-0 font-12">{{ticket.product}}</span></p>
-            <p>AMC : <span class="mb-0 font-12">{{amc.expiry}}</span></p>
+            <p>AMC : <span class="mb-0 font-12">{{amc.expiry}}</span>: <a href="{% url "AmcDetail" amc.pk %}"> click here to view AMC detail</a></p>
             <p>Downtime Required : <span class="mb-0 font-12">{% if ticket.downtime_required %}Yes {% else %} No{% endif%}</span></p>
             <p>Location : <span class="mb-0 font-12">{{ticket.location}}</span></p>
             <p>On-site Contact Person : <span class="mb-0 font-12">{{ticket.contact_person}}</span></p>
@@ -454,8 +454,8 @@
                   <p class="mb-0 font-14">Scheduled on : <span class="mb-0 font-12">{{call.schedule}}</span></p>
                   <p class="mb-0 font-16">Engineer: {{call.field_engineer.first_name}} {{call.field_engineer.last_name}}</p>
 
-                  <a href="{% url 'download_file' call.field_engineer.id 'aadhar' %}" class="btn btn-soft-primary">Aadhar</a>
-                  <a href="{% url 'download_file' call.field_engineer.id 'covid' %}" class="btn btn-soft-primary ">Vaccination Certificate</a>
+                  <a href="{% url 'download_file' call.field_engineer.id 'aadhaar_no' %}" class="btn btn-soft-primary">Aadhar</a>
+                  <a href="{% url 'download_file' call.field_engineer.id 'covid_cert' %}" class="btn btn-soft-primary ">Vaccination Certificate</a>
 
                   
 

@@ -83,6 +83,7 @@
         <div class="card">
           <div class="card-body">
           <h3 class="mt-0 font-20">AMC Details</h3>
+          
           <!--AMC datatable-->
           <div class="table-responsive">
             <div class="container">
@@ -133,10 +134,32 @@
                         {% comment %} <th scope="row">SLA</th> {% endcomment %}
                         <td style="">{{amc.sla}}</td>
                       </tr>
-
                     </tbody>
+                    
                   </table>
                 </div>
+                <table class="table mb-0" >
+                    
+                  <tbody>
+                      <tr>
+
+                        <td style="">
+                          <h4>
+                                SLA Download
+                          </h4>
+                          <div class="col ps-0">
+                            <a href="{{ amc.file.url }}" class="fw-bold" target="_blank">{{amc.file.name}}</a>
+                          
+                          <!-- Button -->
+                          <a href="{{ amc.file.url }}" class="btn btn-link font-18 text-muted" download>
+                            <i class="dripicons-download"></i>
+                          </a>
+                        </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                    
+                  </table>
               
               </div>
             </div>

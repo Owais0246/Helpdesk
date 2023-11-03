@@ -95,7 +95,7 @@
         <div class="card">
           <div class="card-body">
             {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
-<form method="post">
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   
   <!-- AMC Form Fields -->
@@ -190,12 +190,15 @@
           <label for="username" class="form-label">SLA</label>
           <textarea
             class="form-control"
-            rows="20"
+            rows="17"
             id="sla"
             name="sla"
             placeholder="Enter the SLA"
           ></textarea>
         </div>
+        <div>
+          <label for="file">Upload File</label>
+          <input type="file" class="form-control" id="file" name="file">
       </div>
     </div>
   </div>
@@ -205,12 +208,40 @@
   <div id="product-formset">
     {{ product_formset.management_form }}
     {% for form in product_formset %}
-      {{ form|crispy }}
+    <div class="row">
+      <div class="col-md-3">
+        
+          <label for="username" class="form-label">Product Name</label>
+            {{ form.product_name }}
+
+      </div>
+      <div class="col-md-2">
+      <label for="username" class="form-label">Model Number</label>
+        {{ form.model_number }}
+      </div>
+      <div class="col-md-2">
+      <label for="username" class="form-label">Serial Number</label>
+        {{ form.serial_number }}
+      </div>
+      
+      <div class="col-md-2">
+      <label for="username" class="form-label">Product Location</label>
+        {{ form.location }}
+      </div>
+
+      <div class="col-md-3">
+      <label for="username" class="form-label">Product Description</label>
+      {{ form.description }}
+    </div>
+
+  </div>
     {% endfor %}
   </div>
+<div class="p-3 ">
+  <button type="button" id="add-product" class="btn btn-secondary">Add Product</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</div>
 
-  <button type="button" id="add-product">Add Product</button>
-  <button type="submit">Submit</button>
 </form>
 </div>
 </div>
@@ -229,7 +260,34 @@
 </script>
 
 <div id="empty-form" style="display: none;">
-  <hr>
-  {{ product_formset.empty_form|crispy }}
+
+  <div class="row">
+    <div class="col-md-3">
+      
+        <label for="username" class="form-label"></label>
+          {{ product_formset.empty_form.product_name }}
+
+    </div>
+    <div class="col-md-2">
+    <label for="username" class="form-label"></label>
+      {{ product_formset.empty_form.model_number }}
+    </div>
+    <div class="col-md-2">
+    <label for="username" class="form-label"></label>
+      {{ product_formset.empty_form.serial_number }}
+    </div>
+    
+    <div class="col-md-2">
+    <label for="username" class="form-label"></label>
+      {{ product_formset.empty_form.location }}
+    </div>
+
+    <div class="col-md-3">
+    <label for="username" class="form-label"></label>
+    {{ product_formset.empty_form.description }}
+  </div>
+
+
+  {% comment %} {{ product_formset.empty_form|crispy }} {% endcomment %}
 </div>
 {% endblock %}

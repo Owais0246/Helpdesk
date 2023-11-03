@@ -13,6 +13,7 @@ class Amc(models.Model):
     escalation_matrix_2= models.TextField(max_length=1000, null=True,blank=True)
     escalation_matrix_3= models.TextField(max_length=1000, null=True,blank=True)
     escalation_matrix_4= models.TextField(max_length=1000, null=True,blank=True)
+    file = models.FileField(upload_to='sla/')
         
     def __str__(self):
         return str(self.company) + " - " +str(self.pk)

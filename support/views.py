@@ -8,6 +8,9 @@ from amc.models import Amc
 from masters.models import Product, Company, Location
 from django.http import FileResponse
 import os
+from django.conf import settings
+from django.core.mail import send_mail
+from .utils import build_absolute_url
 
 def create_ticket(request):
     user = request.user
@@ -27,6 +30,15 @@ def create_ticket(request):
             ticket.save()
             for doc in request.FILES.getlist('documents'):
                 ticket.documents.create(file=doc)  # Create Document objects and associate them with the ticket
+                
+                
+            subject = f'Ticket ID {ticket.uuid} was created'
+            message = f'Hi Ticket ID: {ticket.uuid}, by {ticket.company} was created. Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'
+            email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+            recipient_list = ['abhiraj@zacocomputer.com', ]
+            send_mail(subject, message, email_from, recipient_list)
+            
+            
             return redirect('/')
     else:
         form = TicketForm()
@@ -51,6 +63,17 @@ def ticket_list(request):
 
 def ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk = pk)
+    ticket_user = User.objects.filter(user_company=ticket.company)
+    admin = User.objects.filter(is_service_admin=True)
+    
+    admin_list = [user.email for user in admin]
+    email_list = [user.email for user in ticket_user] + admin_list
+    if ticket.assignee:
+        email_list.append(ticket.assignee.email)
+    
+                # fe_list = email_list.append(call_time.get_field_engineer_email())
+    
+    
     ticket1 = Ticket.objects.filter(pk = pk)
     assign_form = AssignTicketForm(request.POST or None, instance= ticket)
     close_form = CloseForm(request.POST or None, instance= ticket)
@@ -61,7 +84,7 @@ def ticket(request, pk):
     amc = selected_product.amc
     call_filter = Call_Time.objects.filter(ticket_id=pk).filter(field_engineer=request.user)
 
-    
+
     if assign_form.is_valid():
         assign = assign_form.save(commit=False)
         ticket.status = 'Open'
@@ -70,12 +93,27 @@ def ticket(request, pk):
         {ticket.assignee.user_contact_no} or email at {ticket.assignee.email}
         '''
         ticket.ticket_message.create(messages=messages, sender=request.user)
+        
+        
+        subject = f'Ticket ID {ticket.uuid} was assigned to {ticket.assignee.first_name} {ticket.assignee.last_name}'
+        message = f'Hi Ticket ID: {ticket.uuid}, was assigned to {ticket.assignee.first_name} {ticket.assignee.last_name}. Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'
+        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        recipient_list = email_list
+        send_mail(subject, message, email_from, recipient_list)
+        
+        
         return redirect('Ticket', pk)
     
 
     elif "schedule" in request.POST:
         schedule = request.POST.get("schedule")
         eng = request.POST.get("field_engineer")
+        # fe = User.objects.get(pk=eng)
+        # fe_email_obj = fe.email
+        # # print(fe_email_obj)
+        # if ticket.ticket_call_time:
+            
+        
         field_engineer = User.objects.get(pk=eng)
         ticket.ticket_call_time.create(schedule=schedule, ticket_id=ticket, field_engineer=field_engineer)
         messages=f'''Service is scheduled on {schedule} and the engineer would be {field_engineer.first_name} {field_engineer.last_name}
@@ -88,16 +126,52 @@ def ticket(request, pk):
         '''
         ticket.ticket_message.create(messages=messages1, sender=request.user)
         
+        for call_time in ticket.ticket_call_time.all():
+                fe_email = [call_time.get_field_engineer_email()]
+                if fe_email not in email_list:
+                    fe_email = email_list + fe_email
+        
+        subject = f'Ticket ID {ticket.uuid} service is scheduled on {schedule}'
+        message = f'''Hi Ticket ID: {ticket.uuid}, Service is scheduled on {schedule} 
+        and the engineer would be {field_engineer.first_name} {field_engineer.last_name}. 
+        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
+        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        recipient_list = fe_email
+        send_mail(subject, message, email_from, recipient_list)
+        
+        
+        
+        
+        
         return redirect('Ticket', pk)
+    
     
     elif "sr_engineer" in request.POST:
         sr_engineer = request.POST.get("sr_engineer")
         ticket1.update(sr_engineer=sr_engineer)
-        return redirect('Ticket', pk)   
+        sr_eng = User.objects.get(pk = sr_engineer)
+        
+    
+        subject = f'Ticket ID {ticket.uuid} your assistance is required'
+        message = f'''Hi Ticket ID: {ticket.uuid}, needs your assistance
+        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
+        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        recipient_list = [sr_eng.email]
+        send_mail(subject, message, email_from, recipient_list)
+        return redirect('Ticket', pk)
+    
+       
     elif "ticket_message" in request.POST:
         message = request.POST.get("ticket_message")
         sender = request.user
         ticket.ticket_message.create(messages=message, sender=sender)
+        
+        subject = f'Ticket ID {ticket.uuid} New Message'
+        message = f'''Hi Ticket ID: {ticket.uuid}, received new message: {message}
+        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
+        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        recipient_list = email_list
+        send_mail(subject, message, email_from, recipient_list)
         return redirect('Ticket', pk)
     
     elif 'close' in request.POST:
@@ -106,9 +180,19 @@ def ticket(request, pk):
         closed_at = datetime.datetime.now()
         time = closed_at.strftime('%d/%m/%Y, %I:%M:%S %p')
         ticket1.update(feedback=feedback,status=status,closed_at=closed_at)
-        ticket.ticket_message.create(messages=f''' Your tickect {ticket.uuid} has been closed at {time} here is the summary of the ticket
+        ticket.ticket_message.create(messages=f''' Your ticket {ticket.uuid} has been closed at {time} here is the summary of the ticket
                                      {feedback}''', sender=request.user)
+        
+        subject = f'Ticket ID {ticket.uuid} was closed'
+        message = f'''Hi Ticket ID: {ticket.uuid} has been closed at {time} here is the summary of the ticket {feedback}
+        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
+        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        recipient_list = email_list
+        send_mail(subject, message, email_from, recipient_list)
+        
+        
         return redirect('Ticket', pk)
+    
     
     elif 'transport_cost' in request.POST:
         fe_cost = request.POST.get("fe_cost")
@@ -141,6 +225,7 @@ def ticket(request, pk):
         'costing':costing,
         'exp': exp,
         'call_filter':call_filter,
+     
 
     }
     return render(request, 'support/ticket.html', context)
@@ -154,12 +239,12 @@ def download_file(request, file_id, file_type):
     if file_type == 'document':
         file_object = Document.objects.get(pk=file_id)
         file_path = file_object.file.path
-    elif file_type == 'aadhar':
+    elif file_type == 'aadhaar_no':
         user_object = User.objects.get(pk=file_id)
-        file_path = user_object.aadhar.path
-    elif file_type == 'covid':
+        file_path = user_object.aadhaar_no.path
+    elif file_type == 'covid_cert':
         user_object = User.objects.get(pk=file_id)
-        file_path = user_object.covid.path
+        file_path = user_object.covid_cert.path
     else:
         # Handle invalid file types or file not found scenarios
         return HttpResponse("Invalid request", status=400)
