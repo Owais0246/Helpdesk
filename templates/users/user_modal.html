@@ -1,4 +1,5 @@
 <!-- Standard modal content -->
+{% load crispy_forms_tags %}
 <div
 id="user-modal"
 class="modal fade"
@@ -11,7 +12,7 @@ aria-hidden="true"
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" id="standard-modalLabel">
-        Add Location
+        Add User
       </h4>
       <button
         type="button"
@@ -23,8 +24,9 @@ aria-hidden="true"
     <div class="modal-body">
          
       <form action= "" method='POST'>
+        {{user_form|crispy}}
         {% csrf_token %}
-        <div class="mb-3">
+        {% comment %} <div class="mb-3">
           <label for="firstnameofUser" class="form-label"
             >Fisrt Name</label
           >
@@ -134,7 +136,7 @@ aria-hidden="true"
             placeholder="Enter the confirm Password"
           />
           
-        </div>
+        </div> {% endcomment %}
       
         <button
           type="submit"
