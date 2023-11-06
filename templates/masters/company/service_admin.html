@@ -2,6 +2,7 @@
 {% load static i18n %} 
 {% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
 {% block content %}
+{% load crispy_forms_tags %}
 <!-- Start Content-->
 <div class="container-fluid">
   <!-- start page title -->
@@ -31,9 +32,12 @@
         <div class="card-body">
           {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
 
-          <form action= "" method='POST' enctype="multipart/form-data">
+         
+
+          <form action= "" method='POST'  data-parsley-validate="" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-3">
+            {{service_form | crispy}}
+            {% comment %} <div class="mb-3">
               <label for="firstnameofUser" class="form-label">
                 Fisrt Name</label>
               <input
@@ -147,7 +151,7 @@
                 
                 placeholder="Enter the confirm Password"/>
               
-            </div>
+            </div> {% endcomment %}
           
             <button
               type="submit"
@@ -176,4 +180,12 @@
   <!-- end row -->
 </div>
 <!-- container -->
+{% endblock %}{% block extra_javascript %}
+<!-- Third party js -->
+<script src="{% static 'libs/parsleyjs/parsley.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/form-validation.init.js' %}"></script>
+<!-- Init js end -->
 {% endblock %}
