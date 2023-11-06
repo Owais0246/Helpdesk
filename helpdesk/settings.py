@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s0)km5gsx!nf=msd#$gwspfb$3-6x&j*u9&v@y-4rt45t_)xdl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['192.168.1.30','127.0.0.1','13.127.27.146','13.232.88.153']
 
@@ -145,8 +145,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles')
 
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'uploads'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/uploads')
 
 
 
@@ -154,12 +156,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = "/login"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-if DEBUG:
-    from django.conf import settings
-    from django.conf.urls.static import static
-    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# if DEBUG:
+#     from django.conf import settings
+#     from django.conf.urls.static import static
+#     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
