@@ -42,6 +42,7 @@ def create_service_admin(request):
             service = service_form.save(commit=False)
             service.user_company=company
             service.is_service_admin=True
+            service.is_service_agent=True
           
             service.save()
 
