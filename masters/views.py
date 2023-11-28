@@ -7,10 +7,12 @@ from django.views import generic
 from . models import Company,Location,Product
 from amc.forms import CreateAmcForm
 from amc.models import Amc
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 #Company Views
-
+@login_required
 def create_customer(request):
     customer_form=CompanyForm(request.POST)
     if customer_form.is_valid():
@@ -25,23 +27,29 @@ def create_customer(request):
     }
     return render(request, 'masters/company/company_create.html', context)
 
+
 def customer_list(request):
     customers= Company.objects.filter(is_customer=True)
     context= {'customers':customers}
     return render(request, 'masters/company/company_list.html', context)
     
+
 class CustomerCreateView(generic.CreateView):
     template_name = 'masters/company/company_create.html'
     form_class = CompanyForm
 
     def get_success_url(self):
         return reverse('CompanyList')
+    
+    
 
 class CustomerListView(generic.ListView):
     template_name = 'masters/company/company_list.html'
     queryset = Company.objects.all()
     context_object_name = 'company'
-
+    
+    
+@login_required
 def customer_detail(request, company_pk):
     customer_pk =Company.objects.get(id=company_pk)
     amc =Amc.objects.filter(company=customer_pk)
@@ -65,7 +73,7 @@ def customer_detail(request, company_pk):
     }
     return render(request, 'masters/company/company_detail.html', context)
 
-
+@login_required
 def create_customer_user(request,pk):
     print ("create user is working")
     company=Company.objects.get(id=company_pk)
@@ -101,12 +109,15 @@ class CustomerUpdateView(generic.UpdateView):
 
 
 #Location Views
+
 class LocationCreateView(generic.CreateView):
     template_name = 'masters/location/location_create.html'
     form_class = LocationForm
 
     def get_success_url(self):
         return reverse('LocationList')
+    
+
 
 class LocationListView(generic.ListView):
     template_name = 'masters/location/location_list.html'
@@ -114,7 +125,7 @@ class LocationListView(generic.ListView):
     context_object_name = 'location'
 
 
-
+@login_required
 def LocationDetail(request, pk):
     location =Location.objects.get(id=pk)
     company =Company.objects.get(id=location.loc_company.pk)

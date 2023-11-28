@@ -41,6 +41,7 @@ def dashboard(request):
         ticket = Ticket.objects.all()
         ticket_active = Ticket.objects.all()
         ticket_close = Ticket.objects.all()
+        ticket_pending = Ticket.objects.filter(assignee=None).filter(status="Pending")
         
         
     context = {

@@ -5,9 +5,12 @@ from . models import Amc
 from masters.models import Company,Location,Product
 from user.models import User
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.forms import inlineformset_factory
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
+
 # Create your views here.
 
 #AMC Views
@@ -66,7 +69,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
-
+@login_required
 def create_amc(request, pk):
     company = Company.objects.get(id=pk)
     location = Location.objects.filter(loc_company=company)  # Retrieve location data
@@ -124,6 +127,7 @@ def create_amc(request, pk):
 #     }
 #     return render(request,'amc/amc_create.html',context)
 
+@method_decorator(login_required, name="dispatch")
 class AmcListView(generic.ListView):
     model=Amc
     template_name = 'amc/amc_list.html'
@@ -136,6 +140,7 @@ class AmcListView(generic.ListView):
             context['amc']= Amc.objects.filter(company=self.request.user.user_company)
         return context
     
+@login_required  
 def AmcDetail(request, pk):
     amc_pk =Amc.objects.get(id=pk)
     company= Company.objects.get(pk=amc_pk.company.pk)
@@ -149,7 +154,7 @@ def AmcDetail(request, pk):
     return render(request, 'amc/amc_detail.html', context)
 
 
-
+@method_decorator(login_required, name="dispatch")
 class AmcUpdateView(generic.UpdateView):
     model = Amc
     form_class = CreateAmcForm

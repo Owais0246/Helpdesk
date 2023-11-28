@@ -20,7 +20,7 @@
 
               
           </li>
-{% if request.user.is_service_admin %}
+{% if request.user.is_service_admin  or request.user.is_superuser%}
           <li class="nav-item dropdown">
             <a
               class="nav-link"

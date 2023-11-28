@@ -4,6 +4,7 @@ from masters.models import Company,Location
 # Create your models here.
 
 class Amc(models.Model):
+    
     company = models.ForeignKey(Company,on_delete=models.PROTECT)
     amc_description = models.TextField(max_length=200)
     start_date = models.DateField(null=True,blank=True)

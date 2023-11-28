@@ -9,6 +9,7 @@ class Company(models.Model):
     company_name = models.CharField(max_length=50, help_text='Enter your Company Name')
     company_contact_no = models.IntegerField(blank=True, help_text='Enter Company Phone Number')
     address = models.TextField()
+    company_suffix= models.CharField(max_length=10, help_text='Enter your Company Suffix',null=True,blank=True)
     is_customer = models.BooleanField(default=False)
     is_self_company = models.BooleanField(default=False)
     # salesperson=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)

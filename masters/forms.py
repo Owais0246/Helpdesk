@@ -5,7 +5,7 @@ from .models import Company,Location,Product
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ['company_name','company_contact_no','address']
+        fields = ['company_name','company_contact_no','address','company_suffix']
 
 
 class LocationForm(forms.ModelForm):
