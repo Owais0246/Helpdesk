@@ -18,7 +18,11 @@ def create_ticket(request):
     user = request.user
     company = Location.objects.filter(loc_company = user.user_company.pk)
     # amc = Amc.objects.get(company=company)
-    product = Product.objects.filter(amc__company_id=user.user_company.pk)
+    
+    product = Product.objects.filter(amc__company_id=user.user_company.pk).filter(location=user.user_loc)
+    if user.is_customer_admin:
+        product = Product.objects.filter(amc__company_id=user.user_company.pk)
+    
 
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
@@ -67,6 +71,7 @@ def ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk = pk)
     ticket_user = User.objects.filter(user_company=ticket.company)
     admin = User.objects.filter(is_service_admin=True)
+    
     
     admin_list = [user.email for user in admin]
     email_list = [user.email for user in ticket_user] + admin_list

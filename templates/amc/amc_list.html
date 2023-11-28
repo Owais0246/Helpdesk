@@ -63,6 +63,7 @@
         <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
                   <thead>
                     <tr>
+                      <th>Amc Nuumber</th>
                       <th>Company</th>
                       <th data-priority="3">Description</th>
                       <th data-priority="1">Start Date
@@ -75,6 +76,7 @@
                   <tbody>
                     {% for amc in amc  %}
                     <tr>
+                     <th> <a href="{% url 'AmcDetail' amc.pk %}">{{amc.uuid}}</a></th>
                      <th> <a href="{% url 'AmcDetail' amc.pk %}">{{amc.company}}</a></th>
                       <td>{{amc.amc_description}}</td>
                       <td>{{amc.start_date}}</td>

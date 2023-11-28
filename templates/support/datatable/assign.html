@@ -40,7 +40,11 @@
 
               {% for ticket in ticket_user %}
               <tr>
-                <td><b>{{ticket.uuid}}</b></td>
+                <td>
+                  <a href="{% url 'Ticket' ticket.pk %}" class="text-body">
+                  <b>{{ticket.uuid}}</b>
+                </a>
+                </td>
 
                 <td>
                   <a href="{% url 'Ticket' ticket.pk %}" class="text-body">

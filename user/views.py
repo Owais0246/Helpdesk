@@ -43,7 +43,6 @@ def create_service_admin(request):
             service.user_company=company
             service.is_service_admin=True
             service.is_service_agent=True
-          
             service.save()
 
             return redirect('service-admin-list')
@@ -68,6 +67,7 @@ def edit_service_admin(request,pk):
             service = service_form.save(commit=False)
             service.user_company=company
             service.is_service_admin=True
+            service.is_service_agent=True
             service.save()
 
             return redirect('service-admin-list')
@@ -215,8 +215,8 @@ def create_sr_engineer(request):
             service = service_form.save(commit=False)
             service.user_company=company
             service.is_sr_engineer=True
+            service.is_field_engineer=True
             service.save()
-
             return redirect('sr-engineer-list')
     else:
         service_form = ServiceAdminForm()
