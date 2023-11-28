@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .forms import TicketForm, AssignTicketForm, CallTimeForm, CloseForm, ClockIn, ClockOut
-from .models import Ticket, Document, Call_Time
+from .models import Ticket, Document, Call_Time, MessageDocument
 from user.models import User
 import datetime
 from amc.models import Amc
@@ -11,6 +11,8 @@ import os
 from django.conf import settings
 from django.core.mail import send_mail
 from .utils import build_absolute_url
+from django.utils.safestring import mark_safe
+
 
 def create_ticket(request):
     user = request.user
@@ -160,18 +162,33 @@ def ticket(request, pk):
         send_mail(subject, message, email_from, recipient_list)
         return redirect('Ticket', pk)
     
-       
-    elif "ticket_message" in request.POST:
-        message = request.POST.get("ticket_message")
-        sender = request.user
-        ticket.ticket_message.create(messages=message, sender=sender)
         
+    if "ticket_message" in request.POST:
+        message_text = request.POST.get("ticket_message")
+        sender = request.user
+        ticket_message = ticket.ticket_message.create(messages=message_text, sender=sender)
+
+        # Handle file upload
+        document = request.FILES.get("document")
+        if document:
+            # Save the document associated with the message
+            document_instance = MessageDocument.objects.create(message=ticket_message, file=document)
+
+            # Include a clickable link to view the document in the message
+            document_link = request.build_absolute_uri(document_instance.file.url)
+            clickable_link = f'<a href="{document_link}" target="_blank">here</a>'
+            message_with_link = f"{message_text} New attachment received, View the document {mark_safe(clickable_link)}."
+            ticket_message.messages = message_with_link
+            ticket_message.sender = sender
+            ticket_message.save()
+
+        # Send email notification
         subject = f'Ticket ID {ticket.uuid} New Message'
-        message = f'''Hi Ticket ID: {ticket.uuid}, received new message: {message}
-        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
-        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        message = f'Hi Ticket ID: {ticket.uuid}, received new message: {message_text} from {sender.username}'
+        email_from = 'info@zacocomputer.com'
         recipient_list = email_list
         send_mail(subject, message, email_from, recipient_list)
+
         return redirect('Ticket', pk)
     
     elif 'close' in request.POST:

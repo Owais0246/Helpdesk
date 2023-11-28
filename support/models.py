@@ -112,3 +112,11 @@ class Message(models.Model):
     messages = models.TextField()
     sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     sent_on = models.DateTimeField(auto_now=True)
+
+
+class MessageDocument(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='documents')
+    file = models.FileField(upload_to='documents/')
+
+    def __str__(self):
+        return str(self.file)
