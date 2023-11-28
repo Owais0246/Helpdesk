@@ -7,15 +7,17 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def dashboard(request):
 
-    if request.user.is_customer_user == True:
+    if request.user.is_customer_user == True or request.user.is_customer_admin == True:
         ticket = Ticket.objects.filter(company = request.user.user_company)
         ticket_active = Ticket.objects.filter(company = request.user.user_company).filter(status="Open")
         ticket_close = Ticket.objects.filter(company = request.user.user_company).filter(status="Closed")
+        ticket_pending = Ticket.objects.filter(assignee=None).filter(status="Pending")
         
     elif request.user.is_service_admin == True:
         ticket = Ticket.objects.all()
         ticket_active = Ticket.objects.filter(assignee=request.user).filter(status="Open")
-        ticket_close = Ticket.objects.filter(assignee=request.user).filter(status="Closed")
+        ticket_close = Ticket.objects.filter(status="Closed")
+        ticket_pending = Ticket.objects.filter(assignee=None).filter(status="Pending")
         
     elif request.user.is_service_agent == True:
         ticket = Ticket.objects.filter(assignee=request.user)
@@ -45,6 +47,7 @@ def dashboard(request):
         'ticket': ticket,
         'ticket_active':ticket_active,
         'ticket_close':ticket_close,
+        'ticket_pending': ticket_pending
   
     }
     # return render(request, 'support/ticket_list.html', context)

@@ -61,6 +61,40 @@
 
                 </a>
               </li>
+              {% if request.user.is_service_admin  or request.user.is_customer_user or request.user.is_customer_admin%}
+              <li class="nav-item">
+                <a
+                  href="#pending_ticket"
+                  data-bs-toggle="tab"
+                  aria-expanded="false"
+                  class="nav-link">
+             
+                  <div class="widget-rounded-circle card border">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="avatar-lg rounded-circle bg-success">
+                            <i class="fe-package font-22 avatar-title text-white"></i>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="text-end">
+                            <h3 class="text-dark mt-1">
+                              <span data-plugin="counterup">{{ticket_pending|length}}</span>
+                            </h3>
+                            <p class="text-muted mb-1 text-truncate">Pending Ticket</p>
+                        </div>
+                      </div>
+                      <!-- end row-->
+                    </div>
+                  </div>
+                  <!-- end widget-rounded-circle-->
+                </div>
+
+
+                </a>
+              </li>
+              {% endif %}
               <li class="nav-item">
                 <a
                   href="#profile1"
@@ -130,6 +164,9 @@
             <div class="tab-content">
               <div class="tab-pane" id="home1">
                 {% include "support/datatable/all.html" %}
+              </div>
+              <div class="tab-pane" id="pending_ticket">
+                {% include "support/datatable/pending.html" %}
               </div>
               <div class="tab-pane show active" id="profile1">
                 {% include "support/datatable/active.html" %}

@@ -1,28 +1,14 @@
-{% extends "dashboard/horizontal_base.html" %} {% load static i18n %} 
+{% extends "dashboard/horizontal_base.html" %} {% load static i18n %}
 {% block head_title%} {% trans "Company Details" %}{% endblock head_title %}
 {% block extra_css %}
 
 <!-- third party css -->
-<link
-  href="{% static 'libs/mohithg-switchery/switchery.min.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<link
-  href="{% static 'libs/multiselect/css/multi-select.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<link
-  href="{% static 'libs/select2/css/select2.min.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<link
-  href="{% static 'libs/selectize/css/selectize.bootstrap3.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<link
-  href="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
+<link href="{% static 'libs/mohithg-switchery/switchery.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/multiselect/css/multi-select.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/selectize/css/selectize.bootstrap3.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet"
+  type="text/css" />
 <!-- third party css end -->
 
 {% endblock %}
@@ -36,7 +22,7 @@
         <div class="page-title-right">
           <ol class="breadcrumb m-0">
             <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Helpdeskk</a>
+              <a href="javascript: void(0);">Helpdesk</a>
             </li>
             <li class="breadcrumb-item">
               <a href="javascript: void(0);">Ticket</a>
@@ -52,126 +38,102 @@
   </div>
 
 
-      <div class="card">
-        <div class="card-body">
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-md-3 mb-3">
-           
-                    <div class="col-md-6">
-                      <p>Select Product</p>
+  <div class="card">
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" id ="ticket">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6 mb-6">
+            <div class="col-md-8">
+              <p>Select Product</p>
 
-                      <select
-                        class="form-control"
-                        data-toggle="select2"
-                        data-width="100%"
-                        name = "product">
-                        <option>Select Product</option>
-                        {% for product in product  %}
-                          <option value="{{product.pk}}">{{product.product_name}} - {{product.part_number}} </option>
+              <select class="form-control" data-toggle="select2" data-width="100%" name="product" id="product_id">
+                <option>Select Product</option>
+                {% for product in product %}
+                <option value="{{product.pk}}">{{product.product_name}} - {{product.model_number}} -
+                  {{product.serial_number}} </option>
 
-                          {% endfor %}
-                        
-                      </select>
-                    </div>
-                </div>
+                {% endfor %}
 
-                <div class="col-md-3 mb-3">
-                    <div class="form-floating md-3">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="contact_person"
-                        placeholder="Contact person"
-                        name = "contact_person"/>
-                    <label for="contact_person">Contact person</label>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <div class="form-floating md-3">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="phone_number"
-                        placeholder="Phone number"
-                        name = "phone_number"/>
-                    <label for="phone_number">Phone number</label>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="form-check">
-                        <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="downtime_required"
-                        name ="downtime_required"/>
-                        <label class="form-check-label" for="downtime_required">
-                          Downtime required</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="spare_by_zaco"
-                        name = "spare_by_zaco"/>
-                        <label class="form-check-label" for="spare_by_zaco">
-                          Spare by zaco</label>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                  <div class="form-floating md-3">
-                  <input
-                      type="text"
-                      class="form-control"
-                      id="issue"
-                      placeholder="Phone number"
-                      name = "issue"/>
-                  <label for="issue">Problem Overview</label>
-                  </div>
+              </select>
+            </div>
+            <div class="col-md-8 mt-3 mb-3">
+              <div class="form-floating ">
+                {% comment %} <input type="text" class="form-control" id="contact_person" placeholder="Contact person"
+                  name="contact_person" />
+                <label for="contact_person">Contact person</label> {% endcomment %}
+                <select name="contact_person" id = "contact_person">
+                 
+                  <option value="#">Select Contact Person</option>
+               
+                </select>
               </div>
             </div>
-
-                <div class="row">
-                <div class="col-md-6 mb-6">
-                    <div class="mb-3">
-                        <label for="problem" class="form-label">
-                          Problem</label>
-                        <textarea
-                        class="form-control"
-                        id="problem"
-                        rows="5"
-                        name ="problem"></textarea>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="">
-                      <label for="documents" class="form-label">
-                        Upload error logs</label>
-                      <input
-                        class="form-control"
-                        type="file"
-                        id="documents"
-                        name = "documents"
-                        multiple/>
-                    </div>
-                  </div>
-            <div class="col-md-6" style="margin-top: 10px;">
-            <button
-                type="submit"
-                class="btn btn-primary btn-rounded waves-effect waves-light">
-                submit
-          </button>
+            <div class="col-md-8 mt-3 mb-3">
+              <div class="form-floating ">
+                <input type="text" class="form-control" id="phone_number" placeholder="Phone number"
+                  name="phone_number" />
+                <label for="phone_number">Phone number</label>
+              </div>
+            </div>
+            <div class="mb-3" style="display:flex;">
+              <div class="col-md-4">
+                <input type="checkbox" class="form-check-input" id="downtime_required" name="downtime_required" />
+                <label class="form-check-label" for="downtime_required">
+                  Downtime required</label>
+              </div>
+              <div class="col-md-4">
+                <input type="checkbox" class="form-check-input" id="spare_by_zaco" name="spare_by_zaco" />
+                <label class="form-check-label" for="spare_by_zaco">
+                  Spare by zaco</label>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <label for="documents" class="form-label">
+                Upload error logs</label>
+              <input class="form-control" type="file" id="documents" name="documents" multiple />
+            </div>
+            
+          </div>
+          <div class="col-md-6 mb-6">
+            <div class="col-md-9 mb-9 mb-3">
+              
+              <div class="form-floating ">
+                <input type="text" class="form-control" id="issue" placeholder="Phone number" name="issue" />
+                <label for="issue">Problem</label>
+              </div>
+            </div>
+            <div class="col-md-9 mb-9">
+              
+              <label for="problem" class="form-label">
+                Brief Overview</label>
+              <textarea class="form-control" id="problem" rows="10" name="problem"></textarea>
+            
+            </div>
+          </div>
+          <div class="col-md-6" style="margin-top: 10px;">
+            <button type="submit" class="btn btn-primary btn-rounded waves-effect waves-light">
+              submit
+            </button>
+          </div>
+          
         </div>
+
+        
+
+          
+          
       </form>
-        </div>
-      </div>
+       
     </div>
   </div>
 </div>
+</div>
+</div>
+
+
+
+
 
 {% endblock %}
 {% block extra_javascript %}
@@ -185,10 +147,104 @@
 <script src="{% static 'libs/devbridge-autocomplete/jquery.autocomplete.min.js' %}"></script>
 <script src="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
 <script src="{% static 'libs/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Third party js ends -->
 
 <!-- Init js -->
 <script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
 <!-- Init js end -->
+<script>
 
+
+  $(document).ready(function() {
+    $('#product_id').change(function() {
+      const selectedProductId = $(this).val();
+      //console.log("Selected Product ID:", selectedProductId); // Check if this log displays the selected ID
+      const url = "/amc/load_contact_person";
+  
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+          "product_id": selectedProductId
+        },
+        success: function(response) {
+
+          var data1 = response.user_detail
+          //console.log("got response", data1);
+          console.log('Filtered data from Django:', response.user_detail);
+
+                // Clear previous content
+                $('#contact_person').empty();
+
+                // Loop through the items in the response and create HTML for each item
+                {% comment %} for (var i = 0; i < data1.length; i++) {
+                    var itemHTML = '<option value=${data1.i}>' + data1[i].username+ '</option>'; // Replace 'itemName' with the property you want to display
+                    $('#contact_person').append(itemHTML); // Append HTML for each item to the loopResult div
+                }
+          // Update your HTML with the filtered data as needed {% endcomment %}
+
+
+
+
+
+          function renderOptions(data1) {
+            const selectElement = document.getElementById('contact_person');
+
+            // Loop through the data and create options
+
+            const emptyOption = document.createElement('option');
+            emptyOption.value = ''; // No value assigned for the empty option
+            emptyOption.text = 'Select User'; // No text content for the empty option
+            selectElement.appendChild(emptyOption); // Append the empty option to the select element
+            data1.forEach(optionData => {
+
+              const option = document.createElement('option');
+              option.value = optionData.id; // Set the value attribute
+              option.text = optionData.first_name; // Set the text content
+
+              selectElement.appendChild(option); // Append the option to the select element
+              //console.log("data",optionData)
+              selectElement.addEventListener('change', function(event) {
+                const selectedValue = event.target.value;
+                console.log('Selected value:', selectedValue);
+                const selectedUser = data1.find(user => user.id === parseInt(selectedValue));
+                const phoneData = selectedUser.user_contact_no
+                console.log('abcd:', selectedUser.user_contact_no);
+
+                //const phone = document.getElementById("phone_number").innertext
+
+                const inputField = document.getElementById('phone_number');
+  
+                // Set the value of the input field
+                inputField.value = phoneData;
+
+
+                // You can perform actions with the selected value here
+              });
+
+            });
+
+            // Call the function to populate select options
+
+
+
+
+          }
+
+
+          renderOptions(data1)
+
+
+
+
+      
+        },
+        error: function(error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

@@ -8,7 +8,7 @@
         >
           <i class="mdi mdi-plus-circle"></i> Add Ticket
         </button> {% endcomment %}
-        <h4 class="header-title mb-4">Active Ticket</h4>
+        <h4 class="header-title mb-4">Pending Ticket</h4>
 
         <div class="table-responsive">
           <table
@@ -21,7 +21,7 @@
               nowrap
               w-100
             "
-            id="tickets-table1"
+            id="pending_ticket11"
           >
             <thead>
               <tr>
@@ -38,7 +38,7 @@
 
             <tbody>
 
-              {% for ticket in ticket_active %}
+              {% for ticket in ticket_pending %}
               <tr>
                 <td><b>{{ticket.uuid}}</b></td>
 
@@ -71,7 +71,6 @@
 
                 <td>{{ticket.created_at}}</td>
 
-                
               </tr>
 
 
@@ -94,7 +93,7 @@
 <script language="JavaScript" type="text/javascript">
 
   $(document).ready(function () {
-    $("#tickets-table1").DataTable({
+    $("#pending_ticket11").DataTable({
       language: {
         paginate: {
           previous: "<i class='mdi mdi-chevron-left'>",

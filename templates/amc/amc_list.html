@@ -34,7 +34,7 @@
         <div class="page-title-right">
           <ol class="breadcrumb m-0">
             <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Helpdeskk</a>
+              <a href="javascript: void(0);">Helpdesk</a>
             </li>
             <li class="breadcrumb-item">
               <a href="javascript: void(0);">Customer</a>
@@ -64,8 +64,10 @@
                   <thead>
                     <tr>
                       <th>Company</th>
+                      <th data-priority="3">Description</th>
                       <th data-priority="1">Start Date
                         </th>
+                      
                       <th data-priority="3">Expiry Date</th>
                       <th data-priority="3">SLA</th>
                     </tr>
@@ -74,6 +76,7 @@
                     {% for amc in amc  %}
                     <tr>
                      <th> <a href="{% url 'AmcDetail' amc.pk %}">{{amc.company}}</a></th>
+                      <td>{{amc.amc_description}}</td>
                       <td>{{amc.start_date}}</td>
                       <td>{{amc.expiry}}</td>
                       <td>{{amc.sla}}</td>

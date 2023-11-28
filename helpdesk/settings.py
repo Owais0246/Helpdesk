@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-s0)km5gsx!nf=msd#$gwspfb$3-6x&j*u9&v@y-4rt45t_)xdl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.110.32.226','192.168.1.11','114.143.252.214']
+ALLOWED_HOSTS = ['127.0.0.1','3.110.32.226','192.168.1.11','114.143.252.214']
 
 
 # Application definition
@@ -145,23 +145,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles')
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/uploads')
-
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = "/login"
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
-# if DEBUG:
-#     from django.conf import settings
-#     from django.conf.urls.static import static
-#     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
@@ -173,6 +164,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'zacoitsolution@gmail.com'
 EMAIL_HOST_PASSWORD = 'uvxe hxzp cfbh gyxy'
 
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 # # HTTPS settings
 # SESSION_COOKIE_SECURE = True

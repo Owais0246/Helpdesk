@@ -20,7 +20,7 @@
 
               
           </li>
-{% if request.user.is_customer_user == False  %}
+{% if request.user.is_service_admin %}
           <li class="nav-item dropdown">
             <a
               class="nav-link"
@@ -75,6 +75,23 @@
     
               
             </div>
+          </li>
+          {% endif %}
+          {% if  request.user.is_field_engineer == False or request.user.is_sr_engineer == False %}
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link"
+              href="{% url 'AmcList' %}"
+              id="topnav-dashboard"
+              aria-haspopup="true"
+              aria-expanded="false"
+
+            >
+              <i class="fe-users me-1"></i> AMC
+             
+            </a>
+
+              
           </li>
           {% endif %}
         </ul>

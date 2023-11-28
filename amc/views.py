@@ -6,7 +6,8 @@ from masters.models import Company,Location,Product
 from user.models import User
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 #AMC Views
@@ -124,12 +125,17 @@ def create_amc(request, pk):
 #     return render(request,'amc/amc_create.html',context)
 
 class AmcListView(generic.ListView):
+    model=Amc
     template_name = 'amc/amc_list.html'
-    queryset = Amc.objects.all()
-    context_object_name = 'amc'
 
-
-
+    def get_context_data(self, **kwargs) :
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_service_admin or self.request.user.is_service_agent or self.request.user.is_superuser:
+            context["amc"] = Amc.objects.all()
+        else:
+            context['amc']= Amc.objects.filter(company=self.request.user.user_company)
+        return context
+    
 def AmcDetail(request, pk):
     amc_pk =Amc.objects.get(id=pk)
     company= Company.objects.get(pk=amc_pk.company.pk)
@@ -151,5 +157,25 @@ class AmcUpdateView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse('AmcList')
+
+
+def load_contact_person(request):
+    if request.method == "GET":
+        product_id = request.GET.get('product_id')
+        print(product_id)
+        prod=Product.objects.get(pk=product_id)
+        print(prod.location)
+        
+        # Assuming User model has a field 'user_loc' that matches the product_id
+        user_details = User.objects.filter(user_loc=prod.location.id).values()
+        # Customize the fields you want to retrieve from the User model
+        print(user_details)
+        # Convert queryset to list of dictionaries for JSON serialization
+        user_details_list = list(user_details)
+        
+        return JsonResponse({'user_detail': user_details_list})
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 
