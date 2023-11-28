@@ -19,6 +19,7 @@ class LocationForm(forms.ModelForm):
             'loc_address': 'Address',
             
         }
+
         
 
 class ProductForm(forms.ModelForm):

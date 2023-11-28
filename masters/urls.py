@@ -21,6 +21,8 @@ urlpatterns = [
     path('location/list', LocationListView.as_view(), name="LocationList"),
     path('location/update/<int:pk>', LocationUpdateView.as_view(), name="LocationUpdate"),
     path('location/detail/<int:pk>', views.LocationDetail, name="LocationDetail"),
+    path('location/load-location', views.LoadLocation, name="LoadLocation"),
+    
     
     #Product
     path('product/add', ProductCreateView.as_view(), name="CreateProduct"),

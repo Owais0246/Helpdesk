@@ -8,6 +8,9 @@ from . models import Company,Location,Product
 from amc.forms import CreateAmcForm
 from amc.models import Amc
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.core.serializers import serialize
+
 
 # Create your views here.
 
@@ -211,3 +214,18 @@ class ProductUpdateView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse('ProductList')
+    
+    
+def LoadLocation(request):
+    company=request.GET.get('company')
+    print(company)
+    location= Location.objects.filter(loc_company=company)
+    # location_list =location
+    
+         
+        
+    location_data = serialize('json', location)
+    
+    # Returning the JSON response
+    return JsonResponse({'location_list': location_data}, safe=False)
+    # return JsonResponse(location_data, safe=False)

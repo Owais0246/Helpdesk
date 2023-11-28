@@ -56,12 +56,15 @@
           <!-- project title-->
           <h3 class="mt-0 font-20">Customer Details</h3>
           <!--company datatable-->
-          <div class="table-responsive">
-            <table class="table mb-0">
+          {% comment %} <div id="company">{{company.company_name}}</div> {% endcomment %}
+
+          <div class="table-responsive" >
+            <table class="table mb-0" >
               <thead>
                 <tr>
                   <th>Company Name</th>
                   <td>{{company.company_name}}</td>
+                  <td>{{company.id}}</td>
                 </tr>
               </thead>
               <tbody>
@@ -226,6 +229,7 @@
       
       <div class="col-md-2">
       <label for="username" class="form-label">Product Location</label>
+      
         {{ form.location }}
       </div>
 
@@ -290,4 +294,50 @@
 
   {% comment %} {{ product_formset.empty_form|crispy }} {% endcomment %}
 </div>
+
+
+<div id="company">{{company.id}}</div>
+
+<script>
+  $(document).ready(function() {
+    var companyName = $('#company').text();
+    console.log(companyName)
+    $.ajax({
+      type: 'GET',
+      url: '/masters/location/load-location',  // Replace with your Django view URL
+      data: {
+        'company': companyName
+      },
+      success: function(response) {
+        console.log('Data received successfully:', response);
+        
+        // Assuming response.locations is an array of objects with id and name properties
+        var locationListString = response.location_list; // Extract the location_list string
+        var locations = JSON.parse(locationListString); // Parse the string to convert it to a JavaScript object
+              console.log("jkjkjd11",locations)
+
+        var selectLocation = $('#id_products-0-location'); // Assuming 'id_location' is the ID of the select field
+        console.log(selectLocation)
+        // Clear existing options
+        selectLocation.empty();
+        // Populate options
+        console.log("m",locations)
+
+        $.each(locations, function(index, location) {
+          console.log("Location Name:", location.pk);
+          //location.loc_name
+          selectLocation.append('<option value="' + location.pk + '">' + location.fields.loc_name + '</option>');
+          
+        });
+       
+      },
+      error: function(error) {
+        console.error('Error receiving data:', error);
+      }
+    });
+    });
+
+
+
+</script>
 {% endblock %}
