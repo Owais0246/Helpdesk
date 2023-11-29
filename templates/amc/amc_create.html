@@ -98,6 +98,10 @@
         <div class="card">
           <div class="card-body">
             {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
+
+            <div id="abc">
+
+</div> 
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   
@@ -255,11 +259,30 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-  $('#add-product').click(function() {
+/**  $('#add-product').click(function() {
     var form_idx = $('#id_products-TOTAL_FORMS').val();
     var newForm = $('#empty-form').html().replace(/__prefix__/g, form_idx);
     $('#product-formset').append(newForm);
     $('#id_products-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+
+
+  });**/
+
+var i=0;
+  $(document).ready(function() {
+
+    $('#add-product').click(function() {
+      var form_idx = $('#id_products-TOTAL_FORMS').val();
+      var newForm = $('#empty-form').html().replace(/__prefix__/g, form_idx);
+      $('#product-formset').append(newForm);
+      $('#id_products-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+  
+      // Ensure the element with ID 'abc' exists in the DOM before attempting to modify it
+      i=form_idx;
+      
+    });
+
   });
 </script>
 
@@ -296,9 +319,15 @@
 </div>
 
 
-<div id="company">{{company.id}}</div>
+<div id="company" style="display:none;">{{company.id}}</div>
+
 
 <script>
+
+  
+
+
+
   $(document).ready(function() {
     var companyName = $('#company').text();
     console.log(companyName)
@@ -315,14 +344,15 @@
         var locationListString = response.location_list; // Extract the location_list string
         var locations = JSON.parse(locationListString); // Parse the string to convert it to a JavaScript object
               console.log("jkjkjd11",locations)
-
-        var selectLocation = $('#id_products-0-location'); // Assuming 'id_location' is the ID of the select field
+      
+        //console.log('dj',prod_id)
+        var selectLocation = $(`#id_products-${i}-location`); // Assuming 'id_location' is the ID of the select field
         console.log(selectLocation)
         // Clear existing options
         selectLocation.empty();
         // Populate options
-        console.log("m",locations)
-
+        //console.log("m",locations)
+        //console.log('idddddd',i)
         $.each(locations, function(index, location) {
           console.log("Location Name:", location.pk);
           //location.loc_name

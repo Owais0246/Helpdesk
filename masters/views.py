@@ -218,7 +218,6 @@ class ProductUpdateView(generic.UpdateView):
     
 def LoadLocation(request):
     company=request.GET.get('company')
-    print(company)
     location= Location.objects.filter(loc_company=company)
     # location_list =location
     
