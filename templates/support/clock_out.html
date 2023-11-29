@@ -43,7 +43,7 @@
 
 {% endblock %}
 {% block content %}
-<form method="post">
+<form method="post" enctype="multipart/form-data">
         
     {% csrf_token %}
             <div class="mb-3">
@@ -64,6 +64,7 @@
             <textarea rows="3" class="form-control border-0 resize-none" placeholder="Call Summary..."
             name="update"></textarea>
           
+            <input type="file" name="documents" multiple>
 
 
           <button type="submit" class="btn btn-primary">

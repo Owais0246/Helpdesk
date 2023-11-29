@@ -94,6 +94,9 @@ class Document(models.Model):
     def __str__(self):
         return self.file.name
 
+
+
+
 class Call_Time(models.Model):
     ticket_id = models.ForeignKey('Ticket', related_name='ticket_call_times', on_delete=models.CASCADE, null=True, blank=True)
     schedule = models.DateTimeField(blank=True, null=True)
@@ -106,6 +109,11 @@ class Call_Time(models.Model):
         if self.field_engineer:
             return self.field_engineer.email
         return None
+    
+
+class CallDocument(models.Model):
+    call_time = models.ForeignKey(Call_Time, related_name='attachments', on_delete=models.CASCADE)
+    file = models.FileField(upload_to='attachments/')
 
 class Message(models.Model):
     sent_on = models.DateTimeField(auto_now_add=True)

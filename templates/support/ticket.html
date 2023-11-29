@@ -420,6 +420,7 @@
 {% if request.user.is_field_engineer == True %}
           
           {% for call in call_filter %}
+          
           <div class="card mb-1 shadow-none border">
             <div class="p-2">
               <div class="row align-items-center">
@@ -427,6 +428,7 @@
 
                 </div>
                 <div class="col ps-0">
+                  <p class="mb-0 font-14">Call Schedule: {{ forloop.counter }}</p>
                   <p class="mb-0 font-14">Scheduled on : <span class="mb-0 font-12">{{call.schedule}}</span></p>
                   <p class="mb-0 font-16">Engineer: {{call.field_engineer.first_name}} {{call.field_engineer.last_name}}</p>
                   
@@ -444,7 +446,9 @@
                   
                   <p class="mb-0 font-12">Activity summary : <span class="mb-0 font-12">{{call.update}}</span></p>
                   
-                  
+                  {% for attachment in call.attachments.all %}
+                  <a href="{% url 'view_attachment' attachment.id %}" target="_blank">View Call Summary</a></br>
+                  {% endfor %}
                   {% endif %}
 
                   

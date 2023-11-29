@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import TicketForm, AssignTicketForm, CallTimeForm, CloseForm, ClockIn, ClockOut
-from .models import Ticket, Document, Call_Time, MessageDocument
+from .forms import TicketForm, AssignTicketForm, CallTimeForm, CloseForm, ClockIn, ClockOutForm
+from .models import Ticket, Document, Call_Time, MessageDocument, CallDocument
 from user.models import User
 import datetime
 from amc.models import Amc
@@ -326,9 +326,12 @@ def clock_in(request, pk):
 def clock_out(request, pk):
     call = Call_Time.objects.get(pk=pk)
     ticket = Ticket.objects.get(pk = call.ticket_id.pk)
-    call_form = ClockOut(request.POST or None, instance= call)
+    call_form = ClockOutForm(request.POST or None, instance= call)
     if call_form.is_valid():
         call_form.save()
+        files = request.FILES.getlist('documents')
+        for file in files:
+            CallDocument.objects.create(call_time=call, file=file)
         time = request.POST.get('clock_out')
         update = request.POST.get('update')
         ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer} has left your location at {time} Call Summary: {update}''', sender=request.user)
@@ -339,3 +342,13 @@ def clock_out(request, pk):
         'call':call,
     }
     return render(request, 'support/clock_out.html', context)
+
+
+
+def view_attachment(request, attachment_id):
+    attachment = get_object_or_404(CallDocument, pk=attachment_id)
+    
+    # Serve the file
+    response = HttpResponse(attachment.file, content_type='application/octet-stream')
+    response['Content-Disposition'] = f'attachment; filename="{attachment.file.name}"'
+    return response

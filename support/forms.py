@@ -50,7 +50,12 @@ class ClockIn(forms.ModelForm):
         model = Call_Time
         fields = [ 'clock_in']
     
-class ClockOut(forms.ModelForm):
+# forms.py
+from django import forms
+
+class ClockOutForm(forms.ModelForm):
     class Meta:
         model = Call_Time
-        fields = [ 'clock_out', 'update']
+        fields = ['clock_out', 'update']
+
+    documents = MultiFileField(min_num=1, max_num=10, max_file_size=1024*1024*5, required=False)
