@@ -436,6 +436,16 @@
                   {% if call.clock_out is None and call.clock_in is not None %}
                   <a href="{% url 'ClockOut' call.pk%}" class="btn btn-soft-primary ">Clock Out</a>
                   {% endif %}
+                  {% if call.clock_out is not None %}
+                  
+                  <p class="mb-0 font-12">Clocked in on : <span class="mb-0 font-12">{{call.clock_in}}</span></p>
+                  
+                  <p class="mb-0 font-12">Clocked out on : <span class="mb-0 font-12">{{call.clock_out}}</span></p>
+                  
+                  <p class="mb-0 font-12">Activity summary : <span class="mb-0 font-12">{{call.update}}</span></p>
+                  
+                  
+                  {% endif %}
 
                   
 

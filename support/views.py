@@ -12,7 +12,16 @@ from django.conf import settings
 from django.core.mail import send_mail
 from .utils import build_absolute_url
 from django.utils.safestring import mark_safe
+from threading import Thread
+from django.core.mail import send_mail
 
+
+
+def send_email_async(subject, message, email_from, recipient_list):
+    """
+    A function to send emails asynchronously using threading.
+    """
+    send_mail(subject, message, email_from, recipient_list)
 
 def create_ticket(request):
     user = request.user
@@ -42,7 +51,9 @@ def create_ticket(request):
             message = f'Hi Ticket ID: {ticket.uuid}, by {ticket.company} was created. Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'
             email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
             recipient_list = ['abhiraj@zacocomputer.com', ]
-            send_mail(subject, message, email_from, recipient_list)
+        
+            email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+            email_thread.start()
             
             
             return redirect('/')
@@ -101,12 +112,16 @@ def ticket(request, pk):
         '''
         ticket.ticket_message.create(messages=messages, sender=request.user)
         
-        
+        l = [ticket.assignee.email, ]
+        print(l)
         subject = f'Ticket ID {ticket.uuid} was assigned to {ticket.assignee.first_name} {ticket.assignee.last_name}'
         message = f'Hi Ticket ID: {ticket.uuid}, was assigned to {ticket.assignee.first_name} {ticket.assignee.last_name}. Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
         recipient_list = email_list
-        send_mail(subject, message, email_from, recipient_list)
+        
+        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+        email_thread.start()
+        
         
         
         return redirect('Ticket', pk)
@@ -143,8 +158,10 @@ def ticket(request, pk):
         and the engineer would be {field_engineer.first_name} {field_engineer.last_name}. 
         Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
-        recipient_list = fe_email
-        send_mail(subject, message, email_from, recipient_list)
+        recipient_list = ['abhiraj@zacocomputer.com',]
+        
+        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+        email_thread.start()
         
         
         
@@ -164,11 +181,14 @@ def ticket(request, pk):
         Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
         recipient_list = [sr_eng.email]
-        send_mail(subject, message, email_from, recipient_list)
+        
+        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+        email_thread.start()
+        
         return redirect('Ticket', pk)
     
         
-    if "ticket_message" in request.POST:
+    elif "ticket_message" in request.POST:
         message_text = request.POST.get("ticket_message")
         sender = request.user
         ticket_message = ticket.ticket_message.create(messages=message_text, sender=sender)
@@ -187,12 +207,14 @@ def ticket(request, pk):
             ticket_message.sender = sender
             ticket_message.save()
 
-        # Send email notification
         subject = f'Ticket ID {ticket.uuid} New Message'
         message = f'Hi Ticket ID: {ticket.uuid}, received new message: {message_text} from {sender.username}'
         email_from = 'info@zacocomputer.com'
-        recipient_list = email_list
-        send_mail(subject, message, email_from, recipient_list)
+        recipient_list = ["abhiraj@zacocomputer.com",]
+
+        # Use threading to send the email asynchronously
+        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+        email_thread.start()
 
         return redirect('Ticket', pk)
     
@@ -210,7 +232,10 @@ def ticket(request, pk):
         Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
         recipient_list = email_list
-        send_mail(subject, message, email_from, recipient_list)
+        
+        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+        email_thread.start()
+        
         
         
         return redirect('Ticket', pk)

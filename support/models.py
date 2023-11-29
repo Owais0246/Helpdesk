@@ -99,7 +99,7 @@ class Call_Time(models.Model):
     schedule = models.DateTimeField(blank=True, null=True)
     clock_in = models.DateTimeField(blank=True, null=True)
     clock_out = models.DateTimeField(blank=True, null=True)
-    update = models.TextField(blank=True, null=True)
+    update = models.TextField(blank=True, null=True, max_length=200)
     field_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     
     def get_field_engineer_email(self):
