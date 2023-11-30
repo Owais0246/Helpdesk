@@ -165,7 +165,7 @@ EMAIL_HOST_USER = 'zacoitsolution@gmail.com'
 EMAIL_HOST_PASSWORD = 'uvxe hxzp cfbh gyxy'
 
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 24240
 
 # # HTTPS settings
 # SESSION_COOKIE_SECURE = True
