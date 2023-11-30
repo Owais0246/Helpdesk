@@ -42,6 +42,7 @@ def create_ticket(request):
             ticket.company = user.user_company
             ticket.location = user.user_loc
             ticket.product = product
+            ticket.raised_by = user
             ticket.save()
             for doc in request.FILES.getlist('documents'):
                 ticket.documents.create(file=doc)  # Create Document objects and associate them with the ticket
