@@ -31,18 +31,21 @@ def dashboard(request):
         ticket_active = Ticket.objects.filter(assignee=request.user).filter(status="Open")
         ticket_close = Ticket.objects.filter(assignee=request.user).filter(status="Closed")
         
-    elif request.user.is_sr_engineer == True:
-        ticket = Ticket.objects.filter(sr_engineer=request.user)
-        ticket_active = Ticket.objects.filter(sr_engineer=request.user).filter(status="Open")
-        ticket_close = Ticket.objects.filter(sr_engineer=request.user).filter(status="Closed")
+    # elif request.user.is_sr_engineer == True:
+    #     ticket = Ticket.objects.filter(sr_engineer=request.user)
+    #     ticket_active = Ticket.objects.filter(sr_engineer=request.user).filter(status="Open")
+    #     ticket_close = Ticket.objects.filter(sr_engineer=request.user).filter(status="Closed")
     
-    elif request.user.is_field_engineer == True:
+    elif request.user.is_field_engineer == True or request.user.is_sr_engineer == True:
         call_times = Call_Time.objects.filter(field_engineer=request.user)
         call_times_active = Call_Time.objects.filter(field_engineer=request.user, clock_out__isnull=True)
         ticket_new = Ticket.objects.filter(ticket_call_times__in=call_times_active)
-        ticket_active = ticket_new.filter(status="Open")
-        ticket = ticket_active
-        ticket_close = None
+        ticket_active = ticket_new.filter(status="Open") | Ticket.objects.filter(sr_engineer=request.user).filter(status="Open")
+        ticket_active = ticket_active.distinct()
+        ticket_active1 = ticket_new.filter(status="Open") or Ticket.objects.filter(sr_engineer=request.user).filter(status="Open")
+        ticket = ticket_active1 | Ticket.objects.filter(sr_engineer=request.user)
+        ticket = ticket.distinct()
+        ticket_close = None or Ticket.objects.filter(sr_engineer=request.user).filter(status="Closed")
         
     elif request.user.is_superuser == True:
         ticket = Ticket.objects.all()

@@ -417,7 +417,7 @@
             
           </div>
 
-{% if request.user.is_field_engineer == True %}
+{% if request.user.is_field_engineer == True or request.user.is_sr_engineer == True %}
           
           {% for call in call_filter %}
           

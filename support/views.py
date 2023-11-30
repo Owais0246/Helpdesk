@@ -95,7 +95,7 @@ def ticket(request, pk):
     ticket1 = Ticket.objects.filter(pk = pk)
     assign_form = AssignTicketForm(request.POST or None, instance= ticket)
     close_form = CloseForm(request.POST or None, instance= ticket)
-    eng = User.objects.filter(is_field_engineer=True)
+    eng = User.objects.filter(is_field_engineer=True) | User.objects.filter(is_sr_engineer=True)
     sr_eng = User.objects.filter(is_sr_engineer=True)
     is_service_agent = User.objects.filter(is_service_agent=True)
     selected_product = Product.objects.get(pk=ticket.product.pk)
