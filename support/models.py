@@ -22,6 +22,7 @@ Priority = [
 
 class Ticket(models.Model):
     uuid = models.CharField(max_length=200, unique=True, null=True, blank=True)
+    raised_by = models.ForeignKey(User, on_delete=)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     location_text = models.CharField(max_length=50, null=True, blank=True)
@@ -30,7 +31,7 @@ class Ticket(models.Model):
     documents = models.ManyToManyField("Document", blank=True)
     downtime_required = models.BooleanField(default=False)
     # contact_person = models.CharField(max_length=50, null=True, blank=True)
-    contact_person = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True, related_name="contact_person",default=1)
+    contact_person = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True, related_name="contact_person")
     phone_number = models.CharField(max_length=50)
     spare_by_zaco = models.BooleanField(default=False)
     sr_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
