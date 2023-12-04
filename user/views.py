@@ -315,7 +315,7 @@ def UserDetail(request, pk):
 
 
 # User Login view
-@login_required
+
 def login_user(request):
         if request.method == 'POST':
             username = request.POST.get('username')
