@@ -14,6 +14,8 @@ from .utils import build_absolute_url
 from django.utils.safestring import mark_safe
 from threading import Thread
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 
@@ -23,6 +25,7 @@ def send_email_async(subject, message, email_from, recipient_list):
     """
     send_mail(subject, message, email_from, recipient_list)
 
+@login_required
 def create_ticket(request):
     user = request.user
     company = Location.objects.filter(loc_company = user.user_company.pk)
@@ -63,6 +66,7 @@ def create_ticket(request):
 
     return render(request, 'support/create_ticket.html', {'form': form, 'user':user, 'product':product,})
 
+@login_required
 def ticket_list(request):
     ticket = Ticket.objects.all()
     ticket_user = Ticket.objects.filter(assignee=request.user)
@@ -79,6 +83,7 @@ def ticket_list(request):
     }
     return render(request, 'support/ticket_list.html', context)
 
+@login_required
 def ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk = pk)
     ticket_user = User.objects.filter(user_company=ticket.company)
@@ -278,11 +283,12 @@ def ticket(request, pk):
     }
     return render(request, 'support/ticket.html', context)
 
-
+@login_required
 def show_pdf(request):
     filepath = os.path.join('static', 'sample.pdf')
     return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
 
+@login_required
 def download_file(request, file_id, file_type):
     if file_type == 'document':
         file_object = Document.objects.get(pk=file_id)
@@ -306,7 +312,7 @@ def download_file(request, file_id, file_type):
         # Handle file not found error
         return HttpResponse("File not found", status=404)
     
-
+@login_required
 def clock_in(request, pk):
     call = Call_Time.objects.get(pk=pk)
     ticket = Ticket.objects.get(pk = call.ticket_id.pk)
@@ -323,7 +329,7 @@ def clock_in(request, pk):
     }
     return render(request, 'support/clock_in.html', context)
 
-
+@login_required
 def clock_out(request, pk):
     call = Call_Time.objects.get(pk=pk)
     ticket = Ticket.objects.get(pk = call.ticket_id.pk)
@@ -345,7 +351,7 @@ def clock_out(request, pk):
     return render(request, 'support/clock_out.html', context)
 
 
-
+@login_required
 def view_attachment(request, attachment_id):
     attachment = get_object_or_404(CallDocument, pk=attachment_id)
     
