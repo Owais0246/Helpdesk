@@ -32,7 +32,7 @@ class Ticket(models.Model):
     downtime_required = models.BooleanField(default=False)
     # contact_person = models.CharField(max_length=50, null=True, blank=True)
     contact_person = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True, related_name="contact_person")
-    phone_number = models.BigIntegerField(max_length=50)
+    phone_number = models.BigIntegerField(blank=True, help_text='Enter Phone Number')
     spare_by_zaco = models.BooleanField(default=False)
     sr_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     ticket_call_time = models.ManyToManyField("Call_Time", blank=True)
