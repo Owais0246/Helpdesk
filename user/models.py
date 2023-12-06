@@ -8,7 +8,7 @@ from masters.models import Company,Location
 class User(AbstractUser):
     
     email = models.EmailField()
-    user_contact_no = models.IntegerField(null=True,blank=True)
+    user_contact_no = models.BigIntegerField(null=True,blank=True)
     user_company= models.ForeignKey(Company,on_delete=models.CASCADE, null=True)
     user_loc = models.ForeignKey(Location,on_delete=models.CASCADE, null=True)
     is_service_admin=models.BooleanField(default=False)

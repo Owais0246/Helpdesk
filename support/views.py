@@ -8,12 +8,14 @@ from amc.models import Amc
 from masters.models import Product, Company, Location
 from django.http import FileResponse
 import os
-from django.conf import settings
+from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from .utils import build_absolute_url
 from django.utils.safestring import mark_safe
 from threading import Thread
 from django.core.mail import send_mail
+from django.db.models import Q
+
 
 
 
@@ -25,6 +27,8 @@ def send_email_async(subject, message, email_from, recipient_list):
 
 def create_ticket(request):
     user = request.user
+    admin = User.objects.filter(is_service_admin=True)    
+
     company = Location.objects.filter(loc_company = user.user_company.pk)
     # amc = Amc.objects.get(company=company)
     
@@ -47,11 +51,14 @@ def create_ticket(request):
             for doc in request.FILES.getlist('documents'):
                 ticket.documents.create(file=doc)  # Create Document objects and associate them with the ticket
                 
-                
-            subject = f'Ticket ID {ticket.uuid} was created'
-            message = f'Hi Ticket ID: {ticket.uuid}, by {ticket.company} was created. Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'
-            email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
-            recipient_list = ['abhiraj@zacocomputer.com', ]
+
+
+            email_template_path = "email/ticket_create_mail.html"
+            email_content = render_to_string(email_template_path, {'ticket': ticket, 'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk)})
+            subject = f' New Ticket Created - Ticket ID: {ticket.uuid}'
+            message = email_content
+            email_from = 'info@zacocomputer.com'
+            recipient_list = [admin.email, ticket.raised_by.email]
         
             email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
             email_thread.start()
@@ -81,50 +88,44 @@ def ticket_list(request):
 
 def ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk = pk)
-    ticket_user = User.objects.filter(user_company=ticket.company)
     admin = User.objects.filter(is_service_admin=True)
-    
-    
-    admin_list = [user.email for user in admin]
-    email_list = [user.email for user in ticket_user] + admin_list
-    if ticket.assignee:
-        email_list.append(ticket.assignee.email)
-    
-                # fe_list = email_list.append(call_time.get_field_engineer_email())
-    
-    
+    customer_admin = User.objects.filter(user_loc=ticket.location).filter(is_customer_admin=True)
     ticket1 = Ticket.objects.filter(pk = pk)
     assign_form = AssignTicketForm(request.POST or None, instance= ticket)
     close_form = CloseForm(request.POST or None, instance= ticket)
     eng = User.objects.filter(is_field_engineer=True) | User.objects.filter(is_sr_engineer=True)
     sr_eng = User.objects.filter(is_sr_engineer=True)
-    is_service_agent = User.objects.filter(is_service_agent=True)
+    is_service_agent = User.objects.filter(is_service_agent=True) or User.objects.filter(is_service_admin=True)
     selected_product = Product.objects.get(pk=ticket.product.pk)
     amc = selected_product.amc
     call_filter = Call_Time.objects.filter(ticket_id=pk).filter(field_engineer=request.user)
-
+    assign_email = ticket.assignee.email 
+    sender = request.user
 
     if assign_form.is_valid():
         assign = assign_form.save(commit=False)
-        ticket.status = 'Open'
+        assign.status = 'Open'
         assign.save()
+        
+        
         messages=f'''Your ticket has been assigned to {ticket.assignee.first_name} {ticket.assignee.last_name} you can contact them at
         {ticket.assignee.user_contact_no} or email at {ticket.assignee.email}
         '''
         ticket.ticket_message.create(messages=messages, sender=request.user)
         
-        l = [ticket.assignee.email, ]
-        print(l)
-        subject = f'Ticket ID {ticket.uuid} was assigned to {ticket.assignee.first_name} {ticket.assignee.last_name}'
-        message = f'Hi Ticket ID: {ticket.uuid}, was assigned to {ticket.assignee.first_name} {ticket.assignee.last_name}. Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'
+
+        email_template_path = "email/ticket_assign_mail.html"
+        email_content = render_to_string(email_template_path, {'ticket': ticket, 'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk)})
+
+        subject = f'''Ticket Assignment Confirmation - Ticket ID: {ticket.uuid}'''
+        message = email_content
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
-        recipient_list = email_list
-        
+        recipient_list = [assign_email, ticket.raised_by.email]
+        print(recipient_list)
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
         
-        
-        
+
         return redirect('Ticket', pk)
     
 
@@ -149,17 +150,25 @@ def ticket(request, pk):
         '''
         ticket.ticket_message.create(messages=messages1, sender=request.user)
         
-        for call_time in ticket.ticket_call_time.all():
-                fe_email = [call_time.get_field_engineer_email()]
-                if fe_email not in email_list:
-                    fe_email = email_list + fe_email
+        # for call_time in ticket.ticket_call_time.all():
+        #         fe_email = [call_time.get_field_engineer_email()]
+        #         if fe_email not in email_list:
+        #             fe_email = email_list + fe_email
         
-        subject = f'Ticket ID {ticket.uuid} service is scheduled on {schedule}'
-        message = f'''Hi Ticket ID: {ticket.uuid}, Service is scheduled on {schedule} 
-        and the engineer would be {field_engineer.first_name} {field_engineer.last_name}. 
-        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
+        
+        email_template_path = "email/ticket_schedule_mail.html"
+        email_content = render_to_string(email_template_path, {'ticket': ticket, 
+                                                               'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                               'field_engineer': field_engineer,
+                                                               'schedule':schedule,
+                                                               })
+
+        
+        subject = f'Service Schedule and Engineer Assigned  - Ticket ID: {ticket.uuid}'
+        message = email_content
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
-        recipient_list = ['abhiraj@zacocomputer.com',]
+        recipient_list = [field_engineer.email, ticket.raised_by.email]
+        print(recipient_list)
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
@@ -176,22 +185,23 @@ def ticket(request, pk):
         ticket1.update(sr_engineer=sr_engineer)
         sr_eng = User.objects.get(pk = sr_engineer)
         
-    
-        subject = f'Ticket ID {ticket.uuid} your assistance is required'
-        message = f'''Hi Ticket ID: {ticket.uuid}, needs your assistance
-        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
+        email_template_path = "email/ticket_sr_mail.html"
+        email_content = render_to_string(email_template_path, {'ticket': ticket, 
+                                                               'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                               })
+        subject = f'Urgent Assistance Needed - Ticket ID: {ticket.uuid}'
+        message = email_content
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
         recipient_list = [sr_eng.email]
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
-        
+        print(assign_email)
         return redirect('Ticket', pk)
     
-        
+      
     elif "ticket_message" in request.POST:
         message_text = request.POST.get("ticket_message")
-        sender = request.user
         ticket_message = ticket.ticket_message.create(messages=message_text, sender=sender)
 
         # Handle file upload
@@ -207,11 +217,25 @@ def ticket(request, pk):
             ticket_message.messages = message_with_link
             ticket_message.sender = sender
             ticket_message.save()
-
+            
+            
+        email_template_path = "email/ticket_message_mail.html"
+        email_content = render_to_string(email_template_path, {'ticket': ticket, 
+                                                               'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                               })
         subject = f'Ticket ID {ticket.uuid} New Message'
-        message = f'Hi Ticket ID: {ticket.uuid}, received new message: {message_text} from {sender.username}'
+        message = email_content
         email_from = 'info@zacocomputer.com'
-        recipient_list = ["abhiraj@zacocomputer.com",]
+        recipient_list = [assign_email, ticket.raised_by.email]
+        if customer_admin:
+            for admin in customer_admin:
+                if admin.email not in recipient_list:
+                    recipient_list.append(admin.email)
+        if sender.email in recipient_list:
+            recipient_list.remove(sender.email)
+        print(recipient_list)
+        # print(customer_admin.values())
+        
 
         # Use threading to send the email asynchronously
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
@@ -228,11 +252,25 @@ def ticket(request, pk):
         ticket.ticket_message.create(messages=f''' Your ticket {ticket.uuid} has been closed at {time} here is the summary of the ticket
                                      {feedback}''', sender=request.user)
         
-        subject = f'Ticket ID {ticket.uuid} was closed'
-        message = f'''Hi Ticket ID: {ticket.uuid} has been closed at {time} here is the summary of the ticket {feedback}
-        Click here to view the ticket: {build_absolute_url(request, "Ticket", pk=ticket.pk)}'''
+        
+        email_template_path = "email/ticket_close_email.html"
+        email_content = render_to_string(email_template_path, {'ticket': ticket, 
+                                                               'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                               'time':time,
+                                                               'feedback':feedback,
+                                                               })
+        
+        subject = f'Ticket Closure Notification - Ticket ID: {ticket.uuid}'
+        message = email_content
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
-        recipient_list = email_list
+        recipient_list = [assign_email, ticket.raised_by.email]
+        if customer_admin:
+            for admin in customer_admin:
+                if admin.email not in recipient_list:
+                    recipient_list.append(admin.email)
+        if sender.email in recipient_list:
+            recipient_list.remove(sender.email)
+        print(recipient_list)
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
@@ -311,16 +349,44 @@ def clock_in(request, pk):
     call = Call_Time.objects.get(pk=pk)
     ticket = Ticket.objects.get(pk = call.ticket_id.pk)
     call_form = ClockIn(request.POST or None, instance= call)
+    customer_admin = User.objects.filter(user_loc=ticket.location).filter(is_customer_admin=True)
+    assign_email = ticket.assignee.email
     if call_form.is_valid():
         call_form.save()
         time = request.POST.get('clock_in')
         ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer} has reached your location at {time}''', sender=request.user)
+        
+    
+    
+        email_template_path = "email/ticket_clock_in_mail.html"
+        email_content = render_to_string(email_template_path, {    'ticket': ticket, 
+                                                                'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                                'time':time,
+                                                                'call':call,
+                                                                
+                                                                })
+            
+        subject = f'Field Engineer Arrival Notification - Service for Ticket ID: {ticket.uuid}'
+        message = email_content
+        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        recipient_list = [assign_email, ticket.raised_by.email]
+        if customer_admin:
+            for admin in customer_admin:
+                if admin.email not in recipient_list:
+                    recipient_list.append(admin.email)
+        
+        print(recipient_list)
+        
+        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+        email_thread.start()
+        
         return redirect('Ticket', call.ticket_id.pk)
     context = {
 
-        'call_form':call_form,
-        'call':call,
-    }
+            'call_form':call_form,
+            'call':call,
+        }
+    
     return render(request, 'support/clock_in.html', context)
 
 
@@ -328,6 +394,8 @@ def clock_out(request, pk):
     call = Call_Time.objects.get(pk=pk)
     ticket = Ticket.objects.get(pk = call.ticket_id.pk)
     call_form = ClockOutForm(request.POST or None, instance= call)
+    customer_admin = User.objects.filter(user_loc=ticket.location).filter(is_customer_admin=True)
+    assign_email = ticket.assignee.email
     if call_form.is_valid():
         call_form.save()
         files = request.FILES.getlist('documents')
@@ -336,6 +404,30 @@ def clock_out(request, pk):
         time = request.POST.get('clock_out')
         update = request.POST.get('update')
         ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer} has left your location at {time} Call Summary: {update}''', sender=request.user)
+        
+        email_template_path = "email/ticket_clock_out_mail.html"
+        email_content = render_to_string(email_template_path, {  'ticket': ticket, 
+                                                                'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                                'time':time,
+                                                                'call':call,
+                                                                'update':update,
+                                                                
+                                                                })
+            
+        subject = f'Field Engineer Departure Notification - Service Summary for Ticket ID: {ticket.uuid}'
+        message = email_content
+        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+        recipient_list = [assign_email, ticket.raised_by.email]
+        if customer_admin:
+            for admin in customer_admin:
+                if admin.email not in recipient_list:
+                    recipient_list.append(admin.email)
+        
+        print(recipient_list)
+        
+        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+        email_thread.start()
+        
         return redirect('Ticket', call.ticket_id.pk)
     context = {
 

@@ -51,7 +51,7 @@ class Ticket(models.Model):
     
     def __str__(self):
         return self.issue + " - " + "ZCPL/"+str(self.pk) + " - UUID -" + str(self.uuid)
-    
+
 def generate_uuid():
     today = datetime.date.today()
     year = today.year

@@ -6,7 +6,7 @@ from multiupload.fields import MultiFileField
 
 
 class TicketForm(forms.ModelForm):
-    documents = MultiFileField(min_num=1, max_num=10, max_file_size=1024*1024*5, required=False)
+    documents = MultiFileField(min_num=1, max_num=10, max_file_size=1024*1024*500, required=False)
 
     class Meta:
         model = Ticket

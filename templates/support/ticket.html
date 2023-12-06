@@ -339,10 +339,10 @@
            
             <div class="col-6 text-end">
               {% if ticket.status != 'Closed' %}
-              {% if ticket.sr_engineer == None and request.user.is_service_admin == True or ticket.assignee == request.user  %}
+              {% if ticket.sr_engineer == None and ticket.assignee == request.user  %}
               <button type="button" class="btn btn-primary  mb-3" data-bs-toggle="modal" data-bs-target="#sr_eng">
                 Involve Sr Engineer</button>
-              {% else %}
+              {% elif ticket.sr_engineer != None%}
               <h5 class="card-title font-16 mb-3">Sr Engineer :{{ticket.sr_engineer.first_name}}</h5>
               {% endif %}{% endif %}
  </div>
