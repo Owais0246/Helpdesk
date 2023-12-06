@@ -10,6 +10,7 @@ from amc.models import Amc
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.serializers import serialize
+from django.utils.decorators import method_decorator
 
 
 # Create your views here.
@@ -30,13 +31,13 @@ def create_customer(request):
     }
     return render(request, 'masters/company/company_create.html', context)
 
-
+@login_required
 def customer_list(request):
     customers= Company.objects.filter(is_customer=True)
     context= {'customers':customers}
     return render(request, 'masters/company/company_list.html', context)
     
-
+@method_decorator(login_required, name="dispatch")
 class CustomerCreateView(generic.CreateView):
     template_name = 'masters/company/company_create.html'
     form_class = CompanyForm
@@ -45,7 +46,7 @@ class CustomerCreateView(generic.CreateView):
         return reverse('CompanyList')
     
     
-
+@method_decorator(login_required, name="dispatch")
 class CustomerListView(generic.ListView):
     template_name = 'masters/company/company_list.html'
     queryset = Company.objects.all()
@@ -101,7 +102,7 @@ def create_customer_user(request,pk):
     return render(request, 'masters/company/company_detail.html', context)
 
     
-
+@method_decorator(login_required, name="dispatch")
 class CustomerUpdateView(generic.UpdateView):
     model =Company
     form_class = CompanyForm
@@ -112,7 +113,7 @@ class CustomerUpdateView(generic.UpdateView):
 
 
 #Location Views
-
+@method_decorator(login_required, name="dispatch")
 class LocationCreateView(generic.CreateView):
     template_name = 'masters/location/location_create.html'
     form_class = LocationForm
@@ -121,7 +122,7 @@ class LocationCreateView(generic.CreateView):
         return reverse('LocationList')
     
 
-
+@method_decorator(login_required, name="dispatch")
 class LocationListView(generic.ListView):
     template_name = 'masters/location/location_list.html'
     queryset = Location.objects.all()
@@ -161,8 +162,6 @@ def LocationDetail(request, pk):
         messages.success(request, 'User Created Successfully')
         return redirect('LocationDetail',pk)
     
-    
-    
     context = {        
         "user_form":user_form,
         "users":users,
@@ -174,8 +173,7 @@ def LocationDetail(request, pk):
    
     return render(request, 'masters/location/location_detail.html', context)
 
-
-
+@method_decorator(login_required, name="dispatch")
 class LocationUpdateView(generic.UpdateView):
     model =Location
     form_class = LocationForm
@@ -186,19 +184,21 @@ class LocationUpdateView(generic.UpdateView):
     
     
 #Product Views
+@method_decorator(login_required, name="dispatch")
 class ProductCreateView(generic.CreateView):
     template_name = 'product/product_create.html'
     form_class = ProductForm
 
     def get_success_url(self):
         return reverse('ProductList')
-
+    
+@method_decorator(login_required, name="dispatch")
 class ProductListView(generic.ListView):
     template_name = 'product/product_list.html'
     queryset = Product.objects.all()
     context_object_name = 'product'
 
-
+@login_required
 def ProductDetail(request, pk):
     product_pk =Product.objects.get(id=pk)
 
@@ -207,6 +207,7 @@ def ProductDetail(request, pk):
     }
     return render(request, 'product/product_detail.html', context)
 
+@method_decorator(login_required, name="dispatch")
 class ProductUpdateView(generic.UpdateView):
     model =Product
     form_class =ProductForm
@@ -215,16 +216,11 @@ class ProductUpdateView(generic.UpdateView):
     def get_success_url(self):
         return reverse('ProductList')
     
-    
+@login_required
 def LoadLocation(request):
     company=request.GET.get('company')
-    location= Location.objects.filter(loc_company=company)
-    # location_list =location
-    
-         
-        
+    location= Location.objects.filter(loc_company=company) 
     location_data = serialize('json', location)
-    
     # Returning the JSON response
     return JsonResponse({'location_list': location_data}, safe=False)
     # return JsonResponse(location_data, safe=False)

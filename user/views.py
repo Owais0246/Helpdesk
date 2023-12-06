@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 
 
 # **************users list view*****************
-
+@login_required
 def user_list_view(request):
     service_admin_view = User.objects.filter(is_service_admin=True)
     service_agent_view = User.objects.filter(is_service_agent=True)
@@ -32,7 +32,7 @@ def user_list_view(request):
 
 
 # *****************create service admin view*********************
-
+@login_required
 def create_service_admin(request):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -56,7 +56,7 @@ def create_service_admin(request):
 # ***************edit service admin view*******************
 
 
-
+@login_required
 def edit_service_admin(request,pk):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -87,7 +87,7 @@ def service_admin_del(request,pk):
 
 
 # ***************service admin list view*************
-
+@login_required
 def service_admin_list(request):
     service_admin_view = User.objects.filter(is_service_admin=True)
     return render(request,'users/service_admin_list.html',{'service_admin_view':service_admin_view})
@@ -95,7 +95,7 @@ def service_admin_list(request):
 
 # **********create service gent view**************
 
-
+@login_required
 def create_service_agent(request):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -116,7 +116,7 @@ def create_service_agent(request):
 
 # *****************edit service admin view****************** 
 
-
+@login_required
 def edit_service_agent(request,pk):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -135,7 +135,7 @@ def edit_service_agent(request,pk):
 
     return render(request,'masters/company/service_admin_edit.html',{'service_form':service_form})
 
-
+@login_required
 def service_agent_del(request,pk):
     service_agent= User.objects.get(id=pk)
     service_agent.delete()
@@ -143,14 +143,14 @@ def service_agent_del(request,pk):
 
 
 # ***************service agent list view************* 
-
+@login_required
 def service_agent_list(request):
     service_agent_view = User.objects.filter(is_service_agent=True)
     return render(request,'users/service_agent_list.html',{'service_agent_view':service_agent_view})
 
 
 # **********create field engineer********** 
-
+@login_required
 def create_field_engineer(request):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -169,7 +169,7 @@ def create_field_engineer(request):
     return render(request,'masters/company/service_admin.html',{'service_form':service_form})
 
 # **********edit field engineer************* 
-
+@login_required
 def edit_field_engineer(request,pk):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -190,7 +190,7 @@ def edit_field_engineer(request,pk):
 
 
 # **************delete field engineer***************
-
+@login_required
 def field_engineer_del(request,pk):
     field_engineer= User.objects.get(id=pk)
     field_engineer.delete()
@@ -198,14 +198,14 @@ def field_engineer_del(request,pk):
 
 
 # ***************Field engineer list view************* 
-
+@login_required
 def field_engineer_list(request):
     field_engineer_view = User.objects.filter(is_field_engineer=True)
     return render(request,'users/field_engineer_list.html',{'field_engineer_view':field_engineer_view})
 
 
 # ***********create sr engineer*************
-
+@login_required
 def create_sr_engineer(request):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -225,7 +225,7 @@ def create_sr_engineer(request):
 
 
 # **************edit sr engineer*****************
-
+@login_required
 def edit_sr_engineer(request,pk):
     # company = get_object_or_404(Company, id=pk)
     company=Company.objects.get(is_self_company=True)
@@ -243,7 +243,7 @@ def edit_sr_engineer(request,pk):
     return render(request,'masters/company/service_admin_edit.html',{'service_form':service_form})
 
 # **************delete sr engineer****************
-
+@login_required
 def sr_engineer_del(request,pk):
     sr_engineer= User.objects.get(id=pk)
     sr_engineer.delete()
@@ -251,7 +251,7 @@ def sr_engineer_del(request,pk):
 
 
 # ***************senior engineer list view************* 
-
+@login_required
 def sr_engineer_list(request):
     sr_engineer_view = User.objects.filter(is_sr_engineer=True)
     return render(request,'users/senior_engineer_list.html',{'sr_engineer_view':sr_engineer_view})
@@ -273,6 +273,7 @@ def sr_engineer_list(request):
 
 # Create View
 
+@method_decorator(login_required, name="dispatch")
 class  UserCreateView(generic.CreateView):
     user=User.objects.all()
     template_name='users/user_create.html'
@@ -283,13 +284,14 @@ class  UserCreateView(generic.CreateView):
         return reverse ("UserList")
 
 # List View
+@method_decorator(login_required, name="dispatch")
 class UserListView(generic.ListView):
     template_name = "users/user_list.html"
     queryset = User.objects.all()
     context_object_name = "users"
 
 # Detail View
-
+@login_required
 def UserDetail(request, pk):
     user_pk =User.objects.get(id=pk)
 
@@ -332,7 +334,7 @@ def login_user(request):
 
 
 # User Logout View
-
+@login_required
 def logout_user (request):
     logout(request)
     return redirect ('login')

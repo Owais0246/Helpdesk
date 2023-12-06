@@ -163,7 +163,7 @@ class AmcUpdateView(generic.UpdateView):
     def get_success_url(self):
         return reverse('AmcList')
 
-
+@login_required
 def load_contact_person(request):
     if request.method == "GET":
         product_id = request.GET.get('product_id')
