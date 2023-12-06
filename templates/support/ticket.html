@@ -182,6 +182,7 @@
               <!-- end Status -->
             </div>
 
+            {% if request.user.is_service_admin or request.user.is_service_agent %}
 
             <div class="col-md-6">
               <!-- Status -->
@@ -220,7 +221,7 @@
             </div>
 
             <!-- end col -->
-
+            {% endif %}
             {% endif %}
             <!-- end col -->
           </div>
@@ -277,6 +278,7 @@
 
           </div>
           <div class="border rounded mt-4">
+            {% if ticket.status == 'Open' %}
             <form method="post" class="comment-area-box" enctype="multipart/form-data">
 
               {% csrf_token %}
@@ -299,6 +301,7 @@
                 </button>
               </div>
             </form>
+            {% endif %}
           </div>
           <!-- end .border-->
         </div>
@@ -407,10 +410,11 @@
               <h5 class="card-title font-16 mb-3 mt-2 text-left">Call Time</h5>
             </div>
             <div class="col-6 text-end">
-              {% if request.user.is_service_admin == True or ticket.assignee == request.user and ticket.status != 'Closed' %}
+              {% if ticket.status == 'Open' %}
+              {% if request.user.is_service_admin == True or ticket.assignee == request.user %}
               <button type="button" class="btn btn-primary  mb-3" data-bs-toggle="modal" data-bs-target="#call">
                 Schedule call time</button>
-                {% endif %}
+                {% endif %}{% endif %}
                 
 
             </div>

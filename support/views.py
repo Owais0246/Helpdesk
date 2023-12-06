@@ -104,9 +104,12 @@ def ticket(request, pk):
     selected_product = Product.objects.get(pk=ticket.product.pk)
     amc = selected_product.amc
     call_filter = Call_Time.objects.filter(ticket_id=pk).filter(field_engineer=request.user)
-    assign_email = ticket.assignee.email 
+     
     sender = request.user
+    if ticket.assignee is not None:
+        assign_email = ticket.assignee.email
 
+        
     if assign_form.is_valid():
         assign = assign_form.save(commit=False)
         assign.status = 'Open'
@@ -125,14 +128,13 @@ def ticket(request, pk):
         subject = f'''Ticket Assignment Confirmation - Ticket ID: {ticket.uuid}'''
         message = email_content
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
-        recipient_list = [assign_email, ticket.raised_by.email]
+        recipient_list = [ticket.assignee.email, ticket.raised_by.email]
         print(recipient_list)
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
         
 
         return redirect('Ticket', pk)
-    
 
     elif "schedule" in request.POST:
         schedule = request.POST.get("schedule")
