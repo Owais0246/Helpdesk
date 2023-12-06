@@ -7,7 +7,7 @@ from django.db import models
 
 class Company(models.Model):
     company_name = models.CharField(max_length=50, help_text='Enter your Company Name')
-    company_contact_no = models.IntegerField(blank=True, help_text='Enter Company Phone Number')
+    company_contact_no =models.BigIntegerField(blank=True, help_text='Enter Company Phone Number')
     address = models.TextField()
     company_suffix= models.CharField(max_length=10, help_text='Enter your Company Suffix',null=True,blank=True)
     is_customer = models.BooleanField(default=False)
@@ -24,7 +24,7 @@ class Location(models.Model):
     loc_company = models.ForeignKey(Company, on_delete=models.PROTECT, help_text='Select Company Name')
     loc_name = models.CharField(max_length=50, help_text='Enter Branch Name')
     loc_poc_email= models.EmailField(max_length=254)
-    loc_poc_contact_no =models.IntegerField(blank=True, help_text='Enter Company Phone Number')
+    loc_poc_contact_no =models.BigIntegerField(blank=True, help_text='Enter Company Phone Number')
     loc_address = models.TextField()
 
     def __str__(self):
