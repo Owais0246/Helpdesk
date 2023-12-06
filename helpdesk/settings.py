@@ -105,7 +105,7 @@ DATABASES = {
         'NAME': 'helpdesk',
         'USER': 'service_admin',
         'PASSWORD': 'helpmeout',
-        'HOST': '192.168.1.11',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
