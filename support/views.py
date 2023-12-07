@@ -214,16 +214,24 @@ def ticket(request, pk):
         # Handle file upload
         document = request.FILES.get("document")
         if document:
+            documents = request.FILES.getlist("document")
+    
+        ticket_messages = []
+        
+        for document in documents:
             # Save the document associated with the message
+            ticket_message = ticket.ticket_message.create(messages=message_text, sender=sender)
             document_instance = MessageDocument.objects.create(message=ticket_message, file=document)
 
             # Include a clickable link to view the document in the message
             document_link = request.build_absolute_uri(document_instance.file.url)
-            clickable_link = f'<a href="{document_link}" target="_blank">here</a>'
+            clickable_link = f'<a href="{document_link}" target="_blank">{document.name}</a>'
             message_with_link = f"{message_text} New attachment received, View the document {mark_safe(clickable_link)}."
             ticket_message.messages = message_with_link
             ticket_message.sender = sender
             ticket_message.save()
+            
+            ticket_messages.append(ticket_message)
             
             
         email_template_path = "email/ticket_message_mail.html"
