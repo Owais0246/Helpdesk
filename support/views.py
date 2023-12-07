@@ -30,7 +30,10 @@ def send_email_async(subject, message, email_from, recipient_list):
 @login_required
 def create_ticket(request):
     user = request.user
-    admin = User.objects.filter(is_service_admin=True)    
+    admin = User.objects.filter(is_service_admin=True)
+    admin_email= [x.email for x in admin ]
+  
+    
 
     company = Location.objects.filter(loc_company = user.user_company.pk)
     # amc = Amc.objects.get(company=company)
@@ -61,8 +64,8 @@ def create_ticket(request):
             subject = f' New Ticket Created - Ticket ID: {ticket.uuid}'
             message = email_content
             email_from = 'info@zacocomputer.com'
-            recipient_list = [admin.email, ticket.raised_by.email]
-        
+            recipient_list = [ticket.raised_by.email]+admin_email
+                    
             email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
             email_thread.start()
             
