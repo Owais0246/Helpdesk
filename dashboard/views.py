@@ -18,7 +18,7 @@ def dashboard(request):
         ticket = Ticket.objects.filter(company = request.user.user_company)
         ticket_active = Ticket.objects.filter(company = request.user.user_company).filter(status="Open")
         ticket_close = Ticket.objects.filter(company = request.user.user_company).filter(status="Closed")
-        ticket_pending = Ticket.objects.filter(assignee=None).filter(status="Pending")
+        ticket_pending = Ticket.objects.filter(assignee=None).filter(status="Pending").filter(location=request.user.user_loc)
         
     elif request.user.is_service_admin == True:
         ticket = Ticket.objects.all()
