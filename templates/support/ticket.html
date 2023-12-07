@@ -10,24 +10,58 @@
     overflow: auto;
   }
 
-  .msg-right {
-    background: #3BA1EE;
+  .msg-container {
+    clear: both;
+    content: "";
+
+  }
+
+  .msg-right,
+  .msg-left {
+    border-radius: 15px;
     padding: 10px;
-    text-align: right;
-    color: #fff;
     margin: 5px;
     width: 70%;
+    color: #292b2c;
+  }
+
+  .msg-right {
+    background: #e3effd;
     float: right;
     margin-right: 30px;
+    position: relative;
+    text-align: right;
+  }
+
+  .msg-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 15px 0 15px 15px;
+    border-color: transparent transparent transparent #e3effd;
   }
 
   .msg-left {
-    background: #ddd;
-    padding: 10px;
-    margin: 5px;
-    width: 70%;
+    background: #f6f6f6;
     float: left;
     margin-left: 30px;
+    position: relative;
+  }
+
+  .msg-left::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 15px 15px 15px 0;
+    border-color: transparent #f6f6f6 transparent transparent;
   }
 </style>
 <link href="{% static 'libs/spectrum-colorpicker2/spectrum.min.css' %}" rel="stylesheet" type="text/css" />
@@ -261,22 +295,20 @@
           <div class="clerfix"></div>
           <div id="demo" class="demo">
             {% for message in ticket.ticket_message.all %}
-            <div class="msg-{% if message.sender == request.user %}right {% else %}left{% endif %}">
-                <h5 class="mt-0 mb-1">
-                    {{ message.sender.first_name }} {{ message.sender.last_name }}
-                </h5>
-                {% autoescape off %}
-                    {{ message.messages | safe }}
-                {% endautoescape %}
-                <br />
-                <small>{{ message.sent_on }} </small>
+            <div class="msg-container">
+                <div class="msg-{% if message.sender == request.user %}right {% else %}left{% endif %}">
+                    <h5 class="mt-0 mb-1">
+                        {{ message.sender.first_name | title}} {{ message.sender.last_name | title}}
+                    </h5>
+                    {% autoescape off %}
+                        {{ message.messages | safe }}
+                    {% endautoescape %}
+                    <br />
+                    <small>{{ message.sent_on }} </small>
+                </div>
             </div>
-        {% endfor %}
-
-
-            <!-- message-->
-
-          </div>
+            {% endfor %}
+        </div>
           <div class="border rounded mt-4">
             {% if ticket.status == 'Open' %}
             <form method="post" class="comment-area-box" enctype="multipart/form-data">
