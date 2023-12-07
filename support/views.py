@@ -119,8 +119,8 @@ def ticket(request, pk):
         assign.save()
         
         
-        messages=f'''Your ticket has been assigned to {ticket.assignee.first_name} {ticket.assignee.last_name} you can contact them at
-        {ticket.assignee.user_contact_no} or email at {ticket.assignee.email}
+        messages=f'''Your ticket has been assigned to {ticket.assignee.first_name} {ticket.assignee.last_name}. 
+        You can contact them at {ticket.assignee.user_contact_no} or email at {ticket.assignee.email} for further assistance.
         '''
         ticket.ticket_message.create(messages=messages, sender=request.user)
         
@@ -150,13 +150,12 @@ def ticket(request, pk):
         
         field_engineer = User.objects.get(pk=eng)
         ticket.ticket_call_time.create(schedule=schedule, ticket_id=ticket, field_engineer=field_engineer)
-        messages=f'''Service is scheduled on {schedule} and the engineer would be {field_engineer.first_name} {field_engineer.last_name}
-        you can contact them at {field_engineer.user_contact_no} or email at {field_engineer.email}
+        messages=f'''Your service is scheduled on {schedule}, and the assigned engineer is {field_engineer.first_name} {field_engineer.last_name}. 
+        You can contact them at {field_engineer.user_contact_no} or email at {field_engineer.email} for any inquiries or assistance.
         '''
         ticket.ticket_message.create(messages=messages, sender=request.user)
         
-        messages1=f''' {field_engineer.first_name} {field_engineer.last_name} is fully vaccinated you can access the vaccine certificate and ID proof
-        from schedule call section
+        messages1=f'''We're pleased to inform you that {field_engineer.first_name} {field_engineer.last_name} is fully vaccinated. You can access the vaccine certificate and ID proof from the Schedule Call section.
         '''
         ticket.ticket_message.create(messages=messages1, sender=request.user)
         
@@ -267,8 +266,9 @@ def ticket(request, pk):
         closed_at = datetime.datetime.now()
         time = closed_at.strftime('%d/%m/%Y, %I:%M:%S %p')
         ticket1.update(feedback=feedback,status=status,closed_at=closed_at)
-        ticket.ticket_message.create(messages=f''' Your ticket {ticket.uuid} has been closed at {time} here is the summary of the ticket
-                                     {feedback}''', sender=request.user)
+        ticket.ticket_message.create(messages=f'''Your ticket {ticket.uuid} has been successfully closed at {time}. Here is a summary of the ticket:
+                                                {feedback}
+                                                If you have any further questions or need assistance, feel free to reach out.''', sender=request.user)
         
         
         email_template_path = "email/ticket_close_email.html"
@@ -373,7 +373,8 @@ def clock_in(request, pk):
     if call_form.is_valid():
         call_form.save()
         time = request.POST.get('clock_in')
-        ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer} has reached your location at {time}''', sender=request.user)
+        ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer.first_name} {call.field_engineer.last_name} has arrived at your location at {time}. 
+                                     If you have any specific instructions or need assistance, please feel free to reach out.''', sender=request.user)
         
     
     
@@ -422,7 +423,9 @@ def clock_out(request, pk):
             CallDocument.objects.create(call_time=call, file=file)
         time = request.POST.get('clock_out')
         update = request.POST.get('update')
-        ticket.ticket_message.create(messages=f''' Field Engineer {call.field_engineer} has left your location at {time} Call Summary: {update}''', sender=request.user)
+        ticket.ticket_message.create(messages=f'''Field Engineer {call.field_engineer.first_name} {call.field_engineer.last_name} has left your location at {time}. 
+                                                Here is a summary of the call update: {update}.
+                                                If you have any further questions or require assistance, feel free to contact us.''', sender=request.user)
         
         email_template_path = "email/ticket_clock_out_mail.html"
         email_content = render_to_string(email_template_path, {  'ticket': ticket, 

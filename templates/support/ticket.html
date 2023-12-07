@@ -108,7 +108,7 @@
               <label class="mt-2 mb-1">Reported By :</label>
 
               <div class="w-100">
-                <p>{{ticket.company|title}} - {{ticket.location|title}}</p>
+                <p>{{ticket.raised_by|title}}  ( {{ticket.company|title}} - {{ticket.location|title}} )</p>
 
               </div>
               <!-- end Reported by -->
@@ -473,9 +473,24 @@
                   <p class="mb-0 font-14">Scheduled on : <span class="mb-0 font-12">{{call.schedule}}</span></p>
                   <p class="mb-0 font-16">Engineer: {{call.field_engineer.first_name}} {{call.field_engineer.last_name}}</p>
 
+                  
+                  {% if call.clock_out is not None and request.user.is_customer_admin == False and request.user.is_customer_user == False %}
+                  
+                  <p class="mb-0 font-12">Clocked in on : <span class="mb-0 font-12">{{call.clock_in}}</span></p>
+                  
+                  <p class="mb-0 font-12">Clocked out on : <span class="mb-0 font-12">{{call.clock_out}}</span></p>
+                  
+                  <p class="mb-0 font-12">Activity summary : <span class="mb-0 font-12">{{call.update}}</span></p>
+                  
+                  {% for attachment in call.attachments.all %}
+                  <a href="{% url 'view_attachment' attachment.id %}" target="_blank">View Call Summary</a></br>
+                  {% endfor %}
+                  {% else %}
                   <a href="{% url 'download_file' call.field_engineer.id 'aadhaar_no' %}" class="btn btn-soft-primary">Aadhar</a>
                   <a href="{% url 'download_file' call.field_engineer.id 'covid_cert' %}" class="btn btn-soft-primary ">Vaccination Certificate</a>
+                  {% endif %}
 
+                  
                 </div>
               </div>
             </div>
