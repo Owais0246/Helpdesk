@@ -35,7 +35,6 @@ from .forms import CreateAmcForm, ProductForm, AMCForm
 #         'companies':companies,
 #         'locations':locations,
 #         'products':products,
-        
 #     }
 #     return render(request,'amc/amc_create.html',context)
 
@@ -45,8 +44,6 @@ from .forms import CreateAmcForm, ProductForm, AMCForm
 #     company=Company.objects.get(id=pk)
 #     # location=Location.objects.filter(loc_company=company)
 #     location=Location.objects.all()
-    
-    
 #     if request.method == 'POST':
 #         amc_form = AMCForm(request.POST)
 #         product_formset = ProductFormSet(request.POST, instance=Amc(company=company))
