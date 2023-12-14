@@ -17,7 +17,7 @@ class Company(models.Model):
     
 
     def __str__(self):
-        return self.company_name
+        return f'{self.company_name}'
 
 
 class Location(models.Model):
@@ -28,7 +28,7 @@ class Location(models.Model):
     loc_address = models.TextField()
 
     def __str__(self):
-        return self.loc_name
+        return f'{self.loc_name}'
 
 class Product(models.Model):
     product_name=models.CharField(max_length=200,blank=False)    

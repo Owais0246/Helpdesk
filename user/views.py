@@ -1,13 +1,14 @@
-from urllib import request
+# from urllib import request
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, render, redirect,reverse
 from django.views import generic
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from user.models import User
 from masters.models import Company
 from .forms import *
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+
 
 
 # Create your views here.

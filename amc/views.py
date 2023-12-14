@@ -1,14 +1,14 @@
-from django.shortcuts import render,HttpResponse,redirect,reverse
-from .forms import CreateAmcForm, ProductForm, AMCForm, ProductFormSet
+from django.shortcuts import render,redirect,reverse
 from django.views import generic
-from . models import Amc
-from masters.models import Company,Location,Product
-from user.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.forms import inlineformset_factory
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
+from masters.models import Company,Location,Product
+from user.models import User
+from . models import Amc
+from .forms import CreateAmcForm, ProductForm, AMCForm
 
 
 # Create your views here.
