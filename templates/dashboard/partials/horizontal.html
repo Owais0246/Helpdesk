@@ -77,7 +77,7 @@
             </div>
           </li>
           {% endif %}
-          {% if  not request.user.is_field_engineer  or not request.user.is_sr_engineer  %}
+          {% if request.user.is_field_engineer == 'False'  or request.user.is_sr_engineer == 'False' %}
           <li class="nav-item dropdown">
             <a
               class="nav-link"

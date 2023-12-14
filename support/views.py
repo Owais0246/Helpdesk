@@ -231,7 +231,7 @@ def ticket(request, pk):
             # Include a clickable link to view the document in the message
             document_link = request.build_absolute_uri(document_instance.file.url)
             clickable_link = f'<a href="{document_link}" target="_blank">{document.name}</a>'
-            message_with_link = f"{message_text} New attachment received, View the document {mark_safe(clickable_link)}."
+            message_with_link = f" New attachment received, View the document {mark_safe(clickable_link)}."
 
             # Update the ticket_message with the message containing the attachment
             ticket_message_with_attachment.messages = message_with_link
