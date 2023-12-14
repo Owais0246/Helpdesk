@@ -354,7 +354,7 @@
           <div class="row align-items-center">
             <p>Ticket Number : <span class="mb-0 font-12">{{ticket.uuid}}</span></p>
             <p>Product : <span class="mb-0 font-12">{{ticket.product}}</span></p>
-            {% if  request.user == is_service_admin or request.user == is_service_agent or request.user == is_customer_user or request.user == is_customer_admin or request.user == is_superuser%}
+            {% if request.user.is_service_admin  == True or request.user.is_service_agent == True or request.user.is_customer_user == True or request.user.is_customer_admin == True or request.user.is_superuser == True%}
             <p>AMC : <span class="mb-0 font-12">{{amc.expiry}}</span>: <a href="{% url 'AmcDetail' amc.pk %}"> click here to view AMC detail</a></p>
             {% endif %}
             <p>Downtime Required : <span class="mb-0 font-12">{% if ticket.downtime_required %}Yes {% else %} No{% endif%}</span></p>
