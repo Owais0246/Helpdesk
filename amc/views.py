@@ -144,7 +144,16 @@ class AmcListView(generic.ListView):
 def AmcDetail(request, pk):
     amc_pk =Amc.objects.get(id=pk)
     company= Company.objects.get(pk=amc_pk.company.pk)
-    products=Product.objects.filter(amc_id=amc_pk).order_by('location')
+    
+    if request.user.is_customer_user and request.user.is_customer_admin:
+        products=Product.objects.filter(amc_id=amc_pk).order_by('location')
+    elif request.user.is_customer_user:
+        products=Product.objects.filter(amc_id=amc_pk).filter(location=request.user.user_loc).order_by('location')
+    else: 
+        products=Product.objects.filter(amc_id=amc_pk).order_by('location')
+        
+    
+    
 
     context = {
         "amc": amc_pk,
