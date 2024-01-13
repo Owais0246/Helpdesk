@@ -1,5 +1,4 @@
-from django.shortcuts import render,HttpResponse,redirect,reverse
-from .forms import CreateAmcForm, ProductForm, AMCForm, ProductFormSet
+from django.shortcuts import render,redirect,reverse
 from django.views import generic
 from . models import Amc, Source, Service
 from masters.models import Company,Location,Product
@@ -8,9 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.forms import inlineformset_factory
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum
 
+from masters.models import Company,Location,Product
+from user.models import User
+from . models import Amc
+from .forms import CreateAmcForm, ProductForm, AMCForm
 
 
 # Create your views here.
@@ -37,7 +40,6 @@ from django.db.models import Sum
 #         'companies':companies,
 #         'locations':locations,
 #         'products':products,
-        
 #     }
 #     return render(request,'amc/amc_create.html',context)
 
@@ -47,8 +49,6 @@ from django.db.models import Sum
 #     company=Company.objects.get(id=pk)
 #     # location=Location.objects.filter(loc_company=company)
 #     location=Location.objects.all()
-    
-    
 #     if request.method == 'POST':
 #         amc_form = AMCForm(request.POST)
 #         product_formset = ProductFormSet(request.POST, instance=Amc(company=company))
@@ -156,8 +156,17 @@ class AmcListView(generic.ListView):
 def AmcDetail(request, pk):
     amc_pk =Amc.objects.get(id=pk)
     company= Company.objects.get(pk=amc_pk.company.pk)
-    products=Product.objects.filter(amc_id=amc_pk).order_by('location')
+    
+    if request.user.is_customer_user and request.user.is_customer_admin:
+        products=Product.objects.filter(amc_id=amc_pk).order_by('location')
+    elif request.user.is_customer_user:
+        products=Product.objects.filter(amc_id=amc_pk).filter(location=request.user.user_loc).order_by('location')
+    else: 
+        products=Product.objects.filter(amc_id=amc_pk).order_by('location')
     amc_value = products.aggregate(amc_value = Sum('amount'))
+        
+    
+    
 
     context = {
         "amc": amc_pk,
