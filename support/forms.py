@@ -1,6 +1,8 @@
 from django import forms
-from .models import Ticket, Document, Call_Time, Message
+from .models import Ticket, Document, Call_Time, Message, SpareCost
 from multiupload.fields import MultiFileField
+from django.forms import inlineformset_factory
+
 
 
 
@@ -59,3 +61,15 @@ class ClockOutForm(forms.ModelForm):
         fields = ['clock_out', 'update']
 
     documents = MultiFileField(min_num=1, max_num=10, max_file_size=1024*1024*5, required=False)
+
+
+class SpareCostForm(forms.ModelForm):
+    class Meta:
+        model = SpareCost
+        fields = ['type', 'part_no', 'sr_no', 'cost']
+        widgets = {
+            'type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Spare Type'}),
+            'part_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Part Number'}),
+            'sr_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Serial Number'}),
+            'cost': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cost'}),
+        }

@@ -93,7 +93,7 @@ def service_admin_list(request):
     return render(request,'users/service_admin_list.html',{'service_admin_view':service_admin_view})
 
 
-# **********create service gent view**************
+# **********create service agent view**************
 
 @login_required
 def create_service_agent(request):
@@ -114,7 +114,7 @@ def create_service_agent(request):
     return render(request,'masters/company/service_admin.html',{'service_form':service_form})
 
 
-# *****************edit service admin view****************** 
+# *****************edit service agent view****************** 
 
 @login_required
 def edit_service_agent(request,pk):
@@ -135,6 +135,8 @@ def edit_service_agent(request,pk):
 
     return render(request,'masters/company/service_admin_edit.html',{'service_form':service_form})
 
+
+# *****************Delete service agent view****************** 
 @login_required
 def service_agent_del(request,pk):
     service_agent= User.objects.get(id=pk)
@@ -147,6 +149,68 @@ def service_agent_del(request,pk):
 def service_agent_list(request):
     service_agent_view = User.objects.filter(is_service_agent=True)
     return render(request,'users/service_agent_list.html',{'service_agent_view':service_agent_view})
+
+
+
+
+
+# **********create salesperson view**************
+
+@login_required
+def create_salesperson(request):
+    # company = get_object_or_404(Company, id=pk)
+    company=Company.objects.get(is_self_company=True)
+    if request.method=="POST":
+        service_form = salesForm(request.POST, request.FILES)
+        if service_form.is_valid():
+            service = service_form.save(commit=False)
+            service.user_company=company
+            service.is_salesperson=True
+            service.save()
+
+            return redirect('salesperson-list')
+    else:
+        service_form = salesForm()
+
+    return render(request,'masters/company/salesperson.html',{'service_form':service_form})
+
+
+# *****************edit service agent view****************** 
+
+@login_required
+def edit_salesperson(request,pk):
+    # company = get_object_or_404(Company, id=pk)
+    company=Company.objects.get(is_self_company=True)
+    service_agent = get_object_or_404(User,id=pk)
+    if request.method=="POST":
+        service_form = salesUpdateForm(request.POST, request.FILES, instance=service_agent)
+        if service_form.is_valid():
+            service = service_form.save(commit=False)
+            service.user_company=company
+            service.is_salesperson=True
+            service.save()
+
+            return redirect('salesperson-list')
+    else:
+        service_form = salesUpdateForm(instance=service_agent)
+
+    return render(request,'masters/company/salesperson_edit.html',{'service_form':service_form})
+
+
+# *****************Delete service agent view****************** 
+@login_required
+def salesperson_del(request,pk):
+    salesperson= User.objects.get(id=pk)
+    salesperson.delete()
+    return redirect('salesperson-list')
+
+
+# ***************service agent list view************* 
+@login_required
+def salesperson_list(request):
+    salesperson_view = User.objects.filter(is_salesperson=True)
+    return render(request,'users/salesperson_list.html',{'salesperson':salesperson_view})
+
 
 
 # **********create field engineer********** 

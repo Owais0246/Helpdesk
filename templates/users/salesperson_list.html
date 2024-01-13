@@ -1,0 +1,131 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title%}{% trans "Responsive Tables | RWD Tables" %}{% endblock head_title %} 
+{% block extra_css %}
+
+<!-- third party css -->
+
+<link
+  href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-select-bs4/css//select.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<!-- third party css end -->
+
+{% endblock %}
+ {% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Helpdeskk</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Customer</a>
+            </li>
+            {% comment %} <li class="breadcrumb-item active">Responsive</li> {% endcomment %}
+          </ol>
+        </div>
+        <h4 class="page-title">Service Agent Users</h4>
+      
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="{% url 'create-salesperson' %}" class="btn btn-light">Create</a>
+                    </div>
+                  <thead>
+                    <tr>
+                        <th data-priority="1">First Name</th>
+                        <th data-priority="2">Last Name</th>
+                        <th data-priority="3">UserName</th>
+                        <th data-priority="4">Email</th>
+                        <th data-priority="5">User Contact</th>
+                        <th data-priority="6">Aadhar</th>
+                        <th data-priority="7">Covid</th>
+                        <th data-priority="8">Edit</th>
+                        <th data-priority="9">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for salesperson in salesperson %}
+                    <tr>
+                     {% comment %} <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th> {% endcomment %}
+                      <td>{{salesperson.first_name}}</td>
+                      <td>{{salesperson.last_name}}</td>
+                      <td>{{salesperson.username}}</td>
+                      <td>{{salesperson.email}}</td>
+                      <td>{{salesperson.user_contact_no}}</td>
+                      <td>{{salesperson.aadhar}}</td>
+                      <td>{{salesperson.covid}}</td>
+                      <td><a href="{% url 'edit-salesperson' salesperson.id %}">Edit</a></td>
+                      <td><a href="{% url 'delete-salesperson' salesperson.id %}">Delete</a></td>
+                      
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+
+              
+               
+              </div>
+              <!-- end .table-responsive -->
+            </div>
+            <!-- end .table-rep-plugin-->
+          </div>
+          <!-- end .responsive-table-plugin-->
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+  
+</div>
+<!-- container -->
+
+
+
+{% endblock %} {% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+<!-- Init js end -->
+
+{% endblock %}

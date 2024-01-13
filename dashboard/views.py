@@ -31,10 +31,12 @@ def dashboard(request):
         ticket_active = Ticket.objects.filter(assignee=request.user).filter(status="Open")
         ticket_close = Ticket.objects.filter(assignee=request.user).filter(status="Closed")
         
-    # elif request.user.is_sr_engineer == True:
-    #     ticket = Ticket.objects.filter(sr_engineer=request.user)
-    #     ticket_active = Ticket.objects.filter(sr_engineer=request.user).filter(status="Open")
-    #     ticket_close = Ticket.objects.filter(sr_engineer=request.user).filter(status="Closed")
+    elif request.user.is_salesperson == True:
+        ticket = Ticket.objects.filter(product__amc__salesperson=request.user)
+        ticket_active = Ticket.objects.filter(product__amc__salesperson=request.user).filter(status="Open")
+        ticket_close = Ticket.objects.filter(product__amc__salesperson=request.user).filter(status="Closed")
+        ticket_pending = Ticket.objects.filter(product__amc__salesperson=request.user).filter(assignee=None).filter(status="Pending")
+        
     
     elif request.user.is_field_engineer == True or request.user.is_sr_engineer == True:
         call_times = Call_Time.objects.filter(field_engineer=request.user)

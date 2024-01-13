@@ -1,19 +1,19 @@
 from django.db import models
-# from amc.models import Amc
-# from user.models import User
+
+
 
 
 # Create your models here.
 
 class Company(models.Model):
+    
     company_name = models.CharField(max_length=50, help_text='Enter your Company Name')
     company_contact_no =models.BigIntegerField(blank=True, help_text='Enter Company Phone Number')
     address = models.TextField()
     company_suffix= models.CharField(max_length=10, help_text='Enter your Company Suffix',null=True,blank=True)
     is_customer = models.BooleanField(default=False)
     is_self_company = models.BooleanField(default=False)
-    # salesperson=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
-    
+    # salesperson = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True)    
     
 
     def __str__(self):
@@ -38,7 +38,7 @@ class Product(models.Model):
     description = models.CharField(max_length=255,null=True, blank=True)
     location= models.ForeignKey(Location, on_delete=models.PROTECT, related_name='asset_location')
     amc = models.ForeignKey('amc.Amc', on_delete=models.CASCADE, related_name='products', null=True, blank=True)
-
+    amount = models.IntegerField(default=0)
     
     def __str__(self):
         return self.product_name +" - " + self.serial_number

@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Amc
+from .models import Amc, Service, Source
 # Register your models here.
-admin.site.register(Amc)
+admin.site.register([Amc, Service, Source])

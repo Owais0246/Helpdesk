@@ -192,7 +192,7 @@
       </div>
     </div>  
 
-      <div class="col-md-6">
+      <div class="col-md-6 ">
         <div>
           <label for="username" class="form-label">SLA</label>
           <textarea
@@ -203,20 +203,83 @@
             placeholder="Enter the SLA"
           ></textarea>
         </div>
-        <div>
-          <label for="file">Upload File</label>
-          <input type="file" class="form-control" id="file" name="file">
-      </div>
+        <div class = "row mt-3">
+        <div class="col-md-4">
+          <select class="form-control" data-toggle="select2" data-width="100%" name="salesperson" id="salesperson">
+            <option>Select Sales Person</option>
+            {% for sales_user in sales_user %}
+            <option value="{{sales_user.pk}}">{{sales_user.first_name}} - {{sales_user.last_name}}</option>
+
+            {% endfor %}
+
+          </select>
+
     </div>
+            <div class="col-md-4">
+              <select class="form-control" data-toggle="select2" data-width="100%" name="source" id="source">
+                <option>Select Source</option>
+                {% for source in source %}
+                <option value="{{source.pk}}">{{source.source_name}}</option>
+
+                {% endfor %}
+
+              </select>
+
+        </div>
+        <div class="col-md-4">
+          <select class="form-control" data-toggle="select2" data-width="100%" name="service_provider" id="service_provider">
+            <option>Select Service Provider</option>
+            {% for service in service %}
+            <option value="{{service.pk}}">{{service.service_provider}}</option>
+
+            {% endfor %}
+
+          </select>
+
+        </div>
+      </div>
   </div>
-  
+</div>
+<hr/>
+<h5>Upload Files</h5>
+<p class="text-muted" style="font-size: small;">
+  For multiple file uploads, we recommend compressing your files into a single ZIP or RAR archive before uploading.
+</p>
+
+<div class="row">
+<div class="col-md-2 mt-2">
+  <label for="file">SLA File</label>
+  <input type="file" class="form-control" id="sla_file" name="sla_file">
+</div>
+<div class="col-md-2 mt-2">
+  <label for="file">AMC Invoice</label>
+  <input type="file" class="form-control" id="invoice" name="invoice">
+</div>
+<div class="col-md-2 mt-2">
+  <label for="file">AMC Purchase Order</label>
+  <input type="file" class="form-control" id="po" name="po">
+</div>
+<div class="col-md-2 mt-2">
+  <label for="file">Log Files</label>
+  <input type="file" class="form-control" id="log" name="log">
+</div>
+<div class="col-md-2 mt-2">
+  <label for="file">Config File</label>
+  <input type="file" class="form-control" id="config" name="config">
+</div>
+<div class="col-md-2 mt-2">
+  <label for="file">Other File</label>
+  <input type="file" class="form-control" id="file" name="file">
+</div>
+</div>
+<hr/>
 
   <!-- Product Formset -->
   <div id="product-formset">
     {{ product_formset.management_form }}
     {% for form in product_formset %}
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-2">
         
           <label for="username" class="form-label">Product Name</label>
             {{ form.product_name }}
@@ -237,10 +300,14 @@
         {{ form.location }}
       </div>
 
-      <div class="col-md-3">
-      <label for="username" class="form-label">Product Description</label>
-      {{ form.description }}
-    </div>
+      <div class="col-md-2">
+        <label for="username" class="form-label">Product Description</label>
+        {{ form.description }}
+      </div>
+      <div class="col-md-2">
+        <label for="username" class="form-label">Product Amount</label>
+        {{ form.amount }}
+      </div>
 
   </div>
     {% endfor %}
@@ -289,7 +356,7 @@ var i=0;
 <div id="empty-form" style="display: none;">
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
       
         <label for="username" class="form-label"></label>
           {{ product_formset.empty_form.product_name }}
@@ -309,10 +376,14 @@ var i=0;
       {{ product_formset.empty_form.location }}
     </div>
 
-    <div class="col-md-3">
-    <label for="username" class="form-label"></label>
-    {{ product_formset.empty_form.description }}
-  </div>
+    <div class="col-md-2">
+      <label for="username" class="form-label"></label>
+      {{ product_formset.empty_form.description }}
+    </div>
+    <div class="col-md-2">
+      <label for="username" class="form-label"></label>
+      {{ product_formset.empty_form.amount }}
+    </div>
 
 
   {% comment %} {{ product_formset.empty_form|crispy }} {% endcomment %}

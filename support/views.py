@@ -18,6 +18,8 @@ from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.forms import formset_factory
+from .forms import SpareCostForm
 
 
 
@@ -32,6 +34,7 @@ def create_ticket(request):
     user = request.user
     admin = User.objects.filter(is_service_admin=True)
     admin_email= [x.email for x in admin ]
+    
   
     
 
@@ -56,15 +59,15 @@ def create_ticket(request):
             ticket.save()
             for doc in request.FILES.getlist('documents'):
                 ticket.documents.create(file=doc)  # Create Document objects and associate them with the ticket
-                
 
 
+            sales_person = [ticket.product.amc.salesperson.email]
             email_template_path = "email/ticket_create_mail.html"
             email_content = render_to_string(email_template_path, {'ticket': ticket, 'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk)})
             subject = f' New Ticket Created - Ticket ID: {ticket.uuid}'
             message = email_content
             email_from = 'info@zacocomputer.com'
-            recipient_list = [ticket.raised_by.email]+admin_email
+            recipient_list = [ticket.raised_by.email]+admin_email+sales_person
                     
             email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
             email_thread.start()
@@ -107,8 +110,9 @@ def ticket(request, pk):
     selected_product = Product.objects.get(pk=ticket.product.pk)
     amc = selected_product.amc
     call_filter = Call_Time.objects.filter(ticket_id=pk).filter(field_engineer=request.user)
-     
+    SpareCostFormSet = formset_factory(SpareCostForm, extra=1)
     sender = request.user
+
     if ticket.assignee is not None:
         assign_email = ticket.assignee.email
 
@@ -132,7 +136,7 @@ def ticket(request, pk):
         message = email_content
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
         recipient_list = [ticket.assignee.email, ticket.raised_by.email]
-        print(recipient_list)
+        # print(recipient_list)
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
         
@@ -177,7 +181,7 @@ def ticket(request, pk):
         message = email_content
         email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
         recipient_list = [field_engineer.email, ticket.raised_by.email]
-        print(recipient_list)
+        # print(recipient_list)
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
@@ -205,7 +209,7 @@ def ticket(request, pk):
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
-        print(assign_email)
+        # print(assign_email)
         return redirect('Ticket', pk)
     
       
@@ -254,7 +258,7 @@ def ticket(request, pk):
                     recipient_list.append(admin.email)
         if sender.email in recipient_list:
             recipient_list.remove(sender.email)
-        print(recipient_list)
+        # print(recipient_list)
         # print(customer_admin.values())
         
 
@@ -263,65 +267,100 @@ def ticket(request, pk):
         email_thread.start()
 
         return redirect('Ticket', pk)
-    
     elif 'close' in request.POST:
-        feedback = request.POST.get("feedback")
-        status='Closed'
-        closed_at = datetime.datetime.now()
-        time = closed_at.strftime('%d/%m/%Y, %I:%M:%S %p')
-        ticket1.update(feedback=feedback,status=status,closed_at=closed_at)
-        ticket.ticket_message.create(messages=f'''Your ticket {ticket.uuid} has been successfully closed at {time}. Here is a summary of the ticket:
-                                                {feedback}
-                                                If you have any further questions or need assistance, feel free to reach out.''', sender=request.user)
-        
-        
-        email_template_path = "email/ticket_close_email.html"
-        email_content = render_to_string(email_template_path, {'ticket': ticket, 
-                                                               'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
-                                                               'time':time,
-                                                               'feedback':feedback,
-                                                               })
-        
-        subject = f'Ticket Closure Notification - Ticket ID: {ticket.uuid}'
-        message = email_content
-        email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
-        recipient_list = [assign_email, ticket.raised_by.email]
-        if customer_admin:
-            for admin in customer_admin:
-                if admin.email not in recipient_list:
-                    recipient_list.append(admin.email)
-        if sender.email in recipient_list:
-            recipient_list.remove(sender.email)
-        print(recipient_list)
-        
-        email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
-        email_thread.start()
-        
-        
-        
-        return redirect('Ticket', pk)
-    
+            feedback = request.POST.get("feedback")
+            status='Closed'
+            closed_at = datetime.datetime.now()
+            time = closed_at.strftime('%d/%m/%Y, %I:%M:%S %p')
+            ticket1.update(feedback=feedback,status=status,closed_at=closed_at)
+            ticket.ticket_message.create(messages=f'''Your ticket {ticket.uuid} has been successfully closed at {time}. Here is a summary of the ticket:
+                                                    {feedback}
+                                                    If you have any further questions or need assistance, feel free to reach out.''', sender=request.user)
+            
+            
+            email_template_path = "email/ticket_close_email.html"
+            email_content = render_to_string(email_template_path, {'ticket': ticket, 
+                                                                'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                                'time':time,
+                                                                'feedback':feedback,
+                                                                })
+            
+            subject = f'Ticket Closure Notification - Ticket ID: {ticket.uuid}'
+            message = email_content
+            sales_person = ticket.product.amc.salesperson.email
+            email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
+            recipient_list = [assign_email, ticket.raised_by.email, sales_person]
+            if customer_admin:
+                for admin in customer_admin:
+                    if admin.email not in recipient_list:
+                        recipient_list.append(admin.email)
+            if sender.email in recipient_list:
+                recipient_list.remove(sender.email)
+            # print(recipient_list)
+            
+            email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
+            email_thread.start()
+            
+            
+            
+            return redirect('Ticket', pk)
     
     elif 'transport_cost' in request.POST:
         fe_cost = request.POST.get("fe_cost")
-        spare_cost = request.POST.get("spare_cost")
         transport_cost = request.POST.get("transport_cost")
         amount_return = request.POST.get("amount_return")
-        Ticket.objects.filter(pk = pk).update(fe_cost=fe_cost, spare_cost=spare_cost, transport_cost=transport_cost, amount_return=amount_return )
-        return redirect('Ticket', pk)
-    
-    
-    
-    costing = 0  
-    exp = 0  
-    if ticket.transport_cost is not None and ticket.spare_cost is not None and ticket.fe_cost:
-        costing = ticket.transport_cost + ticket.spare_cost + ticket.fe_cost
+
+        # Update the Ticket model
+        ticket = Ticket.objects.get(pk=pk)
+        ticket.fe_cost = fe_cost
+        ticket.transport_cost = transport_cost
+        ticket.amount_return = amount_return
+        ticket.save()
+
+        # Process Spare Cost Formset
+        SpareCostFormSet = formset_factory(SpareCostForm, extra=1)
+        spare_cost_formset = SpareCostFormSet(request.POST, prefix='spare_cost')
+
+        # Check if the formset is valid
+        if spare_cost_formset.is_valid():
+            # Iterate through the forms in the formset and create SpareCost instances
+            for spare_cost_form in spare_cost_formset:
+                if spare_cost_form.is_valid():
+                    spare_cost = spare_cost_form.save(commit=False)
+                    spare_cost.ticket = ticket
+                    spare_cost.save()
+
+                    # Add the SpareCost instance to the many-to-many relationship
+                    ticket.spare_cost.add(spare_cost)
+
+            # Calculate costing and exp
+
+
+            # if ticket.transport_cost is not None and ticket.fe_cost:
+            #     costing = ticket.transport_cost + ticket.fe_cost
+
+            # if ticket.amount_return is not None:
+            #     exp = costing - ticket.amount_return
+
+            # if ticket.amount_return is None:
+            #     exp = costing
+            return redirect('Ticket', pk)
+    costing = 0
+    exp = 0
+
+    if ticket.transport_cost is not None and ticket.fe_cost:
+        costing += ticket.transport_cost + ticket.fe_cost
+
+    # Add the cost from SpareCost instances only if they are associated with the ticket
+    for spare_cost_instance in ticket.spare_cost.all():
+        if spare_cost_instance.ticket == ticket:
+            costing += spare_cost_instance.cost
+
     if ticket.amount_return is not None:
         exp = costing - ticket.amount_return
+
     if ticket.amount_return is None:
         exp = costing
-        
-    
     context = {
         'ticket':ticket, 
         'assign_form':assign_form,
@@ -336,6 +375,8 @@ def ticket(request, pk):
      
 
     }
+    context['spare_cost_formset'] = SpareCostFormSet(prefix='spare_cost')
+
     return render(request, 'support/ticket.html', context)
 
 @login_required
@@ -399,7 +440,7 @@ def clock_in(request, pk):
                 if admin.email not in recipient_list:
                     recipient_list.append(admin.email)
         
-        print(recipient_list)
+        # print(recipient_list)
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
@@ -449,7 +490,7 @@ def clock_out(request, pk):
                 if admin.email not in recipient_list:
                     recipient_list.append(admin.email)
         
-        print(recipient_list)
+        # print(recipient_list)
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
@@ -471,3 +512,10 @@ def view_attachment(request, attachment_id):
     response = HttpResponse(attachment.file, content_type='application/octet-stream')
     response['Content-Disposition'] = f'attachment; filename="{attachment.file.name}"'
     return response
+
+def get_spare_cost_form(request):
+    #  from .forms import SpareCostForm
+
+    # Create an instance of the SpareCostForm
+    spare_cost_form = SpareCostForm()
+    return render(request, 'support/spare_cost_form_template.html', {'spare_cost_form': spare_cost_form})

@@ -1,94 +1,128 @@
-<div
-id="cost-modal"
-class="modal fade"
-tabindex="-1"
-role="dialog"
-aria-labelledby="cost-modalLabel"
-aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title" id="close-modalLabel">
-        Add Service Cost
-      </h4>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row">
-                
-                  
-          <div class="form-floating col-6">
-            <input
-                type="text"
-                class="form-control"
-                id="fe_cost"
-                placeholder="fe_cost"
-                name = "fe_cost"/>
-            <label for="fe_cost">Feild Engineer Cost</label>
-            </div>
+{% load crispy_forms_tags %}
 
-            <div class="form-floating col-6">
-              <input
-                  type="text"
-                  class="form-control"
-                  id="spare_cost"
-                  placeholder="spare_cost"
-                  name = "spare_cost"/>
+<!-- Modal for Spare Cost -->
+<div id="cost-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cost-modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="cost-modalLabel">Add Service Cost</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <!-- Service Cost Fields -->
+          <div class="row">
+            <div class="form-floating col-12">
+              <input type="text" class="form-control" id="fe_cost" placeholder="fe_cost" name="fe_cost" />
+              <label for="fe_cost">Field Engineer Cost</label>
+            </div>
+            {% comment %} <div class="form-floating col-6">
+              <input type="text" class="form-control" id="spare_cost" placeholder="spare_cost" name="spare_cost" />
               <label for="spare_cost">Spare Cost</label>
-              </div>
-              
+            </div> {% endcomment %}
+          </div>
 
+          <br>
+
+          <div class="row">
+            <div class="form-floating col-6">
+              <input type="text" class="form-control" id="transport_cost" placeholder="transport_cost" name="transport_cost" />
+              <label for="transport_cost">Transport Cost</label>
             </div>
-<br>
-            <div class="row">
-                
-                  
-              <div class="form-floating col-6">
-                <input
-                    type="text"
-                    class="form-control"
-                    id="transport_cost"
-                    placeholder="transport_cost"
-                    name = "transport_cost"/>
-                <label for="transport_cost">Transport Cost</label>
-                </div>
-    
-                <div class="form-floating col-6">
-                  <input
-                      type="text"
-                      class="form-control"
-                      id="amount_return"
-                      placeholder="amount_return"
-                      name = "amount_return"/>
-                  <label for="amount_return">Amount Return</label>
-                  </div>
-                  
-    
-                </div>
+            <div class="form-floating col-6">
+              <input type="text" class="form-control" id="amount_return" placeholder="amount_return" name="amount_return" />
+              <label for="amount_return">Amount Return</label>
+            </div>
+          </div>
 
+          <!-- Formset for Spare Costs -->
+          <h5>Spare Costs</h5>
+          {{ spare_cost_formset.management_form }}
+          <div id="spare-cost-forms">
+            {% for form in spare_cost_formset.forms %}
+            <div class="row mb-2">
+              <div class="col-md-6">
+              {{ form.type }}
+              </div>
+              <div class="col-md-6">
+                {{ form.part_no }}
+                </div>
+              </div>
+            <div class="row mb-4">
+              <div class="col-md-6">
+              {{ form.sr_no }}
+              </div>
+              <div class="col-md-6">
+                {{ form.cost }}
+                </div>
+              </div>
+              {% comment %} {{ form.as_p }} {% endcomment %}
+            {% endfor %}
+          </div>
+          <button type="button" id="add-spare" class="btn btn-secondary">Add Spare</button>
 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" name='cost'>Save changes</button>
+      </div>
     </div>
-    <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-light"
-        data-bs-dismiss="modal">
-        Close
-      </button>
-      <button type="submit" class="btn btn-primary" name='cost'>
-        Save changes
-      </button>
-    </form>
-    </div>
+  </form>
+
+    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-content -->
+  <!-- /.modal-dialog -->
 </div>
-<!-- /.modal-dialog -->
+
+<!-- JavaScript to add spare cost form dynamically -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+/**  $('#add-product').click(function() {
+    var form_idx = $('#id_products-TOTAL_FORMS').val();
+    var newForm = $('#empty-form').html().replace(/__prefix__/g, form_idx);
+    $('#product-formset').append(newForm);
+    $('#id_products-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+
+
+  });**/
+
+  var i = 0;
+  $(document).ready(function() {
+    $('#add-spare').click(function() {
+      var form_idx = $('#id_spare_cost-TOTAL_FORMS').val();
+      var newForm = $('#empty-form').html().replace(/__prefix__/g, form_idx);
+      $('#spare-cost-forms').append(newForm);
+      $('#id_spare_cost-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+      i = form_idx;
+      console.log("iii", i);
+    });
+  });
+  
+</script>
+<div id="empty-form" style="display: none;">
+
+  <div class="row mb-2">
+    <hr/>
+    <div class="col-md-6">
+    {{ spare_cost_formset.empty_form.type }}
+    </div>
+    <div class="col-md-6">
+      {{ spare_cost_formset.empty_form.part_no }}
+      </div>
+    </div>
+  <div class="row mb-2">
+    <div class="col-md-6">
+    {{ spare_cost_formset.empty_form.sr_no }}
+    </div>
+    <div class="col-md-6">
+      {{ spare_cost_formset.empty_form.cost }}
+      </div>
+    </div>
+
+
+
 </div>
-<!-- /.modal -->

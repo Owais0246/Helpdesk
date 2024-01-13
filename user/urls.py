@@ -36,6 +36,11 @@ urlpatterns = [
     path('edit-sr-engineer/<int:pk>', views.edit_sr_engineer, name="edit-sr-engineer"),
     path('delete-sr-engineer/<int:pk>', views.sr_engineer_del, name="delete-sr-engineer"),
     path('sr-engineer-list', views.sr_engineer_list, name="sr-engineer-list"),
+    
+    path('create-salesperson', views.create_salesperson, name="create-salesperson"),
+    path('edit-salesperson/<int:pk>', views.edit_salesperson, name="edit-salesperson"),
+    path('delete-salesperson/<int:pk>', views.salesperson_del, name="delete-salesperson"),
+    path('salesperson-list', views.salesperson_list, name="salesperson-list"),
 
  
     

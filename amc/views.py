@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse,redirect,reverse
 from .forms import CreateAmcForm, ProductForm, AMCForm, ProductFormSet
 from django.views import generic
-from . models import Amc
+from . models import Amc, Source, Service
 from masters.models import Company,Location,Product
 from user.models import User
 from django.contrib.auth.decorators import login_required
@@ -9,6 +9,8 @@ from django.utils.decorators import method_decorator
 from django.forms import inlineformset_factory
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
+
 
 
 # Create your views here.
@@ -73,8 +75,11 @@ from django.views.decorators.csrf import csrf_exempt
 def create_amc(request, pk):
     company = Company.objects.get(id=pk)
     location = Location.objects.filter(loc_company=company)  # Retrieve location data
-
+    sales_user = User.objects.filter(is_salesperson = True)
+    print(sales_user)
     ProductFormSet = inlineformset_factory(Amc, Product, form=ProductForm, extra=1)
+    source = Source.objects.all()
+    service = Service.objects.all()
 
     if request.method == 'POST':
         amc_form = AMCForm(request.POST, request.FILES)
@@ -90,12 +95,19 @@ def create_amc(request, pk):
 
             # Redirect or render a success page after form submission
             return redirect('CompanyDetail', pk)  # Replace 'CompanyDetail' with your success URL name
-
+        print(amc_form.errors)
     else:
         amc_form = AMCForm()
         product_formset = ProductFormSet(instance=Amc(company=company))
-
-    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 'product_formset': product_formset, 'locations': location, 'company': company})
+    print(amc_form.errors)
+    return render(request, 'amc/amc_create.html', {'amc_form': amc_form, 
+                                                   'product_formset': product_formset, 
+                                                   'locations': location, 
+                                                   'company': company,
+                                                   'sales_user':sales_user,
+                                                   'source':source,
+                                                   'service':service,
+                                                   })
 
 
 
@@ -145,11 +157,13 @@ def AmcDetail(request, pk):
     amc_pk =Amc.objects.get(id=pk)
     company= Company.objects.get(pk=amc_pk.company.pk)
     products=Product.objects.filter(amc_id=amc_pk).order_by('location')
+    amc_value = products.aggregate(amc_value = Sum('amount'))
 
     context = {
         "amc": amc_pk,
         "company":company,
-        "products":products
+        "products":products,
+        "amc_value":amc_value,
     }
     return render(request, 'amc/amc_detail.html', context)
 

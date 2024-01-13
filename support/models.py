@@ -45,7 +45,7 @@ class Ticket(models.Model):
     closed_at = models.DateTimeField(null=True)
     problem = models.TextField(null=True, blank=True)
     fe_cost = models.IntegerField(null=True, blank=True)
-    spare_cost = models.IntegerField(null=True, blank=True)
+    spare_cost = models.ManyToManyField('SpareCost', blank=True, related_name='spare_cost')
     transport_cost = models.IntegerField(null=True, blank=True)
     amount_return = models.IntegerField(null=True, blank=True)
     
@@ -111,7 +111,9 @@ class Call_Time(models.Model):
             return self.field_engineer.email
         return None
     
-
+    class Meta:
+        ordering = ['schedule']
+        
 class CallDocument(models.Model):
     call_time = models.ForeignKey(Call_Time, related_name='attachments', on_delete=models.CASCADE)
     file = models.FileField(upload_to='attachments/')
@@ -129,3 +131,10 @@ class MessageDocument(models.Model):
 
     def __str__(self):
         return str(self.file)
+    
+class SpareCost(models.Model):
+    ticket = models.ForeignKey('Ticket', on_delete=models.CASCADE)
+    type = models.CharField(max_length=100)
+    part_no = models.CharField(max_length=50)
+    sr_no = models.CharField(max_length=50)
+    cost = models.IntegerField()

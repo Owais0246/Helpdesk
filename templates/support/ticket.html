@@ -91,9 +91,6 @@
             <li class="breadcrumb-item">
               <a href="javascript: void(0);">Ticket</a>
             </li>
-            {% comment %}
-            <li class="breadcrumb-item active">Responsive</li>
-            {% endcomment %}
           </ol>
         </div>
         <h4 class="page-title">{{ticket.uuid}} - {{ticket.issue}}</h4>
@@ -142,7 +139,7 @@
               <label class="mt-2 mb-1">Reported By :</label>
 
               <div class="w-100">
-                <p>{{ticket.raised_by|title}}  ( {{ticket.company|title}} - {{ticket.location|title}} )</p>
+                <p>{{ticket.raised_by.first_name|title}} {{ticket.raised_by.last_name|title}} ( {{ticket.company|title}} - {{ticket.location|title}} )</p>
 
               </div>
               <!-- end Reported by -->
@@ -298,7 +295,14 @@
             <div class="msg-container">
                 <div class="msg-{% if message.sender == request.user %}right {% else %}left{% endif %}">
                     <h5 class="mt-0 mb-1">
+                      {% if message.sender == request.user %}
+                      You
+                      {% else %}
                         {{ message.sender.first_name | title}} {{ message.sender.last_name | title}}
+                        <span class="text-muted" > - {% if message.sender.is_service_agent or message.sender.is_service_admin %}Technical Support
+                        {% elif message.sender.is_sr_engineer or message.sender.is_field_engineer %}Engineer{% endif %}
+                        {% endif %} 
+                      </span>
                     </h5>
                     {% autoescape off %}
                         {{ message.messages | safe }}
@@ -310,7 +314,7 @@
             {% endfor %}
         </div>
           <div class="border rounded mt-4">
-            {% if ticket.status == 'Open' %}
+            {% if ticket.status == 'Open' and request.user.is_salesperson == False %}
             <form method="post" class="comment-area-box" enctype="multipart/form-data">
 
               {% csrf_token %}
@@ -326,8 +330,6 @@
 
                 <input type="file" name="document" multiple>
 
-                
-                
                 <button type="submit" class="btn btn-sm btn-success" >
                   <i class="mdi mdi-send me-1"></i>Submit
                 </button>
@@ -357,10 +359,11 @@
             <p>AMC : <span class="mb-0 font-12">{{amc.expiry}}</span>: <a href="{% url "AmcDetail" amc.pk %}"> click here to view AMC detail</a></p>
             <p>Downtime Required : <span class="mb-0 font-12">{% if ticket.downtime_required %}Yes {% else %} No{% endif%}</span></p>
             <p>Location : <span class="mb-0 font-12">{{ticket.location}}</span></p>
-            <p>On-site Contact Person : <span class="mb-0 font-12">{{ticket.contact_person}}</span></p>
+            <p>Address : <span class="mb-0 font-12">{{ticket.location.loc_address}}</span></p>
+            <p>On-site Contact Person : <span class="mb-0 font-12">{{ticket.contact_person.first_name}} {{ticket.contact_person.last_name}}</span></p>
             <p>Phone Number : <span class="mb-0 font-12">{{ticket.phone_number}}</span></p>
             <p>Spare Carried By Zaco : <span class="mb-0 font-12">{% if ticket.spare_by_zaco %}Yes {% else %} No{% endif%}</span></p>
-            <p>Address : <span class="mb-0 font-12">{{ticket.location.loc_address}}</span></p>
+            <p>Sales Person : <span class="mb-0 font-12">{{amc.salesperson.first_name | title}} {{amc.salesperson.last_name | title}}</span></p>
 
           </div>
         </div>
@@ -494,16 +497,31 @@
           {% endfor %}
 
 {% else %}
-{% for call in ticket.ticket_call_time.all %}
-          <div class="card mb-1 shadow-none border">
-            <div class="p-2">
-              <div class="row align-items-center">
-                <div class="col-auto">
 
-                </div>
-                <div class="col ps-0">
-                  <p class="mb-0 font-14">Scheduled on : <span class="mb-0 font-12">{{call.schedule}}</span></p>
-                  <p class="mb-0 font-16">Engineer: {{call.field_engineer.first_name}} {{call.field_engineer.last_name}}</p>
+
+
+
+{% for call in ticket.ticket_call_time.all %}
+
+<div class="accordion accordion-flush" id="accordionFlushExample">
+  <div class="accordion-item shadow-none border">
+    <h2 class="accordion-header" id="flush-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-{{call.pk}}" aria-expanded="false" aria-controls="flush-{{call.pk}}">
+        <p class="mb-0 font-14">Scheduled on : <span class="mb-0 font-14">{{call.schedule|date:"F j, Y h:i A" }}   </span>  
+          {% if call.clock_out != None %}
+          <span style="color: green; font-weight: bold;">
+
+
+             Completed  
+          </span>
+          {% endif %}
+        </p>      
+        
+      </button>
+    </h2>
+    <div id="flush-{{call.pk}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+        <p class="mb-0 font-16">Engineer: {{call.field_engineer.first_name}} {{call.field_engineer.last_name}}</p>
 
                   
                   {% if call.clock_out is not None and request.user.is_customer_admin == False and request.user.is_customer_user == False %}
@@ -518,14 +536,15 @@
                   <a href="{% url 'view_attachment' attachment.id %}" target="_blank">View Call Summary</a></br>
                   {% endfor %}
                   {% else %}
+                  
                   <a href="{% url 'download_file' call.field_engineer.id 'aadhaar_no' %}" class="btn btn-soft-primary">Aadhar</a>
                   <a href="{% url 'download_file' call.field_engineer.id 'covid_cert' %}" class="btn btn-soft-primary ">Vaccination Certificate</a>
                   {% endif %}
 
-                  
-                </div>
-              </div>
-            </div>
+      
+      </div>
+  </div>
+          
           </div>
           {% endfor %}
           {% endif %}

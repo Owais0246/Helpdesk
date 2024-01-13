@@ -61,7 +61,7 @@
 
                 </a>
               </li>
-              {% if request.user.is_service_admin  or request.user.is_customer_user or request.user.is_customer_admin%}
+              {% if request.user.is_service_admin  or request.user.is_customer_user or request.user.is_customer_admin  or request.user.is_salesperson%}
               <li class="nav-item">
                 <a
                   href="#pending_ticket"
