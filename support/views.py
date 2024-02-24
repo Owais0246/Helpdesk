@@ -15,7 +15,7 @@ from user.models import User
 from masters.models import Product, Location
 from .models import Ticket, Document, Call_Time, MessageDocument, CallDocument
 from .forms import TicketForm, AssignTicketForm, CloseForm, ClockIn, ClockOutForm
-from .utils import build_absolute_url
+# from .utils import build_subdomain_absolute_uri
 from django.utils.safestring import mark_safe
 from threading import Thread
 from django.core.mail import send_mail
@@ -26,7 +26,21 @@ from django.utils.decorators import method_decorator
 from django.forms import formset_factory
 from .forms import SpareCostForm
 
+from django.urls import reverse
+from django.http import HttpRequest
 
+
+def build_subdomain_absolute_uri(request: HttpRequest, view_name: str, *args, **kwargs) -> str:
+    # Define the subdomain
+    subdomain = "itservicedesk"  # Replace "itservicedesk" with your desired subdomain
+
+    # Get the current scheme (http or https)
+    scheme = "https" if request.is_secure() else "http"
+
+    # Build the absolute URL using the reverse function
+    path = reverse(view_name, args=args, kwargs=kwargs)
+    domain = f"{subdomain}.zacocomputer.com"  # Set the correct domain here
+    return f"{scheme}://{domain}{path}"
 
 def send_email_async(subject, message, email_from, recipient_list):
     """
@@ -68,11 +82,13 @@ def create_ticket(request):
 
             sales_person = [ticket.product.amc.salesperson.email]
             email_template_path = "email/ticket_create_mail.html"
+            build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk)
+            ticket_link = build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk)
             email_content = render_to_string(
                 email_template_path,
                 {
                     "ticket": ticket,
-                    "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                    "ticket_link": ticket_link,
                 },
             )
             subject = f" New Ticket Created - Ticket ID: {ticket.uuid}"
@@ -155,7 +171,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
             },
         )
 
@@ -200,7 +216,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                 "field_engineer": field_engineer,
                 "schedule": schedule,
             },
@@ -227,7 +243,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
             },
         )
         subject = f"Urgent Assistance Needed - Ticket ID: {ticket.uuid}"
@@ -284,7 +300,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
             },
         )
         subject = f"Ticket ID {ticket.uuid} New Message"
@@ -320,7 +336,7 @@ def ticket(request, pk):
             
             email_template_path = "email/ticket_close_email.html"
             email_content = render_to_string(email_template_path, {'ticket': ticket, 
-                                                                'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                                'ticket_link': build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                                                                 'time':time,
                                                                 'feedback':feedback,
                                                                 })
@@ -475,7 +491,7 @@ def clock_in(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                 "time": time,
                 "call": call,
             },
@@ -532,7 +548,7 @@ def clock_out(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                 "time": time,
                 "call": call,
                 "update": update,
