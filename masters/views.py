@@ -11,19 +11,44 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.serializers import serialize
 from django.utils.decorators import method_decorator
-
+from django.db.models import Max
+from django.utils.text import slugify
 
 # Create your views here.
 
 #Company Views
+
 @login_required
 def create_customer(request):
-    customer_form=CompanyForm(request.POST)
+    customer_form = CompanyForm(request.POST)
     if customer_form.is_valid():
-        form= customer_form.save(commit=False)
-        form.is_customer=True
+        form = customer_form.save(commit=False)
+        company_suffix = form.company_suffix
+        if company_suffix:
+            # Check if the company_suffix already exists
+            existing_suffixes = Company.objects.filter(company_suffix=company_suffix)
+            if existing_suffixes.exists():
+                # Get the highest suffix number
+                max_suffix_number = existing_suffixes.aggregate(Max('company_suffix'))['company_suffix__max']
+                if max_suffix_number is not None:
+                    # Increment the suffix number
+                    suffix_parts = company_suffix.split('-')
+                    if len(suffix_parts) == 1:
+                        # If no number present, append -1
+                        new_suffix = f"{company_suffix}-1"
+                    else:
+                        # If number present, increment it
+                        suffix_number = int(suffix_parts[-1])
+                        new_suffix = "-".join(suffix_parts[:-1]) + f"-{suffix_number + 1}"
+                    # Check if the newly generated suffix exists
+                    while Company.objects.filter(company_suffix=new_suffix).exists():
+                        # Increment the suffix number until a unique value is found
+                        suffix_parts = new_suffix.split('-')
+                        suffix_number = int(suffix_parts[-1])
+                        new_suffix = "-".join(suffix_parts[:-1]) + f"-{suffix_number + 1}"
+                    form.company_suffix = new_suffix
+        form.is_customer = True
         form.save()
-        
         return redirect('CompanyList')
 
     context = {
