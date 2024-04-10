@@ -12,6 +12,8 @@ from amc.forms import CreateAmcForm
 from amc.models import Amc
 from .forms import CompanyForm,LocationForm,ProductForm
 from . models import Company,Location,Product
+from django.db.models import Max
+from django.utils.text import slugify
 
 # Create your views here.
 
@@ -69,38 +71,39 @@ def get_user_details(request):
 
 
 #Company Views
+
 @login_required
 def create_customer(request):
-    if request.method == 'POST':
-        customer_form = CompanyForm(request.POST)
-        if customer_form.is_valid():
-            company_name = customer_form.cleaned_data['company_name']  # Adjust this based on your form field
-            company_contact_no = customer_form.cleaned_data['company_contact_no']  # Adjust this based on your form field
-            address = customer_form.cleaned_data['address']  # Adjust this based on your form field
-
-            # Check if a record with the same data already exists
-            existing_company = Company.objects.filter(
-                company_name=company_name,
-            ).first()
-
-            if existing_company:
-                # Update the existing record
-                existing_company.company_contact_no = company_contact_no
-                existing_company.address = address
-                existing_company.is_customer = True
-                existing_company.save()
-            else:
-                # Create a new record
-                new_company = customer_form.save(commit=False)
-                new_company.is_customer = True
-                new_company.save()
-
-            return redirect('CompanyList')
-    else:
-        # If it's a GET request, create an empty form
-        customer_form = CompanyForm()
-
-    company = Company.objects.all()
+    customer_form = CompanyForm(request.POST)
+    if customer_form.is_valid():
+        form = customer_form.save(commit=False)
+        company_suffix = form.company_suffix
+        if company_suffix:
+            # Check if the company_suffix already exists
+            existing_suffixes = Company.objects.filter(company_suffix=company_suffix)
+            if existing_suffixes.exists():
+                # Get the highest suffix number
+                max_suffix_number = existing_suffixes.aggregate(Max('company_suffix'))['company_suffix__max']
+                if max_suffix_number is not None:
+                    # Increment the suffix number
+                    suffix_parts = company_suffix.split('-')
+                    if len(suffix_parts) == 1:
+                        # If no number present, append -1
+                        new_suffix = f"{company_suffix}-1"
+                    else:
+                        # If number present, increment it
+                        suffix_number = int(suffix_parts[-1])
+                        new_suffix = "-".join(suffix_parts[:-1]) + f"-{suffix_number + 1}"
+                    # Check if the newly generated suffix exists
+                    while Company.objects.filter(company_suffix=new_suffix).exists():
+                        # Increment the suffix number until a unique value is found
+                        suffix_parts = new_suffix.split('-')
+                        suffix_number = int(suffix_parts[-1])
+                        new_suffix = "-".join(suffix_parts[:-1]) + f"-{suffix_number + 1}"
+                    form.company_suffix = new_suffix
+        form.is_customer = True
+        form.save()
+        return redirect('CompanyList')
 
     context = {
         'customer_form': customer_form,
