@@ -7,6 +7,11 @@ class CreateUser(UserCreationForm):
     class Meta:
         model=User 
         fields= ['first_name', 'last_name', 'username', 'user_contact_no', 'email','is_customer_admin','password1','password2' ]
+        
+class CreateUserNew(forms.ModelForm):
+    class Meta:
+        model=User 
+        fields= ['first_name', 'last_name', 'user_contact_no', 'email','is_customer_admin', 'is_customer_user' ]
 # class UpdateUser(forms.Form):
 #     class Meta:
 #         model=User 

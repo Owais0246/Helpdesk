@@ -2,7 +2,9 @@ from django.urls import path
 from masters import views
 from .views import (CustomerCreateView,CustomerListView,CustomerUpdateView,
                     LocationCreateView,LocationListView,LocationUpdateView,
-                    ProductCreateView,ProductListView,ProductUpdateView)
+                    ProductCreateView,ProductListView,ProductUpdateView, 
+                    get_company_details, get_product_details, get_user_details )
+# from .views import get_company_details, get_product_details, get_user_details  # Import the view you created
 
 
 urlpatterns = [
@@ -11,6 +13,10 @@ urlpatterns = [
     path('company/list', views.customer_list, name="CompanyList"),
     path('company/update/<int:pk>', CustomerUpdateView.as_view(), name="CompanyUpdate"),
     path('company/detail/<int:company_pk>', views.customer_detail, name="CompanyDetail"),
+    path('get_company_details/', get_company_details, name='get_company_details'),
+    path('get_product_details/', get_product_details, name='get_product_details'),
+    path('get_user_details/', get_user_details, name='get_user_details'),
+
     
     
     

@@ -1,33 +1,110 @@
-from django.shortcuts import render,HttpResponse,redirect,reverse
-from .forms import CompanyForm,LocationForm,ProductForm
-from user.forms import CreateUser
-from user.models import User
+'''Masters Views'''
+from django.shortcuts import render,redirect,reverse
 from django.contrib import messages
 from django.views import generic
-from . models import Company,Location,Product
-from amc.forms import CreateAmcForm
-from amc.models import Amc
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.serializers import serialize
 from django.utils.decorators import method_decorator
-
+from user.forms import CreateUser
+from user.models import User
+from amc.forms import CreateAmcForm
+from amc.models import Amc
+from .forms import CompanyForm,LocationForm,ProductForm
+from . models import Company,Location,Product
 
 # Create your views here.
+
+def get_company_details(request):
+    '''Get Company data for Ajax'''
+    company_name = request.GET.get('company_name', None)
+    if company_name:
+        try:
+            company = Company.objects.filter(company_name=company_name).first()
+            data = {
+                'company_contact_no': company.company_contact_no,
+                'address': company.address,
+            }
+            return JsonResponse(data)
+        except Company.DoesNotExist:
+            pass
+    
+    return JsonResponse({'error': 'Company not found'})
+
+
+def get_product_details(request):
+    '''Get Product data for Ajax'''
+    serial_number = request.GET.get('serial_number', None)
+    if serial_number:
+        try:
+            products = Product.objects.filter(serial_number=serial_number).first()
+            data = {
+                'product_name': products.product_name,
+                'model_number': products.model_number,
+                'description': products.description,
+            }
+            return JsonResponse(data)
+        except Product.DoesNotExist:  # Corrected exception handling
+            pass
+    
+    return JsonResponse({'error': 'Product not found'})
+
+
+def get_user_details(request):
+    '''Get User data for Ajax'''
+    email = request.GET.get('email', None)
+    if email:
+        try:
+            user = User.objects.filter(email=email).first()
+            data = {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'user_contact_no': user.user_contact_no,
+            }
+            return JsonResponse(data)
+        except User.DoesNotExist:  # Corrected exception handling
+            pass
+    
+    return JsonResponse({'error': 'User not found'})
+
 
 #Company Views
 @login_required
 def create_customer(request):
-    customer_form=CompanyForm(request.POST)
-    if customer_form.is_valid():
-        form= customer_form.save(commit=False)
-        form.is_customer=True
-        form.save()
-        
-        return redirect('CompanyList')
+    if request.method == 'POST':
+        customer_form = CompanyForm(request.POST)
+        if customer_form.is_valid():
+            company_name = customer_form.cleaned_data['company_name']  # Adjust this based on your form field
+            company_contact_no = customer_form.cleaned_data['company_contact_no']  # Adjust this based on your form field
+            address = customer_form.cleaned_data['address']  # Adjust this based on your form field
+
+            # Check if a record with the same data already exists
+            existing_company = Company.objects.filter(
+                company_name=company_name,
+            ).first()
+
+            if existing_company:
+                # Update the existing record
+                existing_company.company_contact_no = company_contact_no
+                existing_company.address = address
+                existing_company.is_customer = True
+                existing_company.save()
+            else:
+                # Create a new record
+                new_company = customer_form.save(commit=False)
+                new_company.is_customer = True
+                new_company.save()
+
+            return redirect('CompanyList')
+    else:
+        # If it's a GET request, create an empty form
+        customer_form = CompanyForm()
+
+    company = Company.objects.all()
 
     context = {
         'customer_form': customer_form,
+        'company': company,
     }
     return render(request, 'masters/company/company_create.html', context)
 

@@ -26,13 +26,14 @@ class Ticket(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     location_text = models.CharField(max_length=50, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     issue = models.TextField()
     documents = models.ManyToManyField("Document", blank=True)
     downtime_required = models.BooleanField(default=False)
     # contact_person = models.CharField(max_length=50, null=True, blank=True)
     contact_person = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True, related_name="contact_person")
-    phone_number = models.BigIntegerField(blank=True, help_text='Enter Phone Number')
+    phone_number = models.BigIntegerField(help_text='Enter Phone Number',null=True, blank=True,)
     spare_by_zaco = models.BooleanField(default=False)
     sr_engineer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     ticket_call_time = models.ManyToManyField("Call_Time", blank=True)
@@ -48,6 +49,7 @@ class Ticket(models.Model):
     spare_cost = models.ManyToManyField('SpareCost', blank=True, related_name='spare_cost')
     transport_cost = models.IntegerField(null=True, blank=True)
     amount_return = models.IntegerField(null=True, blank=True)
+    sales_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name="sales_person")
     
     def __str__(self):
         return self.issue + " - " + "ZCPL/"+str(self.pk) + " - UUID -" + str(self.uuid)
@@ -67,7 +69,7 @@ def generate_uuid():
         parts = last_obj.uuid.split('/')
         counter = int(parts[-1])
         # Check if the UUID is for the same date
-        if int(parts[2]) == year and int(parts[3]) == month and int(parts[4]) == day:
+        if int( parts[2]) == year and int(parts[3]) == month and int(parts[4]) == day:
             # If yes, increment the counter
             counter += 1
         else:

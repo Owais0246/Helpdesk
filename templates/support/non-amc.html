@@ -1,0 +1,224 @@
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+
+{% block head_title %}
+  {% trans "Form Components" %}
+{% endblock head_title %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Ticket</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Non AMC Ticket</a>
+            </li>
+            <!-- <li class="breadcrumb-item active">Elements</li> -->
+          </ol>
+        </div>
+        <h4 class="page-title">Create Non AMC Ticket</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <!-- <h4 class="mb-3 header-title">Create Customer</h4> -->
+
+          <form method='POST' id="customerForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="nameofCustomer" class="form-label">Customer Name</label>
+              <input type="text" class="form-control" id="cust_name" name="company_name" list="company" placeholder="Enter the Customer's Name" Required/>
+              <datalist id="company">
+                {% for company in company %}
+                <option value='{{company.company_name}}'></option>
+                {% endfor %}
+              </datalist>
+            </div>
+          
+            <div class="mb-3">
+              <label for="contact_number" class="form-label">Contact Number</label>
+              <input type="number" class="form-control" id="cust_number" name="company_contact_no" placeholder="Enter the Contact Number" Required/>
+            </div>
+          
+            <div class="mb-3">
+              <label for="addressofCustomer" class="form-label">Address</label>
+              <input type="text" class="form-control" id="cust_address" name="address" placeholder="Enter the Customer's Address" Required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="serial_number" class="form-label">Product Serial Number</label>
+              <input type="text" class="form-control" id="serial_no" name="serial_number" list="serial" placeholder="Enter Product Serial Number" Required/>
+              <datalist id="serial">
+                {% for product in products %}
+                <option value='{{ product.serial_number }}'>{{ product.serial_number }} | {{ product.product_name }}</option>
+                {% endfor %}
+              </datalist>
+            </div>
+
+            <div class="mb-3">
+              <label for="product_name" class="form-label">Product Name</label>
+              <input type="text" class="form-control" id="product_name" name="product_name" list="product_name" placeholder="Enter Product Name" Required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="model_number" class="form-label">Product Model Number</label>
+              <input type="text" class="form-control" id="model_number" name="model_number" list="model_number" placeholder="Enter Product Model Number" Required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Product Description</label>
+              <input type="text" class="form-control" id="description" name="description" list="description" placeholder="Enter Product Description" Required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" class="form-control" id="user_email" name="email" list="email_id" placeholder="Enter Email" Required/>
+              <datalist id="email_id">
+                {% for user in user %}
+                <option value='{{user.email}}'>{{ user.first_name }} {{ user.last_name }}</option>
+                {% endfor %}
+              </datalist>
+            </div>
+
+            <div class="mb-3">
+              <label for="first_name" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="first_name" name="first_name" list="first_name" placeholder="Enter First Name" Required/>
+            </div>
+            
+            <div class="mb-3">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="last_name" name="last_name" list="last_name" placeholder="Enter Last Name" Required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="user_contact_no" class="form-label">Contact No</label>
+              <input type="text" class="form-control" id="user_contact_no" name="user_contact_no" list="user_contact_no" placeholder="Enter Contact No" Required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="location_text" class="form-label">Location</label>
+              <input type="text" class="form-control" id="location_text" name="location_text" list="location_text" placeholder="Enter Location" Required/>
+            </div>
+
+            <label for="address" class="form-label">
+              Address</label>
+            <textarea class="form-control" id="address" rows="5" name="address"></textarea>
+
+            <div class="mb-3" style="display:flex;">
+              <div class="col-md-4">
+                <input type="checkbox" class="form-check-input" id="downtime_required" name="downtime_required" />
+                <label class="form-check-label" for="downtime_required">
+                  Downtime required</label>
+              </div>
+              <div class="col-md-4">
+                <input type="checkbox" class="form-check-input" id="spare_by_zaco" name="spare_by_zaco" />
+                <label class="form-check-label" for="spare_by_zaco">
+                  Spare by zaco</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="issue" class="form-label">Issue</label>
+              <input type="text" class="form-control" id="issue" name="issue" list="issue" placeholder="Issue" Required/>
+            </div>
+
+            <label for="problem" class="form-label">
+              Problem Overview</label>
+            <textarea class="form-control" id="problem" rows="5" name="problem"></textarea>
+
+
+            <div class="mb-3">
+              <label for="sales_person" class="form-label">Salesperson</label>
+              <select name="sales_person" class="form-control" id="sales_person">
+                <option value="#">Select the sales person</option>
+                {% for user in saleuser %}
+                <option value="{{user.pk}}">{{user.first_name }}{{user.last_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            
+          
+            <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+          </form>
+        </div>
+        <!-- end card-body-->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#cust_name').on('input', function () {
+      var companyName = $(this).val();
+      if (companyName) {
+        $.ajax({
+          url: '{% url "get_company_details" %}',  
+          method: 'GET',
+          data: {'company_name': companyName},
+          success: function (data) {
+            if (data) {
+              $('#cust_number').val(data.company_contact_no);
+              $('#cust_address').val(data.address);
+            }
+          }
+        });
+      }
+    });
+
+    $('#user_email').on('input', function () {
+      var Email = $(this).val();
+      if (Email) {
+        $.ajax({
+          url: '{% url "get_user_details" %}',  
+          method: 'GET',
+          data: {'email': Email},
+          success: function (data) {
+            if (data) {
+              $('#first_name').val(data.first_name);
+              $('#last_name').val(data.last_name);
+              $('#user_contact_no').val(data.user_contact_no);
+            }
+          }
+        });
+      }
+    });
+
+    $('#serial_no').on('input', function () {
+      var serialNumber = $(this).val();
+      if (serialNumber) {
+        $.ajax({
+          url: '{% url "get_product_details" %}',  
+          method: 'GET',
+          data: {'serial_number': serialNumber},
+          success: function (data) {
+            if (data) {
+              $('#product_name').val(data.product_name);
+              $('#model_number').val(data.model_number);
+              $('#description').val(data.description);
+            }
+          }
+        });          
+      }
+    });
+  });
+</script>
+{% endblock %}

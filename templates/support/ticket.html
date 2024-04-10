@@ -357,15 +357,15 @@
             <p>Ticket Number : <span class="mb-0 font-12">{{ticket.uuid}}</span></p>
             <p>Product : <span class="mb-0 font-12">{{ticket.product}}</span></p>
             {% if request.user.is_service_admin  == True or request.user.is_service_agent == True or request.user.is_customer_user == True or request.user.is_customer_admin == True %}
-            <p>AMC : <span class="mb-0 font-12">{{amc.expiry}}</span>: <a href="{% url 'AmcDetail' amc.pk %}"> click here to view AMC detail</a></p>
+            <p>AMC : <span class="mb-0 font-12">{% if amc is None %}Non-AMC{% else %}{{amc.expiry}}</span>: <a href="{% url 'AmcDetail' amc.pk %}"> click here to view AMC detail</a>{% endif %}</p>
             {% endif %}
             <p>Downtime Required : <span class="mb-0 font-12">{% if ticket.downtime_required %}Yes {% else %} No{% endif%}</span></p>
-            <p>Location : <span class="mb-0 font-12">{{ticket.location}}</span></p>
-            <p>Address : <span class="mb-0 font-12">{{ticket.location.loc_address}}</span></p>
+            <p>Location : <span class="mb-0 font-12">{{ticket.location}}{% if ticket.location is None %}{{ticket.location_text}}{% endif %}</span></p>
+            <p>Address : <span class="mb-0 font-12">{{ticket.location.loc_address}}{% if ticket.location.loc_address is None %}{{ticket.address}}{% endif %}</span></p>
             <p>On-site Contact Person : <span class="mb-0 font-12">{{ticket.contact_person.first_name}} {{ticket.contact_person.last_name}}</span></p>
             <p>Phone Number : <span class="mb-0 font-12">{{ticket.phone_number}}</span></p>
             <p>Spare Carried By Zaco : <span class="mb-0 font-12">{% if ticket.spare_by_zaco %}Yes {% else %} No{% endif%}</span></p>
-            <p>Sales Person : <span class="mb-0 font-12">{{amc.salesperson.first_name | title}} {{amc.salesperson.last_name | title}}</span></p>
+            <p>Sales Person : <span class="mb-0 font-12">{{ticket.sales_person.first_name | title}} {{ticket.sales_person.last_name | title}}</span></p>
 
           </div>
         </div>

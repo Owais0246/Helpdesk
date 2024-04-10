@@ -31,7 +31,7 @@
         <div class="card-body">
           {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
 
-          <form method='POST'>
+          <form method='POST' id="customerForm">
             {% csrf_token %}
             <div class="mb-3">
               <label for="nameofCustomer" class="form-label">Customer Name</label>
@@ -40,10 +40,16 @@
                 class="form-control"
                 id="cust_name"
                 name="company_name"
-                
+                list="company"
                 placeholder="Enter the Customer's Name"/>
-              
+          
+              <datalist id="company">
+                {% for company in company %}
+                <option value='{{company.company_name}}'></option>
+                {% endfor %}
+              </datalist>
             </div>
+          
             <div class="mb-3">
               <label for="contact_number" class="form-label">Contact Number</label>
               <input
@@ -51,10 +57,9 @@
                 class="form-control"
                 id="cust_number"
                 name="company_contact_no"
-                
                 placeholder="Enter the Contact Number"/>
-              
             </div>
+          
             <div class="mb-3">
               <label for="addressofCustomer" class="form-label">Address</label>
               <input
@@ -62,9 +67,7 @@
                 class="form-control"
                 id="cust_address"
                 name="address"
-                
                 placeholder="Enter the Customer's Address"/>
-              
             </div>
             <div class="mb-3">
               <label for="company_suffix" class="form-label">Name Suffix</label>
@@ -115,4 +118,27 @@
   <!-- end row -->
 </div>
 <!-- container -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#cust_name').on('input', function () {
+      var companyName = $(this).val();
+      if (companyName) {
+        $.ajax({
+          url: '{% url "get_company_details" %}',  
+          method: 'GET',
+          data: {'company_name': companyName},
+          success: function (data) {
+            if (data) {
+              $('#cust_number').val(data.company_contact_no);
+              $('#cust_address').val(data.address);
+            }
+          }
+        });
+      }
+    });
+  });
+</script>
 {% endblock %}

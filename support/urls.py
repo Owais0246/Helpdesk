@@ -15,7 +15,7 @@ urlpatterns = [
     path('view_attachment/<int:attachment_id>/', views.view_attachment, name='view_attachment'),
     path('spare_cost_form/', get_spare_cost_form, name='get_spare_cost_form'),
 
-
+    path('generate_ticket/', views.generate_ticket, name='generate_ticket'),
 
     
 

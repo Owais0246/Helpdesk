@@ -36,9 +36,9 @@ class Product(models.Model):
     serial_number=models.CharField(max_length=200,blank=False)    
     created_on = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=255,null=True, blank=True)
-    location= models.ForeignKey(Location, on_delete=models.PROTECT, related_name='asset_location')
+    location= models.ForeignKey(Location, on_delete=models.PROTECT, null=True, blank=True, related_name='asset_location')
     amc = models.ForeignKey('amc.Amc', on_delete=models.CASCADE, related_name='products', null=True, blank=True)
-    amount = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0, null=True, blank=True)
     
     def __str__(self):
         return self.product_name +" - " + self.serial_number

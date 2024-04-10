@@ -2,31 +2,39 @@ from threading import Thread
 import os
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, JsonResponse
 from django.core.mail import send_mail
-
-# from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-
-# from amc.models import Amc
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from user.models import User
-from masters.models import Product, Location
+from masters.models import Product, Location, Company
 from .models import Ticket, Document, Call_Time, MessageDocument, CallDocument
-from .forms import TicketForm, AssignTicketForm, CloseForm, ClockIn, ClockOutForm
+from .forms import TicketForm, AssignTicketForm, CloseForm, ClockIn, ClockOutForm, NonAmcTicketForm
 from .utils import build_absolute_url
 from django.utils.safestring import mark_safe
 from threading import Thread
 from django.core.mail import send_mail
 from django.db.models import Q
-
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.forms import formset_factory
 from .forms import SpareCostForm
+from masters.forms import CompanyForm, ProductForm
+from user.forms import CreateUserNew
+from django.urls import reverse
+from django.http import HttpRequest
+def build_subdomain_absolute_uri(request: HttpRequest, view_name: str, *args, **kwargs) -> str:
+    # Define the subdomain
+    subdomain = "itservicedesk"  # Replace "itservicedesk" with your desired subdomain
 
+    # Get the current scheme (http or https)
+    scheme = "https" if request.is_secure() else "http"
 
+    # Build the absolute URL using the reverse function
+    path = reverse(view_name, args=args, kwargs=kwargs)
+    domain = f"{subdomain}.zacocomputer.com"  # Set the correct domain here
+    return f"{scheme}://{domain}{path}"
 
 def send_email_async(subject, message, email_from, recipient_list):
     """
@@ -68,11 +76,13 @@ def create_ticket(request):
 
             sales_person = [ticket.product.amc.salesperson.email]
             email_template_path = "email/ticket_create_mail.html"
+            build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk)
+            ticket_link = build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk)
             email_content = render_to_string(
                 email_template_path,
                 {
                     "ticket": ticket,
-                    "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                    "ticket_link": ticket_link,
                 },
             )
             subject = f" New Ticket Created - Ticket ID: {ticket.uuid}"
@@ -155,7 +165,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
             },
         )
 
@@ -200,7 +210,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                 "field_engineer": field_engineer,
                 "schedule": schedule,
             },
@@ -227,7 +237,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
             },
         )
         subject = f"Urgent Assistance Needed - Ticket ID: {ticket.uuid}"
@@ -284,7 +294,7 @@ def ticket(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
             },
         )
         subject = f"Ticket ID {ticket.uuid} New Message"
@@ -320,14 +330,18 @@ def ticket(request, pk):
             
             email_template_path = "email/ticket_close_email.html"
             email_content = render_to_string(email_template_path, {'ticket': ticket, 
-                                                                'ticket_link': build_absolute_url(request, "Ticket", pk=ticket.pk),
+                                                                'ticket_link': build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                                                                 'time':time,
                                                                 'feedback':feedback,
                                                                 })
             
             subject = f'Ticket Closure Notification - Ticket ID: {ticket.uuid}'
             message = email_content
-            sales_person = ticket.product.amc.salesperson.email
+            if ticket.product.amc is None:
+                sales_person = ticket.sales_person.email
+            else:
+                sales_person = ticket.product.amc.salesperson.email
+                
             email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
             recipient_list = [assign_email, ticket.raised_by.email, sales_person]
             if customer_admin:
@@ -475,7 +489,7 @@ def clock_in(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                 "time": time,
                 "call": call,
             },
@@ -532,7 +546,7 @@ def clock_out(request, pk):
             email_template_path,
             {
                 "ticket": ticket,
-                "ticket_link": build_absolute_url(request, "Ticket", pk=ticket.pk),
+                "ticket_link": build_subdomain_absolute_uri(request, "Ticket", pk=ticket.pk),
                 "time": time,
                 "call": call,
                 "update": update,
@@ -576,3 +590,156 @@ def get_spare_cost_form(request):
     # Create an instance of the SpareCostForm
     spare_cost_form = SpareCostForm()
     return render(request, 'support/spare_cost_form_template.html', {'spare_cost_form': spare_cost_form})
+
+
+def get_raised_by_details(request):
+    raised_by_username = request.GET.get('raised_by_username', None)
+    if raised_by_username:
+        raised_by_user = get_object_or_404(User, username=raised_by_username)
+        # Construct data dictionary with raised by user details
+        data = {
+            # Add raised by user details here
+        }
+        return JsonResponse(data)
+    else:
+        return JsonResponse({'error': 'Raised by username not provided'}, status=400)
+    
+    
+def generate_ticket(request):
+    saleuser = User.objects.filter(is_salesperson = True)
+    ticket = NonAmcTicketForm(request.POST) 
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST)
+        customer_form = CompanyForm(request.POST)
+        user_form = CreateUserNew(request.POST)
+               
+
+        if customer_form.is_valid() and product_form.is_valid() and user_form.is_valid() and ticket.is_valid():
+            company_name = customer_form.cleaned_data['company_name']  # Adjust this based on your form field
+            company_contact_no = customer_form.cleaned_data['company_contact_no']  # Adjust this based on your form field
+            address = customer_form.cleaned_data['address']  # Adjust this based on your form field
+
+            # Check if a record with the same data already exists
+            existing_company = Company.objects.filter(
+                company_name=company_name,
+            ).first()
+
+            if existing_company:
+                # Update the existing record
+                existing_company.company_contact_no = company_contact_no
+                existing_company.address = address
+                existing_company.is_customer = True
+                existing_company.save()
+            else:
+                # Create a new record
+                existing_company = customer_form.save(commit=False)
+                existing_company.is_customer = True
+                existing_company.save()
+            
+            product_name = product_form.cleaned_data['product_name']
+            serial_number = product_form.cleaned_data['serial_number']
+            model_number = product_form.cleaned_data['model_number']
+            description = product_form.cleaned_data['description']
+            existing_product = Product.objects.filter(
+                serial_number=serial_number,
+            ).first()
+            if existing_product:
+                # Update the existing record
+                existing_product.product_name = product_name
+                existing_product.serial_number = serial_number
+                existing_product.model_number = model_number
+                existing_product.description = description
+                existing_product.save()
+            else:
+                # Create a new record
+                existing_product = product_form.save(commit=False)
+                existing_product.save()
+            
+            
+            first_name = user_form.cleaned_data['first_name']
+            last_name = user_form.cleaned_data['last_name']
+            email = user_form.cleaned_data['email']
+            username = email
+            user_contact_no = user_form.cleaned_data['user_contact_no']
+            is_customer_admin = True
+            is_customer_user = True
+            password = first_name + last_name + '@2023'
+
+            existing_user = User.objects.filter(email=email).first()
+            if existing_user:
+                # Update the existing user record
+                existing_user.first_name = first_name
+                existing_user.last_name = last_name
+                existing_user.email = email
+                existing_user.username = username
+                existing_user.user_contact_no = user_contact_no
+                existing_user.is_customer_admin = is_customer_admin
+                existing_user.is_customer_user = is_customer_user
+                existing_user.set_password(password)
+                existing_user.save()
+            else:
+                # Create a new user record
+                existing_user = user_form.save(commit=False)
+                existing_user.is_customer_admin = True
+                existing_user.is_customer_user = True
+                existing_user.set_password(password)
+                existing_user.first_name = first_name
+                existing_user.last_name = last_name
+                existing_user.email = email
+                existing_user.username = username
+                existing_user.user_contact_no = user_contact_no
+                existing_user.user_company = existing_company
+                existing_user.save()
+                
+            location = ticket.cleaned_data['location_text']
+            issue = ticket.cleaned_data['issue']
+            downtime_required = ticket.cleaned_data['downtime_required']
+            spare_by_zaco = ticket.cleaned_data['spare_by_zaco']
+            problem = ticket.cleaned_data['problem']
+            address = ticket.cleaned_data['address']
+            sales_person = ticket.cleaned_data['sales_person']
+            # print(location,issue,downtime_required,spare_by_zaco,problem,address,sales_person)
+            ticket1 = ticket.save(commit=False)
+            ticket1.raised_by = existing_user
+            ticket1.phone_number = user_contact_no
+            ticket1.company = existing_company
+            ticket1.location_text = location
+            ticket1.product = existing_product
+            ticket1.contact_person = existing_user
+            ticket1.issue = issue
+            ticket1.problem = problem
+            ticket1.downtime_required = downtime_required
+            ticket1.spare_by_zaco = spare_by_zaco
+            ticket1.sales_person = sales_person
+            ticket1.save()
+            print("Ticket Form Errors:", ticket.errors)
+            
+
+            return redirect('CompanyList')
+        else:
+            print("Form errors:")
+            print("Customer Form Errors:", customer_form.errors)
+            print("Product Form Errors:", product_form.errors)
+            print("User Form Errors:", user_form.errors)
+            print("Ticket Form Errors:", ticket.errors)
+    else:
+        # If it's a GET request, create empty forms
+        customer_form = CompanyForm()
+        product_form = ProductForm()
+        user_form = CreateUserNew()
+
+    company = Company.objects.all()
+    products = Product.objects.all()
+    user = User.objects.filter(is_customer_user=True)
+
+    context = {
+        'customer_form': customer_form,
+        'company': company,
+        'products': products,
+        'product_form': product_form,
+        'user': user,
+        'user_form': user_form,
+        'saleuser':saleuser,
+        'ticket':ticket
+    }
+    return render(request, 'support/non-amc.html', context)

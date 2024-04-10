@@ -13,6 +13,14 @@ class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ('product','issue','downtime_required','contact_person', 'phone_number', 'spare_by_zaco', 'problem')
+        
+
+class NonAmcTicketForm(forms.ModelForm):
+    documents = MultiFileField(min_num=1, max_num=10, max_file_size=1024*1024*500, required=False)
+
+    class Meta:
+        model = Ticket
+        fields = ('issue','downtime_required','location_text', 'spare_by_zaco', 'problem', 'address','sales_person','phone_number')
     
 
 class AssignTicketForm(forms.ModelForm):

@@ -55,6 +55,27 @@
       </li>
 
       {% endif %}
+
+      {% if request.user.is_service_agent == True or request.user.is_service_admin == True %}
+      <a
+      class="nav-link dropdown-toggle arrow-none waves-effect waves-light"
+      href="{% url "generate_ticket" %}"
+    >
+      <button
+      type="button"
+      class="
+        btn btn-outline-info btn-rounded
+        waves-effect waves-light
+      "
+
+    >
+      Non AMC Ticket
+    </button>
+    
+      </a>
+    </li>
+
+    {% endif %}
      
 
       <li class="dropdown notification-list topbar-dropdown">
