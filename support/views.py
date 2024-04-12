@@ -301,10 +301,7 @@ def ticket(request, pk):
         message = email_content
         email_from = "info@zacocomputer.com"
         recipient_list = [assign_email, ticket.raised_by.email]
-        if customer_admin:
-            for admin in customer_admin:
-                if admin.email not in recipient_list:
-                    recipient_list.append(admin.email)
+        
         if sender.email in recipient_list:
             recipient_list.remove(sender.email)
         # print(recipient_list)
@@ -650,6 +647,7 @@ def generate_ticket(request):
                 existing_product.model_number = model_number
                 existing_product.description = description
                 existing_product.save()
+                
             else:
                 # Create a new record
                 existing_product = product_form.save(commit=False)
@@ -671,12 +669,9 @@ def generate_ticket(request):
                 existing_user.first_name = first_name
                 existing_user.last_name = last_name
                 existing_user.email = email
-                existing_user.username = username
                 existing_user.user_contact_no = user_contact_no
-                existing_user.is_customer_admin = is_customer_admin
-                existing_user.is_customer_user = is_customer_user
-                existing_user.set_password(password)
                 existing_user.save()
+                is_new_customer = False
             else:
                 # Create a new user record
                 existing_user = user_form.save(commit=False)
@@ -690,6 +685,7 @@ def generate_ticket(request):
                 existing_user.user_contact_no = user_contact_no
                 existing_user.user_company = existing_company
                 existing_user.save()
+                is_new_customer = True
                 
             location = ticket.cleaned_data['location_text']
             issue = ticket.cleaned_data['issue']
@@ -714,8 +710,55 @@ def generate_ticket(request):
             ticket1.save()
             print("Ticket Form Errors:", ticket.errors)
             
+            customer_email = existing_user.email
+            salesperson_id = request.POST.get('sales_person')
+            selected_salesperson = User.objects.filter(pk=salesperson_id).first()
+            salesperson_email = selected_salesperson.email if selected_salesperson else None
+            
+            # Prepare HTML message
+            if is_new_customer:
+                email_template_path = "email/ticket_create_mai_non_amc.html"
+            else:
+                email_template_path = "email/ticket_create_mail.html"
+                
 
-            return redirect('CompanyList')
+            ticket_link = build_subdomain_absolute_uri(request, "Ticket", pk=ticket1.pk)
+            email_content = render_to_string(
+                email_template_path,
+                {
+                    "ticket": ticket1,
+                    "ticket_link": ticket_link,
+                    'is_new_customer': is_new_customer,
+                    "username":existing_user.username,
+                    "password":password
+                },
+            )
+            
+            email_template_path_sale = "email/ticket_create_mail.html"
+            email_content_sale = render_to_string(
+                email_template_path_sale,
+                {
+                    "ticket": ticket1,
+                    "ticket_link": ticket_link,
+                },
+            )
+            
+            
+            subject = f" New Ticket Created - Ticket ID: {ticket1.uuid}"
+            message = email_content
+            messagesale = email_content_sale
+            email_from = 'info@zacocomputer.com'
+            recipient_list = [customer_email, salesperson_email]
+            
+            # For sending email to customer
+            email_thread = Thread(target=send_email_async, args=(subject, message, email_from, [customer_email]))
+            email_thread.start()
+
+            # For sending email to salesperson
+            email_thread = Thread(target=send_email_async, args=(subject, messagesale, email_from, [salesperson_email]))
+            email_thread.start()
+
+            return redirect('dashboard')
         else:
             print("Form errors:")
             print("Customer Form Errors:", customer_form.errors)

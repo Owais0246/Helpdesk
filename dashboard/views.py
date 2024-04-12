@@ -38,8 +38,8 @@ def dashboard(request):
         ticket_pending = ticket_queryset.filter(assignee=None, status="Pending")
     
     elif request.user.is_field_engineer or request.user.is_sr_engineer:
-        call_times_queryset = Call_Time.objects.filter(field_engineer=request.user)
-        ticket_new = Ticket.objects.filter(ticket_call_times__in=call_times_queryset).filter(status="Open")
+        ticket_queryset = Call_Time.objects.filter(field_engineer=request.user)
+        ticket_new = Ticket.objects.filter(ticket_call_times__in=ticket_queryset).filter(status="Open")
         ticket_active = ticket_new | Ticket.objects.filter(sr_engineer=request.user, status="Open")
         ticket = ticket_new | Ticket.objects.filter(sr_engineer=request.user)
         ticket_close = Ticket.objects.filter(sr_engineer=request.user, status="Closed")
