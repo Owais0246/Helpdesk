@@ -107,7 +107,7 @@ def create_customer(request):
 
     context = {
         'customer_form': customer_form,
-        'company': company,
+        # 'company': company,
     }
     return render(request, 'masters/company/company_create.html', context)
 
