@@ -1,0 +1,162 @@
+{% extends "dashboard/horizontal_base.html" %} {% load static i18n %}
+{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} {% block content %}
+
+<!-- Start Content-->
+
+<div class="container-fluid">
+  <div class="container">
+    <h1>AMC Report for {{ amc.company.company_name }}</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <table class="table">
+          <tr>
+            <th>UUID</th>
+            <td>
+              <a href="{% url 'AmcDetail' amc.pk %}" class="text-body">
+                {{ amc.uuid }}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <th>Company</th>
+            <td>
+              <a
+                href="{% url 'CompanyDetail' amc.company.pk %}"
+                class="text-body"
+              >
+                {{ amc.company.company_name }}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>{{ amc.amc_description }}</td>
+          </tr>
+          <tr>
+            <th>Start Date</th>
+            <td>{{ amc.start_date }}</td>
+          </tr>
+          <tr>
+            <th>Expiry Date</th>
+            <td class="{% if is_expired %} table-danger {% endif %}">
+              {% if is_expired %} Expired on {{ amc.expiry }} {% else %} {{
+              amc.expiry }} {% endif %}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table class="table">
+          <tr>
+            <th>SLA</th>
+            <td>{{ amc.sla }}</td>
+          </tr>
+          <tr>
+            <th>Salesperson</th>
+            <td>{{ amc.salesperson.username }}</td>
+          </tr>
+          <tr>
+            <th>Service Provider</th>
+            <td>{{ amc.service_provider.service_provider }}</td>
+          </tr>
+          <tr>
+            <th>Product Count</th>
+            <td>{{ product_count }}</td>
+          </tr>
+          <tr>
+            <th>Total Product Amount</th>
+            <td>{{ total_product_amount }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <h2>Associated Products</h2>
+    {% if products %}
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Model Number</th>
+          <th>Serial Number</th>
+          <th>Amount</th>
+          <th>Ticket Count</th>
+          <th>FE Cost</th>
+          <th>Spare Cost</th>
+          <th>Transport Cost</th>
+          <th>Amount Return</th>
+          <th>Margin</th>
+          <th>Margin Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product.product_name }}</td>
+          <td>{{ product.model_number }}</td>
+          <td>{{ product.serial_number }}</td>
+          <td>{{ product.amount }}</td>
+          <td>{{ product.ticket_count }}</td>
+          <td>{{ product.fe_cost }}</td>
+          <td>{{ product.spare_cost }}</td>
+          <td>{{ product.transport_cost }}</td>
+          <td>{{ product.amount_return }}</td>
+          <td>{{ product.margin }}</td>
+          <td>{{ product.margin_percentage|floatformat:2 }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="fs-4 text-center">No products available.</p>
+    {% endif %}
+
+    <h2>Associated Tickets</h2>
+    {% if tickets %}
+
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>UUID</th>
+          <th>Issue</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Product Name</th>
+          <th>Assigned To</th>
+          <th>Raised By</th>
+          <th>Contact Person</th>
+          <th>Created At</th>
+          <th>Closed At</th>
+          <th>Call Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+        <tr>
+          <td>
+            <a href="{% url 'Ticket' ticket.pk %}" class="text-body">
+              {{ ticket.uuid }}
+            </a>
+          </td>
+          <td>{{ ticket.issue }}</td>
+          <td>{{ ticket.status }}</td>
+          <td>{{ ticket.priority }}</td>
+          <td>{{ ticket.product.product_name }}</td>
+          <td>{{ ticket.assignee.username }}</td>
+          <td>{{ ticket.raised_by.username }}</td>
+          <td>{{ ticket.contact_person.username }}</td>
+          <td>{{ ticket.created_at }}</td>
+          <td>{{ ticket.closed_at }}</td>
+
+          <td>{{ ticket.call_count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="fs-4 text-center">No tickets available.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

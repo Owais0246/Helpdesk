@@ -159,16 +159,15 @@ def service_agent_list(request):
 
 @login_required
 def create_salesperson(request):
-    # company = get_object_or_404(Company, id=pk)
-    company=Company.objects.get(is_self_company=True)
-    if request.method=="POST":
+    company = Company.objects.get(is_self_company=True)
+    if request.method == "POST":
         service_form = salesForm(request.POST, request.FILES)
         if service_form.is_valid():
             service = service_form.save(commit=False)
-            service.user_company=company
-            service.is_salesperson=True
+            service.user_company = company
+            service.is_salesperson = True
+            service.user_loc = service_form.cleaned_data['user_loc']  # Assign selected location
             service.save()
-
             return redirect('salesperson-list')
     else:
         service_form = salesForm()

@@ -31,7 +31,7 @@ class ServiceUpdateForm(forms.ModelForm):
         
         
 class salesForm(UserCreationForm):
-    location = forms.ModelChoiceField(
+    user_loc = forms.ModelChoiceField(
         queryset=Location.objects.none(),  # Initially an empty queryset
         required=True,
         label='Location',
@@ -40,14 +40,13 @@ class salesForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'user_contact_no', 'email', 'aadhaar_no', 'covid_cert', 'password1', 'password2']
-
     def __init__(self, *args, **kwargs):
         super(salesForm, self).__init__(*args, **kwargs)
 
         # Update the queryset for the location field based on the company with is_self_company=True
         company = Company.objects.filter(is_self_company=True).first()
         if company:
-            self.fields['location'].queryset = Location.objects.filter(loc_company=company)
+            self.fields['user_loc'].queryset = Location.objects.filter(loc_company=company)
             
 
 class salesUpdateForm(UserCreationForm):

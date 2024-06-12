@@ -1,0 +1,183 @@
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+{% block head_title %}{% trans "AMC Detail" %}{% endblock head_title %}
+{% block extra_css %}
+
+<!-- third party css -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-select-bs4/css/select.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<!-- third party css end -->
+
+{% endblock %}
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+    <h1 class="mt-4">AMC Report</h1>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Filters</h4>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{% url 'amc_report' %}">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="sales_person">Sales Person</label>
+                        <select name="sales_person" id="sales_person" class="form-control">
+                            <option value="">Select Sales Person</option>
+                            {% for person in salespersons %}
+                            <option value="{{ person.id }}" {% if sales_person == person.id|stringformat:"s" %}selected{% endif %}>{{ person.get_full_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="client_name">Client</label>
+                        <select name="client_name" id="client_name" class="form-control">
+                            <option value="">Select Client</option>
+                            {% for client in clients %}
+                            <option value="{{ client.id }}" {% if client_name == client.id|stringformat:"s" %}selected{% endif %}>{{ client.company_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="amc_start_date">AMC Start Date</label>
+                        <input type="date" name="amc_start_date" id="amc_start_date" class="form-control" value="{{ amc_start_date }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="amc_end_date">AMC End Date</label>
+                        <input type="date" name="amc_end_date" id="amc_end_date" class="form-control" value="{{ amc_end_date }}">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label for="location">Location</label>
+                        <select name="location" id="location" class="form-control">
+                            <option value="">Select Location</option>
+                            {% for location_option in locations %}
+                            <option value="{{ location_option }}" {% if location == location_option %}selected{% endif %}>{{ location_option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3 align-self-end">
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        <a href="{% url 'amc_report' %}" class="btn btn-secondary">Clear Filters</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h4>AMC Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover table-bordered dt-responsive w-100" id="tickets-table11">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>AMC UUID</th>
+                            <th>Client Name</th>
+                            <th>Sales Person Name</th>
+                            <th>Zaco Branch</th>
+                            <th>AMC Start Date</th>
+                            <th>AMC End Date</th>
+                            <th>Asset Count</th>
+                            <th>PO</th>
+                            <th>PO Value</th>
+                            <th>Expense All</th>
+                            <th>Amount Returned</th>
+                            <th>Margin Earned in Amt</th>
+                            <th>Margin Earned in %</th>
+                            <th>Total Tickets</th>
+                            <th>Closed Tickets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for amc in amc_list %}
+                        <tr class="{% if amc.is_expired %}table-danger{% endif %}">
+                            <td>
+                                <a href="{% url 'amc_detail' amc.pk %}" class="text-body">
+                                {{ amc.uuid }}
+                            </a>
+                            </td>
+                            <td>{{ amc.company.company_name }}</td>
+                            <td>{{ amc.salesperson }}</td>
+                            <td>{{ amc.salesperson.user_loc.loc_name }}</td>
+                            <td>{{ amc.start_date }}</td>
+                            <td>{{ amc.expiry }}</td>
+                            <td>{{ amc.products.count }}</td>
+                            <td>{{ amc.po }}</td>
+                            <td>{{ amc.po_value }}</td>
+                            <td>{{ amc.total_expenses }}</td>
+                            <td>{{ amc.amount_return }}</td>
+                            <td>{{ amc.margin_earned_amt }}</td>
+                            <td>{{ amc.margin_earned_percent }}</td>
+                            <td>{{ amc.active_tickets_count }}</td>
+                            <td>{{ amc.inactive_tickets_count }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="15" class="text-center">No AMC instances found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script language="JavaScript" type="text/javascript">
+    $(document).ready(function () {
+        var table = $("#tickets-table11").DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'colvis',
+                'excelHtml5',
+                'csvHtml5',
+                {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape', // Set orientation to landscape
+                    pageSize: 'LEGAL', // Set page size to legal
+                    customize: function (doc) {
+                        doc.defaultStyle.fontSize = 10;
+                    }
+                },
+            ],
+            language: {
+                paginate: {
+                    previous: "<i class='mdi mdi-chevron-left'>",
+                    next: "<i class='mdi mdi-chevron-right'>",
+                },
+            },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        });
+
+        $(".dataTables_length select").addClass("form-select form-select-sm");
+        $(".dataTables_length select").removeClass("custom-select custom-select-sm");
+        $(".dataTables_length label").addClass("form-label");
+    });
+</script>
+{% endblock %}

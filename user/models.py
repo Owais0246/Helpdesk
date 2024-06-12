@@ -1,3 +1,11 @@
+"""
+Module: users.models
+
+This module defines the database models related to user management in the application.
+
+Classes:
+    User: Represents a user of the system, extending Django's AbstractUser model.
+"""
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from masters.models import Company,Location
@@ -6,7 +14,9 @@ from masters.models import Company,Location
 
 # USER
 class User(AbstractUser):
-    
+    """
+    A custom user model representing users of the system.
+    """
     email = models.EmailField()
     user_contact_no = models.BigIntegerField(null=True,blank=True)
     user_company= models.ForeignKey(Company,on_delete=models.CASCADE, null=True)
@@ -20,7 +30,10 @@ class User(AbstractUser):
     is_sr_engineer=models.BooleanField(default=False)
     aadhaar_no = models.FileField(upload_to='user/', null=True, blank=True)
     covid_cert = models.FileField(upload_to='user/', null=True, blank=True)
-    
+
     def __str__(self):
-        return self.username
+        """
+        Returns the username of the user as a string.
+        """
+        return f'{self.first_name} {self.last_name}'
     

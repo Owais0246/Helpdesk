@@ -1,18 +1,45 @@
+"""
+Django forms for ticket management.
+
+This module contains various forms for ticket management in the Django application.
+
+TicketForm: Form for creating or updating a ticket.
+NonAmcTicketForm: Form for creating or updating a non-AMC ticket.
+AssignTicketForm: Form for assigning a ticket to a user and setting its priority.
+CallTimeForm: Form for updating the call time of a ticket.
+MessageForm: Form for adding a message to a ticket.
+CloseForm: Form for closing a ticket and providing feedback.
+SrForm: Form for assigning an SR engineer to a ticket.
+CostForm: Form for providing spare cost details.
+ClockIn: Form for recording the clock-in time of a field engineer.
+ClockOutForm: Form for recording the clock-out time of a field engineer.
+SpareCostForm: Form for providing spare cost details.
+
+"""
 from django import forms
-from .models import Ticket, Document, Call_Time, Message, SpareCost
 from multiupload.fields import MultiFileField
-from django.forms import inlineformset_factory
-
-
+from .models import Ticket, Call_Time, SpareCost
 
 
 
 class TicketForm(forms.ModelForm):
+    """
+    Form for creating or updating a ticket.
+    """
     documents = MultiFileField(min_num=1, max_num=10, max_file_size=1024*1024*500, required=False)
 
     class Meta:
+        """
+        Class containing metadata options for the TicketForm.
+
+        Attributes:
+            model: The model associated with the form (Ticket).
+            fields: The fields of the model to include in the form.
+        """
+
         model = Ticket
-        fields = ('product','issue','downtime_required','contact_person', 'phone_number', 'spare_by_zaco', 'problem')
+        fields = ('product','issue','downtime_required','contact_person',
+                  'phone_number', 'spare_by_zaco', 'problem')
         
 
 class NonAmcTicketForm(forms.ModelForm):
