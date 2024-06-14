@@ -56,8 +56,6 @@ def create_ticket(request):
     product = Product.objects.filter(amc__company_id=user.user_company.pk).filter(
         location=user.user_loc
     )
-    if user.is_customer_admin:
-        product = Product.objects.filter(amc__company_id=user.user_company.pk)
 
     if request.method == "POST":
         form = TicketForm(request.POST, request.FILES)
@@ -129,9 +127,6 @@ def ticket_list(request):
 def ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
     admin = User.objects.filter(is_service_admin=True)
-    customer_admin = User.objects.filter(user_loc=ticket.location).filter(
-        is_customer_admin=True
-    )
     ticket1 = Ticket.objects.filter(pk=pk)
     assign_form = AssignTicketForm(request.POST or None, instance=ticket)
     close_form = CloseForm(request.POST or None, instance=ticket)
@@ -306,7 +301,6 @@ def ticket(request, pk):
         if sender.email in recipient_list:
             recipient_list.remove(sender.email)
         # print(recipient_list)
-        # print(customer_admin.values())
 
         # Use threading to send the email asynchronously
         email_thread = Thread(
@@ -342,10 +336,6 @@ def ticket(request, pk):
                 
             email_from = 'info@zacocomputer.com'  # Your Gmail address from which you want to send emails
             recipient_list = [assign_email, ticket.raised_by.email, sales_person]
-            if customer_admin:
-                for admin in customer_admin:
-                    if admin.email not in recipient_list:
-                        recipient_list.append(admin.email)
             if sender.email in recipient_list:
                 recipient_list.remove(sender.email)
             # print(recipient_list)
@@ -354,6 +344,7 @@ def ticket(request, pk):
             email_thread.start()
             
             
+            print(recipient_list)
             
             return redirect('Ticket', pk)
     
@@ -469,9 +460,6 @@ def clock_in(request, pk):
     call = Call_Time.objects.get(pk=pk)
     ticket = Ticket.objects.get(pk=call.ticket_id.pk)
     call_form = ClockIn(request.POST or None, instance=call)
-    customer_admin = User.objects.filter(user_loc=ticket.location).filter(
-        is_customer_admin=True
-    )
     assign_email = ticket.assignee.email
     if call_form.is_valid():
         call_form.save()
@@ -497,13 +485,12 @@ def clock_in(request, pk):
         message = email_content
         email_from = "info@zacocomputer.com"  # Your Gmail address from which you want to send emails
         recipient_list = [assign_email, ticket.raised_by.email]
-        if customer_admin:
-            for admin in customer_admin:
-                if admin.email not in recipient_list:
-                    recipient_list.append(admin.email)
+
+
         
         # print(recipient_list)
-        
+        # print(ticket.raised_by.email)
+        print(recipient_list)
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
 
@@ -521,9 +508,6 @@ def clock_out(request, pk):
     call = Call_Time.objects.get(pk=pk)
     ticket = Ticket.objects.get(pk=call.ticket_id.pk)
     call_form = ClockOutForm(request.POST or None, instance=call)
-    customer_admin = User.objects.filter(user_loc=ticket.location).filter(
-        is_customer_admin=True
-    )
     assign_email = ticket.assignee.email
     if call_form.is_valid():
         call_form.save()
@@ -555,15 +539,12 @@ def clock_out(request, pk):
         message = email_content
         email_from = "info@zacocomputer.com"  # Your Gmail address from which you want to send emails
         recipient_list = [assign_email, ticket.raised_by.email]
-        if customer_admin:
-            for admin in customer_admin:
-                if admin.email not in recipient_list:
-                    recipient_list.append(admin.email)
-        
-        # print(recipient_list)
+
+        print(recipient_list)
         
         email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
         email_thread.start()
+        print(recipient_list)
 
         return redirect("Ticket", call.ticket_id.pk)
     context = {
@@ -660,7 +641,6 @@ def generate_ticket(request):
             email = user_form.cleaned_data['email']
             username = email
             user_contact_no = user_form.cleaned_data['user_contact_no']
-            is_customer_admin = True
             is_customer_user = True
             password = first_name + last_name + '@2023'
 
@@ -676,7 +656,6 @@ def generate_ticket(request):
             else:
                 # Create a new user record
                 existing_user = user_form.save(commit=False)
-                existing_user.is_customer_admin = True
                 existing_user.is_customer_user = True
                 existing_user.set_password(password)
                 existing_user.first_name = first_name

@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-s0)km5gsx!nf=msd#$gwspfb$3-6x&j*u9&v@y-4rt45t_)xdl
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','3.110.32.226','192.168.1.11','114.143.252.214',
-                 '192.168.1.3', 'itservicedesk.zacocomputer.com']
+                 '192.168.1.3', 'itservicedesk.zacocomputer.com','192.168.1.40']
 
 
 # Application definition
