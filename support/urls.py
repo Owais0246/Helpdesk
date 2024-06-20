@@ -16,6 +16,7 @@ urlpatterns = [
     path('spare_cost_form/', get_spare_cost_form, name='get_spare_cost_form'),
 
     path('generate_ticket/', views.generate_ticket, name='generate_ticket'),
+    path('generate_ticket_cus/', views.generate_ticket_cus, name='generate_ticket_cus'),
 
     
 

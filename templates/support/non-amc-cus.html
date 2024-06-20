@@ -1,0 +1,134 @@
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+
+{% block head_title %}
+  {% trans "Form Components" %}
+{% endblock head_title %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Ticket</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Non AMC Ticket</a>
+            </li>
+            <!-- <li class="breadcrumb-item active">Elements</li> -->
+          </ol>
+        </div>
+        <h4 class="page-title">Create Non AMC Ticket</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <!-- <h4 class="mb-3 header-title">Create Customer</h4> -->
+
+          <form method='POST' id="customerForm">
+            {% csrf_token %}
+          
+            <div class="mb-3">
+              <label for="serial_number" class="form-label">Product Serial Number</label>
+              <input type="text" class="form-control" id="serial_no" name="serial_number" list="serial" placeholder="Enter Product Serial Number" required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="product_name" class="form-label">Product Name</label>
+              <input type="text" class="form-control" id="product_name" name="product_name" list="product_name" placeholder="Enter Product Name" required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="model_number" class="form-label">Product Model Number</label>
+              <input type="text" class="form-control" id="model_number" name="model_number" list="model_number" placeholder="Enter Product Model Number" required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Product Description</label>
+              <input type="text" class="form-control" id="description" name="description" list="description" placeholder="Enter Product Description" required/>
+            </div>
+
+            <div class="mb-3">
+              <label for="location_text" class="form-label">Location</label>
+              <input type="text" class="form-control" id="location_text" name="location_text" list="location_text" placeholder="Enter Location" required/>
+            </div>
+
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id="address" rows="5" name="address"></textarea>
+
+            <div class="mb-3" style="display:flex;">
+              <div class="col-md-4">
+                <input type="checkbox" class="form-check-input" id="downtime_required" name="downtime_required" />
+                <label class="form-check-label" for="downtime_required">Downtime required</label>
+              </div>
+              <div class="col-md-4">
+                <input type="checkbox" class="form-check-input" id="spare_by_zaco" name="spare_by_zaco" />
+                <label class="form-check-label" for="spare_by_zaco">Spare by zaco</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="issue" class="form-label">Issue</label>
+              <input type="text" class="form-control" id="issue" name="issue" list="issue" placeholder="Issue" required/>
+            </div>
+
+            <label for="problem" class="form-label">Problem Overview</label>
+            <textarea class="form-control" id="problem" rows="5" name="problem"></textarea>
+
+            <div class="mb-3">
+              <label for="sales_person" class="form-label">Salesperson</label>
+              <select name="sales_person" class="form-control" id="sales_person">
+                <option value="#">Select the sales person</option>
+                {% for user in saleuser %}
+                <option value="{{ user.pk }}">{{ user.first_name }} {{ user.last_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          
+            <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+          </form>
+        </div>
+        <!-- end card-body-->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#serial_no').on('input', function () {
+      var serialNumber = $(this).val();
+      if (serialNumber) {
+        $.ajax({
+          url: '{% url "get_product_details" %}',  
+          method: 'GET',
+          data: {'serial_number': serialNumber},
+          success: function (data) {
+            if (data) {
+              $('#product_name').val(data.product_name);
+              $('#model_number').val(data.model_number);
+              $('#description').val(data.description);
+            }
+          }
+        });          
+      }
+    });
+  });
+</script>
+{% endblock %}

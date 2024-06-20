@@ -10,6 +10,9 @@ from masters.models import Company
 from .forms import *
 
 
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+from django.contrib.auth.forms import PasswordResetForm
 
 # Create your views here.
 
@@ -407,3 +410,15 @@ def logout_user (request):
 # @method_decorator(login_required, name='dispatch')
 # class Dashboard(generic.TemplateView):
 #     template_name= "dashboard/dashboard.html"
+
+
+
+
+class PasswordResetConfirmView(FormView):
+    template_name = 'users/password_reset_confirm.html'
+    form_class = PasswordResetForm
+    success_url = reverse_lazy('password_reset_complete')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

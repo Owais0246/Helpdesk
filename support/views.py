@@ -10,7 +10,7 @@ from django.utils.safestring import mark_safe
 from user.models import User
 from masters.models import Product, Location, Company
 from .models import Ticket, Document, Call_Time, MessageDocument, CallDocument
-from .forms import TicketForm, AssignTicketForm, CloseForm, ClockIn, ClockOutForm, NonAmcTicketForm
+from .forms import TicketForm, AssignTicketForm, CloseForm, ClockIn, ClockOutForm, NonAmcTicketForm, NonAmcTicketCusForm
 from .utils import build_absolute_url
 from django.utils.safestring import mark_safe
 from threading import Thread
@@ -338,7 +338,7 @@ def ticket(request, pk):
             recipient_list = [assign_email, ticket.raised_by.email, sales_person]
             if sender.email in recipient_list:
                 recipient_list.remove(sender.email)
-            # print(recipient_list)
+            print(recipient_list)
             
             email_thread = Thread(target=send_email_async, args=(subject, message, email_from, recipient_list))
             email_thread.start()
@@ -766,3 +766,138 @@ def generate_ticket(request):
         'ticket':ticket
     }
     return render(request, 'support/non-amc.html', context)
+
+
+def generate_ticket_cus(request):
+    saleuser = User.objects.filter(is_salesperson=True)
+    ticket = NonAmcTicketForm(request.POST)
+    
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST)
+        
+        if product_form.is_valid() and ticket.is_valid():
+            # Retrieve the company and contact number of the logged-in user
+            existing_company = request.user.user_company
+            user_contact_no = request.user.user_contact_no
+            
+            # Product details
+            product_name = product_form.cleaned_data['product_name']
+            serial_number = product_form.cleaned_data['serial_number']
+            model_number = product_form.cleaned_data['model_number']
+            description = product_form.cleaned_data['description']
+            
+            # Check if a product with the same serial number exists
+            existing_product = Product.objects.filter(serial_number=serial_number).first()
+            serial_number_with_company = f"{serial_number} -- {existing_company.company_name}"
+            
+            if existing_product:
+                # Find a unique serial number by appending a counter
+                counter = 0
+                new_serial_number = serial_number_with_company
+                while Product.objects.filter(serial_number=new_serial_number).exists():
+                    print("Entering loop to find unique serial number")
+                    counter += 1
+                    new_serial_number = f"{serial_number_with_company} -- {counter}"
+            
+                # Create a new product record with the unique serial number
+                new_product = product_form.save(commit=False)
+                new_product.serial_number = new_serial_number
+                new_product.product_name = product_name
+                new_product.model_number = model_number
+                new_product.description = description
+                new_product.save()
+            else:
+                # Create a new product record with the original serial number and company name
+                new_product = product_form.save(commit=False)
+                new_product.serial_number = serial_number_with_company
+                new_product.product_name = product_name
+                new_product.model_number = model_number
+                new_product.description = description
+                new_product.save()
+            
+            # Ticket details
+            location = ticket.cleaned_data['location_text']
+            issue = ticket.cleaned_data['issue']
+            downtime_required = ticket.cleaned_data['downtime_required']
+            spare_by_zaco = ticket.cleaned_data['spare_by_zaco']
+            problem = ticket.cleaned_data['problem']
+            address = ticket.cleaned_data['address']
+            sales_person = ticket.cleaned_data['sales_person']
+            
+            ticket1 = ticket.save(commit=False)
+            ticket1.raised_by = request.user
+            ticket1.phone_number = user_contact_no
+            ticket1.company = existing_company
+            ticket1.location_text = location
+            ticket1.product = new_product
+            ticket1.contact_person = request.user
+            ticket1.issue = issue
+            ticket1.problem = problem
+            ticket1.downtime_required = downtime_required
+            ticket1.spare_by_zaco = spare_by_zaco
+            ticket1.sales_person = sales_person
+            ticket1.save()
+            
+            # Prepare HTML message
+            customer_email = request.user.email
+            salesperson_id = request.POST.get('sales_person')
+            selected_salesperson = User.objects.filter(pk=salesperson_id).first()
+            salesperson_email = selected_salesperson.email if selected_salesperson else None
+            
+            # Prepare email template and content
+            email_template_path = "email/ticket_create_mail.html"
+            ticket_link = build_subdomain_absolute_uri(request, "Ticket", pk=ticket1.pk)
+            email_content = render_to_string(
+                email_template_path,
+                {'ticket': ticket1, 'ticket_link': ticket_link}
+            )
+            subject = f"New Ticket Created - Ticket ID: {ticket1.uuid}"
+            email_from = 'info@zacocomputer.com'
+            
+            # For sending email to customer
+            email_thread = Thread(target=send_email_async, args=(subject, email_content, email_from, [customer_email]))
+            email_thread.start()
+            
+            # For sending email to salesperson
+            if salesperson_email:
+                email_thread = Thread(target=send_email_async, args=(subject, email_content, email_from, [salesperson_email]))
+                email_thread.start()
+            
+            return redirect('dashboard')
+        else:
+            print("Form errors:")
+            print("Product Form Errors:", product_form.errors)
+            print("Ticket Form Errors:", ticket.errors)
+    
+    else:
+        product_form = ProductForm()
+    
+    context = {
+        'product_form': product_form,
+        'saleuser': saleuser,
+        'ticket': ticket,
+    }
+    
+    return render(request, 'support/non-amc-cus.html', context)
+
+
+def get_product_details(request):
+    if request.method == 'GET':
+        serial_number = request.GET.get('serial_number')
+        
+        if serial_number:
+            product = Product.objects.filter(serial_number=serial_number).first()
+            
+            if product:
+                return JsonResponse({
+                    'product_name': product.product_name,
+                    'model_number': product.model_number,
+                    'description': product.description,
+                    # Add other attributes as needed
+                })
+            else:
+                return JsonResponse({'error': 'Product not found for serial number'}, status=404)
+        else:
+            return JsonResponse({'error': 'Serial number parameter is missing'}, status=400)
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

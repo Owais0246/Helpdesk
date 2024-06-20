@@ -108,3 +108,11 @@ class SpareCostForm(forms.ModelForm):
             'sr_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Serial Number'}),
             'cost': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cost'}),
         }
+
+
+class NonAmcTicketCusForm(forms.ModelForm):
+    documents = MultiFileField(min_num=1, max_num=10, max_file_size=1024*1024*500, required=False)
+
+    class Meta:
+        model = Ticket
+        fields = ('issue','downtime_required','location_text', 'spare_by_zaco', 'problem', 'address','sales_person')
