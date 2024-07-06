@@ -26,9 +26,11 @@
         <h4 class="page-title">Dashboard </h4>
       </div>
     </div>
-          <div class="card">
-          <div class="card-body">
-            <ul class="nav nav-justified">
+    <div class="card">
+      
+      <div class="card-body">
+        <ul class="nav nav-justified">
+              {% if request.user.is_service_admin  or request.user.is_customer_user or request.user.is_customer_admin  or request.user.is_salesperson%}
               <li class="nav-item">
                 <a
                   href="#home1"
@@ -61,7 +63,6 @@
 
                 </a>
               </li>
-              {% if request.user.is_service_admin  or request.user.is_customer_user or request.user.is_customer_admin  or request.user.is_salesperson%}
               <li class="nav-item">
                 <a
                   href="#pending_ticket"
@@ -133,7 +134,8 @@
                   data-bs-toggle="tab"
                   aria-expanded="false"
                   class="nav-link">
-                               
+                {% if request.user.is_service_admin  or request.user.is_customer_user or request.user.is_customer_admin  or request.user.is_salesperson%}
+
                 <div class="widget-rounded-circle card border">
                   <div class="card-body">
                     <div class="row">
@@ -153,6 +155,7 @@
                     <!-- end row-->
                   </div>
                 </div>
+                {% endif %}
                 <!-- end widget-rounded-circle-->
               </div>
 

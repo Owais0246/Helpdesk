@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-s0)km5gsx!nf=msd#$gwspfb$3-6x&j*u9&v@y-4rt45t_)xdl
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','3.110.32.226','192.168.1.11','114.143.252.214',
-                 '192.168.1.3', 'itservicedesk.zacocomputer.com','192.168.1.40']
+                 '192.168.1.3', 'itservicedesk.zacocomputer.com','192.168.1.40','192.168.1.34']
 
 
 # Application definition
@@ -93,24 +93,24 @@ WSGI_APPLICATION = 'helpdesk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'helpdesk',
-#         'USER': 'service_admin',
-#         'PASSWORD': 'helpmeout',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'helpdesk',
+        'USER': 'service_admin',
+        'PASSWORD': 'helpmeout',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
