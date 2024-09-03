@@ -107,7 +107,9 @@
                             <td>{{ amc.start_date }}</td>
                             <td>{{ amc.expiry }}</td>
                             <td>{{ amc.products.count }}</td>
-                            <td>{{ amc.po }}</td>
+                            <td> {% if amc.po %}<a href="{{ amc.po.url }}" class="fw-bold" target="_blank">
+                                <i class="fe-download-cloud me-1"></i></a> 
+                                {% else %}<i class="fe-cloud-off me-1"></i> {% endif %}</td>
                             <td>{{ amc.po_value }}</td>
                             <td>{{ amc.total_expenses }}</td>
                             <td>{{ amc.amount_return }}</td>

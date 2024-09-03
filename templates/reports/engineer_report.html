@@ -1,0 +1,64 @@
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+{% block head_title %}Engineer Report{% endblock head_title %}
+{% block extra_css %}
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">Engineer Report</h1>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Engineers' Call Summary</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered dt-responsive w-100" id="engineer-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Engineer Name</th>
+                            <th>Total Calls Attended</th>
+                            <th>Total Time Taken (Hours:Minutes)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for engineer in engineer_report %}
+                        <tr>
+                            <td>{{ engineer.name }}</td>
+                            <td>{{ engineer.total_calls }}</td>
+                            <td>{{ engineer.total_time }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No engineers found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_javascript %}
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('#engineer-table').DataTable({
+            language: {
+                paginate: {
+                    previous: "<i class='mdi mdi-chevron-left'>",
+                    next: "<i class='mdi mdi-chevron-right'>"
+                }
+            },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            }
+        });
+    });
+</script>
+{% endblock %}

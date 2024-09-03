@@ -13,5 +13,6 @@ from . import views
 urlpatterns = [
     path('amc-report/', views.amc_list, name='amc_report'),
     path('amc-report/<int:amc_id>/', views.amc_detail, name='amc_detail'),
+    path('engineer-report/', views.engineer_report, name='engineer_report'),
     
     ]

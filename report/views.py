@@ -5,14 +5,15 @@ Description: This module contains views for handling AMC
 """
 import datetime
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Sum
+from django.db.models import Count, Sum, F, ExpressionWrapper
 from django.utils.timezone import now
 from user.models import User
 from amc.models import Amc
-from support.models import Ticket
+from support.models import Ticket,Call_Time
 from masters.models import Product, Company
-
-
+from django.db.models.functions import Cast
+from datetime import timedelta
+from django.db import models
 
 def amc_list(request):
     """
@@ -134,4 +135,49 @@ def amc_detail(request, amc_id):
         'total_product_amount': total_product_amount,
         'product_count': product_count,
         'is_expired': is_expired,
+    })
+
+
+def engineer_report(request):
+    """
+    View function to render a report of engineers and their call attendance.
+
+    Parameters:
+    - request: HttpRequest object
+
+    Returns:
+    - HttpResponse object containing the rendered HTML template with engineer report
+    """
+    engineers = User.objects.filter(is_field_engineer=True)
+
+    # Prepare data for the report
+    engineer_data = []
+    for engineer in engineers:
+        calls = Call_Time.objects.filter(field_engineer=engineer)
+        total_calls = calls.count()
+        
+        total_time_seconds = 0
+        for call in calls:
+            if call.clock_in and call.clock_out:
+                time_taken = call.clock_out - call.clock_in
+                total_time_seconds += time_taken.total_seconds()
+        
+        # Convert total time from seconds to hours and minutes
+        total_time_hours = total_time_seconds // 3600
+        total_time_minutes = (total_time_seconds % 3600) // 60
+        
+        # Format hours and minutes to ensure two digits for minutes
+        formatted_time = f"{int(total_time_hours)}:{int(total_time_minutes):02d}"
+        
+        # Debug print statements
+        print(f"Engineer: {engineer.get_full_name()}, Total Time Seconds: {total_time_seconds}, Formatted Time: {formatted_time}")
+        
+        engineer_data.append({
+            'name': engineer.get_full_name(),
+            'total_calls': total_calls,
+            'total_time': formatted_time,
+        })
+
+    return render(request, 'reports/engineer_report.html', {
+        'engineer_report': engineer_data,
     })

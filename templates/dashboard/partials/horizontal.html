@@ -14,7 +14,7 @@
               aria-expanded="false"
 
             >
-              <i class="fe-airplay me-1"></i> Dashboards
+              <i class="fe-layers me-1"></i> Dashboards
              
             </a>
 
@@ -47,6 +47,7 @@
               aria-haspopup="false"
               aria-expanded="false"
             >
+            <i class="fe-user-plus me-1"></i>
               Users
               <i class="mdi mdi-chevron-down"></i>
             </a>
@@ -91,10 +92,51 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i class="fe-users me-1"></i> AMC
+              <i class="fe-hard-drive me-1"></i> AMC
             </a>
           </li>
           {% endif %}
+
+
+          {% if request.user.is_service_admin  or request.user.is_superuser%}
+          
+          <li class=" dropdown d-none d-xl-block">
+            
+            <a
+              class="nav-link dropdown-toggle waves-effect waves-light"
+              data-bs-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-haspopup="false"
+              aria-expanded="false"
+            >
+            <i class="fe-printer me-1"></i>
+              Reports
+              <i class="mdi mdi-chevron-down"></i>
+            </a>
+            <div class="dropdown-menu">
+              <!-- item-->
+              <a href="{% url 'amc_report' %}" class="dropdown-item">
+                <i class="fe-briefcase me-1"></i>
+                <span>AMC Reports</span>
+              </a>
+              
+              {% comment %} <a href="{% url 'amc_detail' %}" class="dropdown-item">
+                <i class="fe-briefcase me-1"></i>
+                <span>AMC Reports</span>
+              </a>           {% endcomment %}
+            
+    
+              <div class="dropdown-divider"></div>
+    
+              
+            </div>
+          </li>
+          {% endif %}
+
+
+
+
         </ul>
         <!-- end navbar-->
       </div>
