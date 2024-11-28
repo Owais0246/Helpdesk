@@ -1,0 +1,116 @@
+{% extends "dashboard/horizontal_base.html" %} 
+{% load static i18n %} 
+{% block head_title %}
+  {% trans "List of Locations" %}
+{% endblock head_title %}
+
+{% block extra_css %}
+
+<!-- third party css -->
+
+<link
+  href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<link
+  href="{% static 'libs/datatables.net-select-bs4/css//select.bootstrap4.min.css' %}"
+  rel="stylesheet"
+  type="text/css"/>
+<!-- third party css end -->
+
+{% endblock %}
+ {% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Locations</li>
+          </ol>
+        </div>
+        <h4 class="page-title">List of Locations</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- Add Location Button -->
+          <a href="{% url 'create_location' %}">
+            <button type="button" class="btn btn-sm btn-blue waves-effect waves-light float-end">
+              <i class="mdi mdi-plus-circle"></i> Add Location
+            </button>
+          </a>
+
+          <!-- Table -->
+          {% comment %} <div class="table-responsive"> {% endcomment %}
+            <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
+              <thead>
+                <tr>
+                  <th>State</th>
+                  <th>City</th>
+                  <th>Region</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for region in regions %}
+                  <tr>
+                    <td>{{ region.city.state.name }}</td> <!-- Display the state name -->
+                    <td>{{ region.city.name }}</td> <!-- Display the city name -->
+                    <td>{{ region.name }}</td> <!-- Display the region name -->
+
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="4">No locations found.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- End table -->
+        </div>
+        <!-- end card-body -->
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+</div>
+<!-- end container -->
+{% endblock %} {% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+<!-- Init js end -->
+
+{% endblock %}

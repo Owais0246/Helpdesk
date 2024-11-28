@@ -1,0 +1,114 @@
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+
+{% block head_title %}
+  {% trans "Create Region" %}
+{% endblock head_title %}
+
+{% block content %}
+<h2>Create Region</h2>
+<form method="POST" id="regionForm">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="state" class="form-label">State</label>
+        <input type="text" class="form-control" id="state" name="state" list="state_list" placeholder="Enter State" required>
+        <datalist id="state_list">
+            <!-- Dynamically populated by AJAX -->
+        </datalist>
+    </div>
+
+    <div class="mb-3">
+        <label for="city" class="form-label">City</label>
+        <input type="text" class="form-control" id="city" name="city" list="city_list" placeholder="Enter City" required>
+        <datalist id="city_list">
+            <!-- Dynamically populated by AJAX -->
+        </datalist>
+    </div>
+
+    <div class="mb-3">
+        <label for="region" class="form-label">Region</label>
+        <input type="text" class="form-control" id="region" name="region" list="region_list" placeholder="Enter Region" required>
+        <datalist id="region_list">
+            <!-- Dynamically populated by AJAX -->
+        </datalist>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Region</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // Fetch states when typing the state name
+    $('#state').on('input', function () {
+      var stateName = $(this).val();
+      if (stateName) {
+        $.ajax({
+          url: '{% url "get_states" %}',
+          method: 'GET',
+          success: function (data) {
+            var stateDatalist = $('#state_list');
+            stateDatalist.empty();  // Clear previous state options
+            if (data.length > 0) {
+              data.forEach(function(state) {
+                stateDatalist.append('<option value="' + state.name + '">');
+              });
+            } else {
+              stateDatalist.append('<option value="">No states found</option>');
+            }
+          }
+        });
+      }
+    });
+
+    // Fetch cities when typing the city name based on the selected state
+    $('#state').on('blur', function () {
+      var stateName = $(this).val();
+      if (stateName) {
+        $.ajax({
+          url: '{% url "get_cities" %}',
+          method: 'GET',
+          data: { 'state': stateName },
+          success: function (data) {
+            var cityDatalist = $('#city_list');
+            cityDatalist.empty();  // Clear previous city options
+            if (data.length > 0) {
+              data.forEach(function(city) {
+                cityDatalist.append('<option value="' + city.name + '">');
+              });
+            } else {
+              cityDatalist.append('<option value="">No cities found</option>');
+            }
+          }
+        });
+      }
+    });
+
+    // Fetch regions when typing the region name based on the selected city
+    $('#city').on('blur', function () {
+      var cityName = $(this).val();
+      if (cityName) {
+        $.ajax({
+          url: '{% url "get_regions" %}',
+          method: 'GET',
+          data: { 'city': cityName },
+          success: function (data) {
+            var regionDatalist = $('#region_list');
+            regionDatalist.empty();  // Clear previous region options
+            if (data.length > 0) {
+              data.forEach(function(region) {
+                regionDatalist.append('<option value="' + region.name + '">');
+              });
+            } else {
+              regionDatalist.append('<option value="">No regions found</option>');
+            }
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{% endblock content %}

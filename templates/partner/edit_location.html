@@ -1,0 +1,66 @@
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+
+{% block head_title %}
+  {% trans "Edit Location" %}
+{% endblock head_title %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Locations</a>
+            </li>
+            <li class="breadcrumb-item active">Edit Location</li>
+          </ol>
+        </div>
+        <h4 class="page-title">Edit Location: {{ region.name }}</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="state" class="form-label">State</label>
+              <input type="text" class="form-control" id="state" value="{{ region.city.state.name }}" disabled />
+            </div>
+
+            <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" value="{{ region.city.name }}" disabled />
+            </div>
+
+            <div class="mb-3">
+              <label for="region_name" class="form-label">Region Name</label>
+              <input type="text" class="form-control" id="region_name" name="name" value="{{ region.name }}" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary waves-effect waves-light">Save Changes</button>
+          </form>
+        </div>
+        <!-- end card-body -->
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+
+</div>
+<!-- container -->
+{% endblock content %}

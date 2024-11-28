@@ -1,0 +1,43 @@
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+
+{% block head_title %}
+  {% trans "Create Engineer" %}
+{% endblock head_title %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Partner</a></li>
+            <li class="breadcrumb-item active">Create Engineer</li>
+          </ol>
+        </div>
+        <h4 class="page-title">Create Engineer</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <form method="POST" id="engineerForm">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Render the form fields -->
+            
+            <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- container -->
+{% endblock %}

@@ -121,7 +121,7 @@
                 <span>AMC Reports</span>
               </a>
                             <a href="{% url 'engineer_report' %}" class="dropdown-item">
-                <i class="fe-briefcase me-1"></i>
+                <i class="fa fa-briefcase"></i>
                 <span>Engineer Reports</span>
               </a>
               {% comment %} <a href="{% url 'amc_detail' %}" class="dropdown-item">
@@ -137,8 +137,43 @@
           </li>
           {% endif %}
 
-
-
+          {% if request.user.is_service_admin  or request.user.is_service_agent%}
+          <li class=" dropdown d-none d-xl-block">
+            
+            <a
+              class="nav-link dropdown-toggle waves-effect waves-light"
+              data-bs-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-haspopup="false"
+              aria-expanded="false"
+            >
+            <i class="fe-printer me-1"></i>
+              Partner
+              <i class="mdi mdi-chevron-down"></i>
+            </a>
+            <div class="dropdown-menu">
+              <!-- item-->
+              <a href="{% url 'location_list' %}" class="dropdown-item">
+                <i class="fe-map-pin me-1"></i>
+                <span>Location</span>
+              </a>
+                            <a href="{% url 'partner_list' %}" class="dropdown-item">
+                <i class="fa fa-briefcase"></i>
+                <span>Partner</span>
+              </a>
+              {% comment %} <a href="{% url 'amc_detail' %}" class="dropdown-item">
+                <i class="fe-briefcase me-1"></i>
+                <span>AMC Reports</span>
+              </a>           {% endcomment %}
+            
+    
+              <div class="dropdown-divider"></div>
+    
+              
+            </div>
+          </li>
+          {% endif %}
 
         </ul>
         <!-- end navbar-->

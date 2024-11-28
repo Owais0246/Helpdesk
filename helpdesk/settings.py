@@ -26,8 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s0)km5gsx!nf=msd#$gwspfb$3-6x&j*u9&v@y-4rt45t_)xdl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','3.110.32.226','192.168.1.11','114.143.252.214',
                  '192.168.1.3', 'itservicedesk.zacocomputer.com','192.168.1.40','192.168.1.34']
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'dashboard.apps.DashboardConfig',
     'support.apps.SupportConfig',
+    'partner.apps.PartnerConfig',
     'mathfilters',
     'crispy_forms',
     'crispy_bootstrap4',

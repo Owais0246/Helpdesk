@@ -28,6 +28,7 @@ urlpatterns = [
     path('amc/', include("amc.urls")),
     path('reports/', include("report.urls")),
     path('support/', include("support.urls")),
+    path('partner/', include("partner.urls")),
     path('', include("dashboard.urls")),
     path('login', views.login_user, name="login"),
     path('logout', views.logout_user, name="logout"),
