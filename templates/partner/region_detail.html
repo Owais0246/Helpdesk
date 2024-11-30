@@ -1,16 +1,16 @@
 {% extends "dashboard/horizontal_base.html" %}
 {% load static i18n %}
 {% block head_title %}
-  {% trans "List of Locations" %}
+  {% trans "Region Detail" %}
 {% endblock head_title %}
 
 {% block extra_css %}
-<!-- third party css -->
-<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'libs/datatables.net-select-bs4/css/select.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
-<!-- third party css end -->
+  <!-- third party css -->
+  <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+  <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+  <link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+  <link href="{% static 'libs/datatables.net-select-bs4/css/select.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+  <!-- third party css end -->
 {% endblock %}
 
 {% block content %}
@@ -25,10 +25,13 @@
             <li class="breadcrumb-item">
               <a href="javascript: void(0);">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Locations</li>
+            <li class="breadcrumb-item">
+              <a href="{% url 'location_list' %}">Locations</a>
+            </li>
+            <li class="breadcrumb-item active">{{ region.name }}</li>
           </ol>
         </div>
-        <h4 class="page-title">List of Locations</h4>
+        <h4 class="page-title">Region: {{ region.name }}</h4>
       </div>
     </div>
   </div>
@@ -38,35 +41,24 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <!-- Add Location Button -->
-          <a href="{% url 'create_location' %}">
-            <button type="button" class="btn btn-sm btn-blue waves-effect waves-light float-end">
-              <i class="mdi mdi-plus-circle"></i> Add Location
-            </button>
-          </a>
-
           <!-- Table -->
           <div class="table-responsive">
             <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
               <thead>
                 <tr>
-                  <th>State</th>
-                  <th>City</th>
-                  <th>Region</th>
-                  <th>Pin Code</th>
+                  <th>Partner Name</th>
+                  <th>Engineer Name</th>
                 </tr>
               </thead>
               <tbody>
-                {% for region in regions %}
+                {% for engineer in engineers %}
                   <tr>
-                    <td><a href="{% url 'state_detail' state_id=region.city.state.id %}">{{ region.city.state.name }}</a></td> <!-- Link to state detail -->
-                    <td><a href="{% url 'city_detail' city_id=region.city.id %}">{{ region.city.name }}</a></td> <!-- Link to city detail -->
-                    <td><a href="{% url 'region_detail' region_id=region.id %}">{{ region.name }}</a></td> <!-- Link to region detail -->
-                    <td>{{ region.pin }}</td> <!-- Display pin code -->
+                    <td>{{ engineer.partner.name }}</td>
+                    <td>{{ engineer.name }}</td>
                   </tr>
                 {% empty %}
                   <tr>
-                    <td colspan="4">No locations found.</td>
+                    <td colspan="2">No engineers found in this region.</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -98,4 +90,5 @@
 <!-- Init js -->
 <script src="{% static 'js/pages/datatables.init.js' %}"></script>
 <!-- Init js end -->
+
 {% endblock %}

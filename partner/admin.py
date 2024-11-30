@@ -10,7 +10,7 @@ This module registers the following models in the Django admin:
 """
 
 from django.contrib import admin
-from .models import Partner, Engineer, State, City, Region, EngineerLocation
+from .models import Partner, Engineer, State, City, Region
 
 # Registering models with the Django admin site
 admin.site.register(Partner)
@@ -18,4 +18,3 @@ admin.site.register(Engineer)
 admin.site.register(State)
 admin.site.register(City)
 admin.site.register(Region)
-admin.site.register(EngineerLocation)

@@ -26,21 +26,6 @@ class Partner(models.Model):
         return str(self.name)
 
 
-class Engineer(models.Model):
-    """
-    A model representing an engineer associated with a partner.
-    """
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, related_name="engineers")
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    contact_no = models.CharField(max_length=20)
-    expertise = models.TextField()
-
-    def __str__(self):
-        """
-        Return the name of the engineer as a string.
-        """
-        return str(self.name)
 
 
 class State(models.Model):
@@ -76,6 +61,7 @@ class Region(models.Model):
     """
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='regions')
     name = models.CharField(max_length=100)
+    pin = models.IntegerField()
 
     def __str__(self):
         """
@@ -84,21 +70,38 @@ class Region(models.Model):
         return str(self.name)
 
 
-class EngineerLocation(models.Model):
-    """
-    A model representing the relationship between an engineer and a location.
-    """
-    engineer = models.ForeignKey(Engineer, on_delete=models.CASCADE)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+# class EngineerLocation(models.Model):
+#     """
+#     A model representing the relationship between an engineer and a location.
+#     """
+#     engineer = models.ForeignKey(Engineer, on_delete=models.CASCADE)
+#     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
-    class Meta:
-        """
-        Meta class to ensure unique combination of engineer and location.
-        """
-        unique_together = ('engineer', 'region')
+#     class Meta:
+#         """
+#         Meta class to ensure unique combination of engineer and location.
+#         """
+#         unique_together = ('engineer', 'region')
+
+#     def __str__(self):
+#         """
+#         Return a string representation of the engineer's service location.
+#         """
+#         return str(f"{self.engineer.name} serves {self.region}")
+
+class Engineer(models.Model):
+    """
+    A model representing an engineer associated with a partner.
+    """
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, related_name="engineers")
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    contact_no = models.CharField(max_length=20)
+    expertise = models.TextField()
+    region = models.ManyToManyField(Region)
 
     def __str__(self):
         """
-        Return a string representation of the engineer's service location.
+        Return the name of the engineer as a string.
         """
-        return str(f"{self.engineer.name} serves {self.region}")
+        return str(self.name)

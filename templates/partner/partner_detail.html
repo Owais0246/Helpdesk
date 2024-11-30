@@ -1,7 +1,7 @@
 {% extends "dashboard/horizontal_base.html" %}
 {% load static i18n %}
 
-{% block head_title%}{% trans "Partner Details" %}{% endblock head_title %}
+{% block head_title %}{% trans "Partner Details" %}{% endblock head_title %}
 
 {% block content %}
 <!-- Start Content -->
@@ -12,12 +12,8 @@
       <div class="page-title-box">
         <div class="page-title-right">
           <ol class="breadcrumb m-0">
-            <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Helpdesk</a>
-            </li>
-            <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Partner</a>
-            </li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Helpdesk</a></li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Partner</a></li>
             <li class="breadcrumb-item active">{{ partner.name }}</li>
           </ol>
         </div>
@@ -27,27 +23,12 @@
   </div>
   <!-- end page title -->
 
+  <!-- Partner Details Section -->
   <div class="row">
     <div class="col-xl-12 col-lg-12">
-      <!-- Partner Details Card -->
       <div class="card d-block">
         <div class="card-body">
-          <div class="dropdown float-end">
-            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="dripicons-dots-3"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end">
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-pencil me-1"></i>Edit</a>
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-delete me-1"></i>Delete</a>
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class="mdi mdi-email-outline me-1"></i>Email</a>
-            </div>
-          </div>
-
           <h3 class="mt-0 font-20">Partner Details</h3>
-
           <div class="table-responsive">
             <table class="table mb-0">
               <thead>
@@ -84,12 +65,12 @@
         <div class="card-body">
           <ul class="nav nav-tabs nav-bordered">
             <li class="nav-item">
-              <a href="#engineers" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+              <a href="#engineers" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
                 Engineers
               </a>
             </li>
             <li class="nav-item">
-              <a href="#regions" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+              <a href="#regions" data-bs-toggle="tab" aria-expanded="true" class="nav-link">
                 Regions Served by Engineers
               </a>
             </li>
@@ -97,81 +78,150 @@
 
           <div class="tab-content">
             <!-- Engineers Tab -->
-            <div class="tab-pane" id="engineers">
+            <div class="tab-pane show active" id="engineers">
               <div class="row">
                 <div class="col-lg-10">
                   <h3>Engineers Associated with {{ partner.name }}</h3>
                 </div>
                 <div class="col-lg-2">
-                  <a href="{% url 'engineer_create' partner.pk %}">
+                  <a href="{% url 'create_engineer' partner.pk %}">
                     <button type="button" class="btn btn-primary">Add Engineer</button>
                   </a>
                 </div>
               </div>
 
-              <div class="row">
-                {% for engineer in partner.engineers.all %}
-                <div class="col-lg-3 border-gray border mb-3">
-                  <div class="card card-body">
-                    <h5 class="card-title">{{ engineer.name }}</h5>
-                    <p class="card-text"><strong>Expertise: </strong>{{ engineer.expertise }}</p>
-                    <p class="card-text"><strong>Contact No: </strong>{{ engineer.contact_no }}</p>
-                    <a href="{% url 'EngineerDetail' engineer.pk %}" class="btn btn-primary">View</a>
-                  </div>
-                </div>
-                {% empty %}
-                <p>No engineers associated with this partner.</p>
-                {% endfor %}
+              <div class="table-responsive">
+                <table id="engineerTable" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Expertise</th>
+                      <th>Contact No</th>
+                      <th>Regions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for engineer in engineers %}
+                      <tr>
+                        <td>{{ engineer.name }}</td>
+                        <td>{{ engineer.expertise }}</td>
+                        <td>{{ engineer.contact_no }}</td>
+                        <td>
+                          {% for region in engineer.region.all %}
+                            <span>{{ region.name }}</span>{% if not forloop.last %}, {% endif %}
+                          {% endfor %}
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="4" class="text-center">No engineers associated with this partner.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
 
             <!-- Regions Tab -->
-            <div class="tab-pane show active" id="regions">
+            <div class="tab-pane" id="regions">
               <div class="row">
                 <div class="col-lg-10">
                   <h3>Regions Served by Engineers for {{ partner.name }}</h3>
                 </div>
-                <div class="col-lg-2">
-                  {% comment %} <a href="{% url 'RegionCreate' partner.pk %}"> {% endcomment %}
-                    <button type="button" class="btn btn-primary">Add Region</button>
-                  </a>
-                </div>
               </div>
 
-              <div class="row">
-                {% for engineer_location in engineer_locations %}
-                  <div class="col-lg-12">
-                    <h4>{{ engineer_location.engineer.name }} serves in:</h4>
-                    <ul>
-                      {% for region in engineer_location.regions %}
-                        <li>{{ region.name }}</li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                {% empty %}
-                <p>No regions associated with this partner's engineers.</p>
-                {% endfor %}
+              <div class="table-responsive">
+                <table id="regionsTable" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>State</th>
+                      <th>City</th>
+                      <th>Region</th>
+                      <th>Pin Code</th>
+                      <th>Engineers</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for region in regions %}
+                      <tr>
+                        <td>{{ region.city.state.name }}</td>
+                        <td>{{ region.city.name }}</td>
+                        <td>{{ region.name }}</td>
+                        <td>{{ region.pin }}</td>
+                        <td>
+                          {% for engineer in partner.engineers.all %}
+                            {% if region in engineer.region.all %}
+                              <span>{{ engineer.name }}</span>{% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                          {% endfor %}
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="5" class="text-center">No regions associated with this partner's engineers.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   </div>
   <!-- end row -->
-
 </div>
 <!-- container -->
 
 {% endblock %}
 
 {% block extra_javascript %}
-<!-- Third party js -->
-<script src="{% static 'libs/chart.js/Chart.bundle.min.js' %}"></script>
-<!-- Third party js ends -->
+<!-- Bootstrap JS (includes Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Init js -->
-<script src="{% static 'js/pages/project-details.init.js' %}"></script>
-<!-- Init js end -->
+<!-- DataTables JS and CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Initialize the DataTable for Engineers table only if it contains rows
+    if ($('#engineerTable tbody tr').length > 0) {
+      $('#engineerTable').DataTable({
+        "searching": true,   // Enable search functionality
+        "paging": true,      // Enable pagination
+        "info": true,        // Show table info
+        "autoWidth": false   // Disable auto width adjustment
+      });
+    } else {
+      // If no data, ensure columns are still properly set
+      $('#engineerTable').DataTable({
+        "searching": false,
+        "paging": false,
+        "info": false,
+        "autoWidth": false
+      });
+    }
+
+    // Initialize the DataTable for Regions table only if it contains rows
+    if ($('#regionsTable tbody tr').length > 0) {
+      $('#regionsTable').DataTable({
+        "searching": true,   // Enable search functionality
+        "paging": true,      // Enable pagination
+        "info": true,        // Show table info
+        "autoWidth": false   // Disable auto width adjustment
+      });
+    } else {
+      // If no data, ensure columns are still properly set
+      $('#regionsTable').DataTable({
+        "searching": false,
+        "paging": false,
+        "info": false,
+        "autoWidth": false
+      });
+    }
+  });
+</script>
+
 {% endblock %}
