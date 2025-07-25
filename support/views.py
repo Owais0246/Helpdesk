@@ -109,10 +109,14 @@ def create_ticket(request):
 
 @login_required
 def ticket_list(request):
+    # Redirect customer users or customer admins to the dashboard
+    if request.user.is_customer_user or request.user.is_customer_admin:
+        return redirect('dashboard')
+
     ticket = Ticket.objects.all()
     ticket_user = Ticket.objects.filter(assignee=request.user)
-    ticket_active = Ticket.objects.filter(assignee=request.user).filter(status="Open")
-    ticket_close = Ticket.objects.filter(assignee=request.user).filter(status="Closed")
+    ticket_active = Ticket.objects.filter(assignee=request.user, status="Open")
+    ticket_close = Ticket.objects.filter(assignee=request.user, status="Closed")
 
     context = {
         "ticket": ticket,
@@ -121,7 +125,6 @@ def ticket_list(request):
         "ticket_close": ticket_close,
     }
     return render(request, "support/ticket_list.html", context)
-
 
 @login_required
 def ticket(request, pk):
