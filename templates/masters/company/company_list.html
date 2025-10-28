@@ -1,30 +1,69 @@
-{% extends "dashboard/horizontal_base.html" %} 
-{% load static i18n %} 
-{% block head_title%}{% trans "Responsive Tables | RWD Tables" %}{% endblock head_title %} 
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+
+{% block head_title %}{% trans "Customer List" %}{% endblock head_title %}
+
 {% block extra_css %}
-
 <!-- third party css -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-select-bs4/css/select.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
 
-<link
-  href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<link
-  href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<link
-  href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<link
-  href="{% static 'libs/datatables.net-select-bs4/css//select.bootstrap4.min.css' %}"
-  rel="stylesheet"
-  type="text/css"/>
-<!-- third party css end -->
+<!-- Custom Table Styling -->
+<style>
+  /* Fixed layout for table */
+  table.dataTable {
+    table-layout: fixed !important;
+    width: 100% !important;
+  }
 
+  /* Word wrap inside cells */
+  table.dataTable th,
+  table.dataTable td {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    vertical-align: middle !important;
+  }
+
+  /* Set column widths */
+  table.dataTable th:nth-child(1),
+  table.dataTable td:nth-child(1) {
+    width: 25%; /* Company */
+  }
+  table.dataTable th:nth-child(2),
+  table.dataTable td:nth-child(2) {
+    width: 20%; /* Contact */
+  }
+  table.dataTable th:nth-child(3),
+  table.dataTable td:nth-child(3) {
+    width: 40%; /* Address */
+  }
+  table.dataTable th:nth-child(4),
+  table.dataTable td:nth-child(4) {
+    width: 15%; /* Actions */
+    text-align: center;
+  }
+
+  /* Adjust look */
+  table.dataTable td {
+    padding: 10px 12px;
+    color: #333;
+  }
+
+  .btn-sm {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .dataTables_wrapper .dataTables_scroll {
+    overflow: auto !important;
+  }
+</style>
 {% endblock %}
- {% block content %}
+
+{% block content %}
 <!-- Start Content-->
 <div class="container-fluid">
   <!-- start page title -->
@@ -33,17 +72,11 @@
       <div class="page-title-box">
         <div class="page-title-right">
           <ol class="breadcrumb m-0">
-            <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Helpdeskk</a>
-            </li>
-            <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Customer</a>
-            </li>
-            {% comment %} <li class="breadcrumb-item active">Responsive</li> {% endcomment %}
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Helpdesk</a></li>
+            <li class="breadcrumb-item active">Customer</li>
           </ol>
         </div>
-        <h4 class="page-title">Cutomers</h4>
-      
+        <h4 class="page-title">Customers</h4>
       </div>
     </div>
   </div>
@@ -53,67 +86,73 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <a href="{% url "CompanyCreate" %}">
-          <button
-          type="button"
-          class="btn btn-sm btn-blue waves-effect waves-light float-end"
-        >
-          <i class="mdi mdi-plus-circle"></i> Add Customer
-        </button>     </a>           
-        <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
-                  <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th data-priority="1">Contact No</th>
-                      <th data-priority="3">Address</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for customer in customers  %}
-                    <tr>
-                     <th> <a href="{% url 'CompanyDetail' customer.pk %}">{{customer.company_name}}</a></th>
-                      <td>{{customer.company_contact_no}}</td>
-                      <td>{{customer.address}}</td>
-                      
-                    </tr>
-                    {% endfor %}
-                    
-                  </tbody>
-                </table>
 
-              
-               
-              </div>
-              <!-- end .table-responsive -->
-            </div>
-            <!-- end .table-rep-plugin-->
-          </div>
-          <!-- end .responsive-table-plugin-->
+          <!-- Add Customer Button -->
+          <a href="{% url 'CompanyCreate' %}">
+            <button type="button" class="btn btn-sm btn-blue waves-effect waves-light float-end mb-3">
+              <i class="mdi mdi-plus-circle"></i> Add Customer
+            </button>
+          </a>
+
+          <!-- DataTable -->
+          <table id="customer-datatable" class="table table-striped table-bordered w-100 nowrap">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Contact No</th>
+                <th>Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for customer in customers %}
+              <tr>
+                <td>
+                  <a href="{% url 'CompanyDetail' customer.pk %}" class="text-primary fw-bold">
+                    {{ customer.company_name }} 
+                    
+                    {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+                    
+                    | {{ customer.company_suffix }}
+                   
+                    {% comment %} {% endif %} {% endcomment %}
+                      {{customer.is_customer}}
+                  </a>
+                </td>
+                <td>{{ customer.company_contact_no }}</td>
+                <td>{{ customer.address }}</td>
+                <td>
+
+                  {% if request.user.is_superuser %}
+
+                  <a href="{% url 'edit_customer' customer.pk %}" class="btn btn-sm btn-warning">
+                    <i class="mdi mdi-pencil"></i> Edit
+                  </a>
+
+                  {% else %}
+
+                  <a href="{% url 'CompanyDetail' customer.pk %}" class="btn btn-sm btn-info">
+                    <i class="mdi mdi-eye"></i> View
+                  </a>
+
+                  {% endif %}
+
+
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
         </div>
       </div>
-      <!-- end card -->
     </div>
-    <!-- end col -->
   </div>
-  <!-- end row -->
-
-  
 </div>
 <!-- container -->
+{% endblock %}
 
-
-
-
-
-
-
-
-
-
-
-
-{% endblock %} {% block extra_javascript %}
-
+{% block extra_javascript %}
 <!-- Third party js -->
 <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
@@ -121,10 +160,26 @@
 <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
 <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
 
-<!-- Third party js ends -->
-
-<!-- Init js -->
-<script src="{% static 'js/pages/datatables.init.js' %}"></script>
-<!-- Init js end -->
-
+<!-- Custom DataTable Setup -->
+<script>
+  $(document).ready(function() {
+    $('#customer-datatable').DataTable({
+      responsive: true,
+      scrollX: true,
+      autoWidth: false,
+      columnDefs: [
+        { targets: 0, width: '25%' },
+        { targets: 1, width: '20%' },
+        { targets: 2, width: '40%' },
+        { targets: 3, width: '15%', orderable: false },
+      ],
+      createdRow: function(row, data, dataIndex) {
+        $('td', row).css('white-space', 'normal');
+      },
+      language: {
+        emptyTable: "No customers available",
+      }
+    });
+  });
+</script>
 {% endblock %}

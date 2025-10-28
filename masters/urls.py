@@ -39,5 +39,6 @@ urlpatterns = [
     path('product/list', ProductListView.as_view(), name="ProductList"),
     path('product/update/<int:pk>', ProductUpdateView.as_view(), name="ProductUpdate"),
     path('product/detail/<int:pk>', views.product_detail, name="ProductDetail"),
+    path('customer/edit/<int:pk>/', views.edit_customer, name='edit_customer'),
 
     ]

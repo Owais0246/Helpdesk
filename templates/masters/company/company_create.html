@@ -1,9 +1,10 @@
-{% extends "dashboard/horizontal_base.html" %} 
-{% load static i18n %} 
-{% block head_title%}{% trans "Form Components" %}{% endblock head_title %} 
+{% extends "dashboard/horizontal_base.html" %}
+{% load static i18n %}
+{% block head_title %}{% if is_edit %}{% trans "Edit Customer" %}{% else %}{% trans "Create Customer" %}{% endif %}{% endblock head_title %}
 {% block content %}
 <!-- Start Content-->
 <div class="container-fluid">
+
   <!-- start page title -->
   <div class="row">
     <div class="col-12">
@@ -11,15 +12,16 @@
         <div class="page-title-right">
           <ol class="breadcrumb m-0">
             <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Cutomer</a>
+              <a href="javascript:void(0);">Customer</a>
             </li>
-            <li class="breadcrumb-item">
-              <a href="javascript: void(0);">Create</a>
+            <li class="breadcrumb-item active">
+              {% if is_edit %} Edit {% else %} Create {% endif %}
             </li>
-            {% comment %} <li class="breadcrumb-item active">Elements</li> {% endcomment %}
           </ol>
         </div>
-        <h4 class="page-title">Create Customer</h4>
+        <h4 class="page-title">
+          {% if is_edit %} Edit Customer {% else %} Create Customer {% endif %}
+        </h4>
       </div>
     </div>
   </div>
@@ -29,46 +31,53 @@
     <div class="col-lg-6">
       <div class="card">
         <div class="card-body">
-          {% comment %} <h4 class="mb-3 header-title">Create Customer</h4> {% endcomment %}
 
-          <form method='POST' id="customerForm">
+          <form method="POST" id="customerForm">
             {% csrf_token %}
+
             <div class="mb-3">
-              <label for="nameofCustomer" class="form-label">Customer Name</label>
+              <label for="cust_name" class="form-label">Customer Name</label>
               <input
                 type="text"
                 class="form-control"
                 id="cust_name"
                 name="company_name"
                 list="company"
-                placeholder="Enter the Customer's Name"/>
-          
+                value="{{ customer_form.company_name.value|default:'' }}"
+                placeholder="Enter the Customer's Name"
+              />
+
               <datalist id="company">
                 {% for company in company %}
-                <option value='{{company.company_name}}'></option>
+                <option value="{{ company.company_name }}"></option>
                 {% endfor %}
               </datalist>
             </div>
-          
+
             <div class="mb-3">
-              <label for="contact_number" class="form-label">Contact Number</label>
+              <label for="cust_number" class="form-label">Contact Number</label>
               <input
                 type="number"
                 class="form-control"
                 id="cust_number"
                 name="company_contact_no"
-                placeholder="Enter the Contact Number"/>
+                value="{{ customer_form.company_contact_no.value|default:'' }}"
+                placeholder="Enter the Contact Number"
+              />
             </div>
-          
+
             <div class="mb-3">
-              <label for="addressofCustomer" class="form-label">Address</label>
+              <label for="cust_address" class="form-label">Address</label>
               <input
                 type="text"
                 class="form-control"
                 id="cust_address"
                 name="address"
-                placeholder="Enter the Customer's Address"/>
+                value="{{ customer_form.address.value|default:'' }}"
+                placeholder="Enter the Customer's Address"
+              />
             </div>
+
             <div class="mb-3">
               <label for="company_suffix" class="form-label">Name Suffix</label>
               <input
@@ -76,46 +85,26 @@
                 class="form-control"
                 id="company_suffix"
                 name="company_suffix"
-                
-                placeholder="Enter the Name Suffix"/>
-              
+                value="{{ customer_form.company_suffix.value|default:'' }}"
+                placeholder="Enter the Name Suffix"
+                required
+              />
             </div>
-            {% comment %} <div class="mb-3">
-              <label for="salesperson" class="form-label">Salesperson</label>
-              <select name="salesperson" id="salesperson">
-                <option value="#">Select the sales person</option>
-                {% for user in user %}
-                  <option value="{{user.pk}}">{{user.first_name }}{{user.last_name}}</option>
-                {% endfor %}
-              </select>>
-              
-            </div> {% endcomment %}
-          
+
             <button
               type="submit"
               class="btn btn-primary waves-effect waves-light">
-              Submit
+              {% if is_edit %} Update {% else %} Submit {% endif %}
             </button>
           </form>
+
         </div>
-        <!-- end card-body-->
+        <!-- end card-body -->
       </div>
-      <!-- end card-->
+      <!-- end card -->
     </div>
-    <!-- end col -->
-
-    
-    <!-- end col -->
   </div>
-  <!-- end row -->
 
-  
-      </div>
-      <!-- end card-->
-    </div>
-    <!-- end col-->
-  </div>
-  <!-- end row -->
 </div>
 <!-- container -->
 
@@ -123,11 +112,12 @@
 
 <script>
   $(document).ready(function () {
+    {% if not is_edit %} // Only auto-fill when creating a new customer
     $('#cust_name').on('input', function () {
       var companyName = $(this).val();
       if (companyName) {
         $.ajax({
-          url: '{% url "get_company_details" %}',  
+          url: '{% url "get_company_details" %}',
           method: 'GET',
           data: {'company_name': companyName},
           success: function (data) {
@@ -139,6 +129,7 @@
         });
       }
     });
+    {% endif %}
   });
 </script>
 {% endblock %}

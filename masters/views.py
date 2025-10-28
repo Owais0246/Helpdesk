@@ -6,7 +6,7 @@ This module contains views for managing company, location, and product data.
 Attributes:
     All views related to managing company, location, and product data.
 """
-from django.shortcuts import render,redirect,reverse
+from django.shortcuts import render,redirect,reverse, get_object_or_404
 from django.contrib import messages
 from django.views import generic
 from django.contrib.auth.decorators import login_required
@@ -160,6 +160,73 @@ def create_customer(request):
         # 'company': form,
     }
     return render(request, 'masters/company/company_create.html', context)
+
+
+
+def edit_customer(request, pk):
+    """
+    Edit an existing customer.
+
+    This view allows editing an existing customer's information.
+    It reuses the same form and template as customer creation.
+
+    Args:
+        request: HttpRequest object containing request data.
+        pk: Primary key (ID) of the customer to edit.
+
+    Returns:
+        HttpResponse: Redirects to CompanyList if the form is valid.
+        Otherwise, renders the form again with validation errors.
+    """
+    customer = get_object_or_404(Company, pk=pk, is_customer=True)
+
+    if request.method == 'POST':
+        customer_form = CompanyForm(request.POST, instance=customer)
+        if customer_form.is_valid():
+            form = customer_form.save(commit=False)
+
+            # Handle suffix update only if changed
+            company_suffix = form.company_suffix
+            if company_suffix:
+                existing_suffixes = Company.objects.filter(
+                    company_suffix=company_suffix
+                ).exclude(pk=customer.pk)  # Exclude the current record
+
+                if existing_suffixes.exists():
+                    max_suffix_number = existing_suffixes.aggregate(
+                        Max('company_suffix')
+                    )['company_suffix__max']
+
+                    if max_suffix_number is not None:
+                        suffix_parts = company_suffix.split('-')
+                        if len(suffix_parts) == 1:
+                            new_suffix = f"{company_suffix}-1"
+                        else:
+                            suffix_number = int(suffix_parts[-1])
+                            new_suffix = "-".join(suffix_parts[:-1]) + f"-{suffix_number + 1}"
+
+                        # Ensure uniqueness
+                        while Company.objects.filter(company_suffix=new_suffix).exists():
+                            suffix_parts = new_suffix.split('-')
+                            suffix_number = int(suffix_parts[-1])
+                            new_suffix = "-".join(suffix_parts[:-1]) + f"-{suffix_number + 1}"
+
+                        form.company_suffix = new_suffix
+
+            form.is_customer = True
+            form.save()
+            return redirect('CompanyList')
+    else:
+        customer_form = CompanyForm(instance=customer)
+
+    context = {
+        'customer_form': customer_form,
+        'customer': customer,
+        'is_edit': True,  # flag to let the template know it's edit mode
+    }
+    return render(request, 'masters/company/company_create.html', context)
+
+
 
 @login_required
 def customer_list(request):
