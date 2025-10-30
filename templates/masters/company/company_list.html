@@ -111,12 +111,12 @@
                   <a href="{% url 'CompanyDetail' customer.pk %}" class="text-primary fw-bold">
                     {{ customer.company_name }} 
                     
-                    {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+                    {% if request.user.is_superuser %}
                     
                     | {{ customer.company_suffix }}
                    
-                    {% comment %} {% endif %} {% endcomment %}
-                      {{customer.is_customer}}
+                    {% endif %}
+                      {% comment %} {{customer.is_customer}} {% endcomment %}
                   </a>
                 </td>
                 <td>{{ customer.company_contact_no }}</td>
