@@ -180,7 +180,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'zacoitsolution@gmail.com'
-EMAIL_HOST_PASSWORD = 'uvxe hxzp cfbh gyxy'
+EMAIL_HOST_PASSWORD = 'rulf vgep fomh brsi'
 
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
